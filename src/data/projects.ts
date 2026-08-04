@@ -5,8 +5,8 @@ import strangerThings from '../assets/images/strangerThings.webp';
 import pringles from '../assets/images/pringles.webp';
 import doutoragenda from '../assets/images/doutoragenda.webp';
 import agencia from '../assets/images/agencia.webp';
-import superMario from '../assets/images/superMario.webp';
 import stockly from '../assets/images/stockly.webp';
+import riff from '../assets/images/riff.png';
 
 export interface Tech {
   name: string;
@@ -24,6 +24,54 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  {
+    title: 'Riff',
+    url: 'https://riff-mauve.vercel.app/',
+    repo: 'https://github.com/joaoviitordev/riff',
+    img: riff,
+    description:
+      'Riff é uma rede social musical que conecta pessoas através do Spotify. Cada usuário cria um perfil com @nome de usuário próprio, conecta sua conta do Spotify e passa a ter uma página pública onde qualquer visitante pode ver o que ele está ouvindo agora, suas músicas e artistas mais ouvidos por período — sem esperar o Wrapped anual.',
+    techs: [
+      { name: 'Next.js', icon: '/assets/icons/nextjs.svg' },
+      { name: 'React', icon: '/assets/icons/react.svg' },
+      { name: 'TypeScript', icon: '/assets/icons/typescript.svg' },
+      { name: 'PostgreSQL', icon: '/assets/icons/postgresql.svg' },
+      { name: 'Tailwind CSS', icon: '/assets/icons/tailwindcss.svg' },
+      { name: 'Supabase', icon: '/assets/icons/supabase.svg' },
+    ],
+  },
+  {
+    title: 'Doutor Agenda',
+    url: 'https://doutor-agenda-indol.vercel.app/',
+    repo: 'https://github.com/joaoviitordev/doutor-agenda',
+    img: doutoragenda,
+    description:
+      'Sistema SaaS para agendamento médico construído com React, Next.js e Tailwind CSS. Desafio: otimização de performance e criação de um painel de UI/UX intuitivo para clínicas. Para saber mais sobre as tecnologias utilizadas, acesse o repositório do projeto.',
+    techs: [
+      { name: 'React', icon: '/assets/icons/react.svg' },
+      { name: 'Next.js', icon: '/assets/icons/nextjs.svg' },
+      { name: 'Tailwind CSS', icon: '/assets/icons/tailwindcss.svg' },
+      { name: 'Node.js', icon: '/assets/icons/nodejs2.svg' },
+      { name: 'PostgreSQL', icon: '/assets/icons/postgresql.svg' },
+      { name: 'Drizzle ORM', icon: '/assets/icons/drizzle.svg' },
+    ],
+  },
+  {
+    title: 'Stockly',
+    url: 'https://stockly-seven-nu.vercel.app/',
+    repo: 'https://github.com/joaoviitordev/stockly',
+    img: stockly,
+    description:
+      'Este projeto consiste em uma aplicação web completa para o controle de estoque e vendas, desenvolvida com o objetivo de aprender a criar soluções full stack robustas. O sistema permite o gerenciamento de produtos, registro de vendas e possui um painel de controle com gráficos de receita em tempo real.',
+    techs: [
+      { name: 'Next.js', icon: '/assets/icons/nextjs.svg' },
+      { name: 'React', icon: '/assets/icons/react.svg' },
+      { name: 'Tailwind CSS', icon: '/assets/icons/tailwindcss.svg' },
+      { name: 'Node.js', icon: '/assets/icons/nodejs2.svg' },
+      { name: 'PostgreSQL', icon: '/assets/icons/postgresql.svg' },
+      { name: 'Prisma ORM', icon: '/assets/icons/prisma.svg' },
+    ],
+  },
   {
     title: 'Stranger Things',
     url: 'https://joaoviitordev.github.io/Landing-Page-StrangerThings/',
@@ -55,22 +103,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    title: 'Doutor Agenda',
-    url: 'https://doutor-agenda-indol.vercel.app/',
-    repo: 'https://github.com/joaoviitordev/doutor-agenda',
-    img: doutoragenda,
-    description:
-      'Sistema SaaS para agendamento médico construído com React, Next.js e Tailwind CSS. Desafio: otimização de performance e criação de um painel de UI/UX intuitivo para clínicas. Para saber mais sobre as tecnologias utilizadas, acesse o repositório do projeto.',
-    techs: [
-      { name: 'React', icon: '/assets/icons/react.svg' },
-      { name: 'Next.js', icon: '/assets/icons/nextjs.svg' },
-      { name: 'Tailwind CSS', icon: '/assets/icons/tailwindcss.svg' },
-      { name: 'Node.js', icon: '/assets/icons/nodejs2.svg' },
-      { name: 'PostgreSQL', icon: '/assets/icons/postgresql.svg' },
-      { name: 'Figma', icon: '/assets/icons/figma.svg' },
-    ],
-  },
-  {
     title: 'Agência 3D',
     url: 'https://joaoviitordev.github.io/Agencia3D/',
     repo: 'https://github.com/joaoviitordev/Agencia3D',
@@ -83,37 +115,6 @@ export const projects: Project[] = [
       { name: 'JavaScript', icon: '/assets/icons/js.svg' },
       { name: 'GSAP', icon: '/assets/icons/gsap2.svg' },
       { name: 'Three.js', icon: '/assets/icons/threejs.svg' },
-      { name: 'Figma', icon: '/assets/icons/figma.svg' },
-    ],
-  },
-  {
-    title: 'Super Mario Galaxy',
-    url: 'https://joaoviitordev.github.io/SuperMarioGalaxy/',
-    repo: 'https://github.com/joaoviitordev/SuperMarioGalaxy',
-    img: superMario,
-    description:
-      'Landing page conceitual e animada inspirada no universo Super Mario Galaxy, simulando o site oficial de um filme fictício com visual imersivo, animações avançadas de scroll e efeitos visuais galáticos. Para saber mais sobre as tecnologias utilizadas, acesse o repositório do projeto.',
-    techs: [
-      { name: 'HTML5', icon: '/assets/icons/html5.svg' },
-      { name: 'CSS3', icon: '/assets/icons/css3.svg' },
-      { name: 'JavaScript', icon: '/assets/icons/js.svg' },
-      { name: 'GSAP', icon: '/assets/icons/gsap2.svg' },
-      { name: 'Figma', icon: '/assets/icons/figma.svg' },
-    ],
-  },
-  {
-    title: 'Stockly',
-    url: 'https://stockly-seven-nu.vercel.app/',
-    repo: 'https://github.com/joaoviitordev/stockly',
-    img: stockly,
-    description:
-      'Este projeto consiste em uma aplicação web completa para o controle de estoque e vendas, desenvolvida com o objetivo de aprender a criar soluções full stack robustas. O sistema permite o gerenciamento de produtos, registro de vendas e possui um painel de controle com gráficos de receita em tempo real.',
-    techs: [
-      { name: 'Next.js', icon: '/assets/icons/nextjs.svg' },
-      { name: 'React', icon: '/assets/icons/react.svg' },
-      { name: 'Tailwind CSS', icon: '/assets/icons/tailwindcss.svg' },
-      { name: 'Node.js', icon: '/assets/icons/nodejs2.svg' },
-      { name: 'PostgreSQL', icon: '/assets/icons/postgresql.svg' },
       { name: 'Figma', icon: '/assets/icons/figma.svg' },
     ],
   },

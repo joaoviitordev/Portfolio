@@ -1,65 +1,160 @@
 ---
-// Tecnologias — estático. Grid bento com tamanhos variáveis.
-const techs = [
-  { name: 'HTML5', icon: '/assets/icons/html5.svg', size: 'wide' },
-  { name: 'React', icon: '/assets/icons/react.svg', size: 'wide' },
-  { name: 'CSS3', icon: '/assets/icons/css3.svg', size: 'normal' },
-  { name: 'JavaScript (ES6+)', icon: '/assets/icons/js.svg', size: 'wide' },
-  { name: 'GSAP', icon: '/assets/icons/gsap2.svg', size: 'normal' },
-  { name: 'Figma', icon: '/assets/icons/figma.svg', size: 'wide' },
-  { name: 'Node.js', icon: '/assets/icons/nodejs2.svg', size: 'wide' },
-  { name: 'Git', icon: '/assets/icons/git.svg', size: 'normal' },
-  { name: 'GitHub', icon: '/assets/icons/github.svg', size: 'wide' },
-  { name: 'Next.js', icon: '/assets/icons/nextjs.svg', size: 'wide' },
-  { name: 'TypeScript', icon: '/assets/icons/typescript.svg', size: 'tall' },
-  { name: 'PostgreSQL', icon: '/assets/icons/postgresql.svg', size: 'normal' },
-];
-
-function classesFor(size: string) {
-  let colSpan = 'col-span-1';
-  let rowSpan = 'row-span-1';
-  let iconSize = 'w-15 h-15 sm:w-17.5 sm:h-17.5 lg:w-20 lg:h-20';
-  let textSize = 'text-base sm:text-lg lg:text-xl';
-
-  if (size === 'large') {
-    colSpan = 'col-span-2';
-    rowSpan = 'row-span-1 sm:row-span-2';
-    iconSize = 'w-17.5 h-17.5 sm:w-25 sm:h-25 lg:w-35 lg:h-35';
-    textSize = 'text-lg sm:text-[22px] lg:text-[26px]';
-  } else if (size === 'tall') {
-    rowSpan = 'row-span-2';
-    iconSize = 'w-17.5 h-17.5 sm:w-20 sm:h-20 lg:w-25 lg:h-25';
-    textSize = 'text-lg sm:text-xl lg:text-[22px]';
-  } else if (size === 'wide') {
-    colSpan = 'col-span-2';
-  }
-  return { colSpan, rowSpan, iconSize, textSize };
-}
+// Tecnologias — grafo de nós (SVG). Ícones inline (como no DC).
 ---
 
-<section id="tecnologias" class="w-full min-h-auto sm:min-h-screen flex flex-col items-center px-[4vw] py-10 sm:py-25">
-  <h2 class="font-mono text-primary text-xl sm:text-2xl font-bold w-full text-left mb-8 sm:mb-12">
-    /* TECNOLOGIAS */
-  </h2>
+<section data-screen-label="Tecnologias" id="tecnologias" style="max-width:1200px;margin:0 auto;padding:clamp(40px,6vw,70px) clamp(20px,4vw,40px) clamp(60px,8vw,100px);">
+  <div style="font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(18px,2.4vw,24px);margin-bottom:8px;">/* TECHSTACK */</div>
+  <div data-i18n="stackSub" style="font-family:JetBrains Mono,monospace;font-size:13px;color:#8b8b92;margin-bottom:clamp(30px,5vw,50px);">// ecossistema de tecnologias que uso no dia a dia</div>
 
-  <div class="w-full max-w-275 grid grid-cols-2 lg:grid-cols-4 grid-flow-dense gap-4 sm:gap-6 auto-rows-37.5 sm:auto-rows-50 lg:auto-rows-60">
-    {techs.map((tech) => {
-      const { colSpan, rowSpan, iconSize, textSize } = classesFor(tech.size);
-      return (
-        <div
-          class={`flex flex-col items-center justify-center gap-4 sm:gap-6 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white/40 backdrop-blur-md border border-white/40 shadow-[0_10px_30px_rgba(0,0,0,0.05)] transition-all duration-300 ease-in hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_35px_rgba(0,0,0,0.1)] ${colSpan} ${rowSpan}`}
-        >
-          <img
-            src={tech.icon}
-            alt={`Ícone da tecnologia ${tech.name}`}
-            loading="lazy"
-            class={`${iconSize} object-contain drop-shadow-md`}
-          />
-          <span class={`font-sans font-semibold text-primary text-center ${textSize}`}>
-            {tech.name}
-          </span>
-        </div>
-      );
-    })}
+  <div data-m="graph" style="position:relative;width:100%;max-width:960px;margin:0 auto;aspect-ratio:960/560;">
+    <svg data-m="graph-lines" viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;">
+      <g stroke="rgba(23,23,23,0.18)" stroke-width="0.25">
+        <line x1="50" y1="52" x2="30" y2="30"/>
+        <line x1="50" y1="52" x2="72" y2="30"/>
+        <line x1="50" y1="52" x2="28" y2="76"/>
+        <line x1="50" y1="52" x2="74" y2="76"/>
+
+        <line x1="30" y1="30" x2="22" y2="12"/>
+        <line x1="30" y1="30" x2="38" y2="14"/>
+        <line x1="30" y1="30" x2="10" y2="34"/>
+        <line x1="30" y1="30" x2="28" y2="46"/>
+
+        <line x1="72" y1="30" x2="62" y2="10"/>
+        <line x1="72" y1="30" x2="84" y2="10"/>
+        <line x1="72" y1="30" x2="92" y2="34"/>
+
+        <line x1="28" y1="76" x2="8" y2="68"/>
+        <line x1="28" y1="76" x2="12" y2="92"/>
+        <line x1="28" y1="76" x2="32" y2="94"/>
+
+        <line x1="74" y1="76" x2="66" y2="94"/>
+        <line x1="74" y1="76" x2="90" y2="68"/>
+      </g>
+    </svg>
+
+    <!-- center -->
+    <div style="position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;" data-m="hub">
+      <div data-s="solid" style="width:clamp(12px,1.6vw,16px);height:clamp(12px,1.6vw,16px);border-radius:50%;background:#171717;"></div>
+      <div style="font-family:JetBrains Mono,monospace;font-size:clamp(9px,1vw,11px);letter-spacing:0.08em;color:#8b8b92;white-space:nowrap;">STACK</div>
+    </div>
+    <!-- category dots -->
+    <div style="position:absolute;left:30%;top:30%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px;" data-m="hub">
+      <div style="width:clamp(7px,1vw,9px);height:clamp(7px,1vw,9px);border-radius:50%;background:#a1a1aa;"></div>
+      <div style="font-family:JetBrains Mono,monospace;font-size:clamp(8px,0.85vw,10px);letter-spacing:0.06em;color:#a1a1aa;white-space:nowrap;">FRONT-END</div>
+    </div>
+    <div style="position:absolute;left:72%;top:30%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px;" data-m="hub">
+      <div style="width:clamp(7px,1vw,9px);height:clamp(7px,1vw,9px);border-radius:50%;background:#a1a1aa;"></div>
+      <div style="font-family:JetBrains Mono,monospace;font-size:clamp(8px,0.85vw,10px);letter-spacing:0.06em;color:#a1a1aa;white-space:nowrap;">BASE</div>
+    </div>
+    <div style="position:absolute;left:28%;top:76%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px;" data-m="hub">
+      <div style="width:clamp(7px,1vw,9px);height:clamp(7px,1vw,9px);border-radius:50%;background:#a1a1aa;"></div>
+      <div style="font-family:JetBrains Mono,monospace;font-size:clamp(8px,0.85vw,10px);letter-spacing:0.06em;color:#a1a1aa;white-space:nowrap;">TOOLS</div>
+    </div>
+    <div style="position:absolute;left:74%;top:76%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px;" data-m="hub">
+      <div style="width:clamp(7px,1vw,9px);height:clamp(7px,1vw,9px);border-radius:50%;background:#a1a1aa;"></div>
+      <div style="font-family:JetBrains Mono,monospace;font-size:clamp(8px,0.85vw,10px);letter-spacing:0.06em;color:#a1a1aa;white-space:nowrap;">BACK-END</div>
+    </div>
+
+    <!-- Next.js -->
+    <div style="position:absolute;left:22%;top:12%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .2s;" data-m="node" class="hv-node">
+      <div data-s="solid" style="width:clamp(34px,4.4vw,48px);height:clamp(34px,4.4vw,48px);border-radius:50%;background:#171717;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,0.18);">
+        <span style="color:#fff;font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(14px,1.6vw,18px);">N</span>
+      </div>
+      <div data-s="muted" style="font-family:JetBrains Mono,monospace;font-size:clamp(9px,1vw,11px);color:#55585f;white-space:nowrap;">Next.js</div>
+    </div>
+
+    <!-- React -->
+    <div style="position:absolute;left:38%;top:14%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .2s;" data-m="node" class="hv-node">
+      <div style="width:clamp(34px,4.4vw,48px);height:clamp(34px,4.4vw,48px);border-radius:50%;background:#fff;border:1px solid rgba(23,23,23,0.12);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+        <svg width="62%" height="62%" viewBox="0 0 40 40"><g fill="none" stroke="#087ea4" stroke-width="2"><ellipse cx="20" cy="20" rx="17" ry="6.6"/><ellipse cx="20" cy="20" rx="17" ry="6.6" transform="rotate(60 20 20)"/><ellipse cx="20" cy="20" rx="17" ry="6.6" transform="rotate(120 20 20)"/></g><circle cx="20" cy="20" r="3" fill="#087ea4"/></svg>
+      </div>
+      <div data-s="muted" style="font-family:JetBrains Mono,monospace;font-size:clamp(9px,1vw,11px);color:#55585f;white-space:nowrap;">React</div>
+    </div>
+
+    <!-- TypeScript -->
+    <div style="position:absolute;left:10%;top:34%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .2s;" data-m="node" class="hv-node">
+      <div style="width:clamp(34px,4.4vw,48px);height:clamp(34px,4.4vw,48px);border-radius:28%;background:#3178c6;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,0.18);">
+        <span style="color:#fff;font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(11px,1.3vw,14px);">TS</span>
+      </div>
+      <div data-s="muted" style="font-family:JetBrains Mono,monospace;font-size:clamp(9px,1vw,11px);color:#55585f;white-space:nowrap;">TypeScript</div>
+    </div>
+
+    <!-- JavaScript -->
+    <div style="position:absolute;left:28%;top:46%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .2s;" data-m="node" class="hv-node">
+      <div style="width:clamp(34px,4.4vw,48px);height:clamp(34px,4.4vw,48px);border-radius:28%;background:#f7df1e;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,0.18);">
+        <span style="color:#171717;font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(11px,1.3vw,14px);">JS</span>
+      </div>
+      <div data-s="muted" style="font-family:JetBrains Mono,monospace;font-size:clamp(9px,1vw,11px);color:#55585f;white-space:nowrap;">JavaScript</div>
+    </div>
+
+    <!-- HTML5 -->
+    <div style="position:absolute;left:62%;top:10%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .2s;" data-m="node" class="hv-node">
+      <div style="width:clamp(34px,4.4vw,48px);height:clamp(34px,4.4vw,48px);border-radius:28%;background:#e34f26;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,0.18);">
+        <span style="color:#fff;font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(11px,1.3vw,14px);">5</span>
+      </div>
+      <div data-s="muted" style="font-family:JetBrains Mono,monospace;font-size:clamp(9px,1vw,11px);color:#55585f;white-space:nowrap;">HTML5</div>
+    </div>
+
+    <!-- CSS3 -->
+    <div style="position:absolute;left:84%;top:10%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .2s;" data-m="node" class="hv-node">
+      <div style="width:clamp(34px,4.4vw,48px);height:clamp(34px,4.4vw,48px);border-radius:28%;background:#1572b6;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,0.18);">
+        <span style="color:#fff;font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(11px,1.3vw,14px);">3</span>
+      </div>
+      <div data-s="muted" style="font-family:JetBrains Mono,monospace;font-size:clamp(9px,1vw,11px);color:#55585f;white-space:nowrap;">CSS3</div>
+    </div>
+
+    <!-- GSAP -->
+    <div style="position:absolute;left:92%;top:34%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .2s;" data-m="node" class="hv-node">
+      <div style="width:clamp(34px,4.4vw,48px);height:clamp(34px,4.4vw,48px);border-radius:28%;background:#88ce02;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,0.18);">
+        <span style="color:#173d0a;font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(10px,1.1vw,12px);">GS</span>
+      </div>
+      <div data-s="muted" style="font-family:JetBrains Mono,monospace;font-size:clamp(9px,1vw,11px);color:#55585f;white-space:nowrap;">GSAP</div>
+    </div>
+
+    <!-- Git -->
+    <div style="position:absolute;left:8%;top:68%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .2s;" data-m="node" class="hv-node">
+      <div style="width:clamp(34px,4.4vw,48px);height:clamp(34px,4.4vw,48px);border-radius:50%;background:#f05033;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,0.18);">
+        <svg width="60%" height="60%" viewBox="0 0 24 24"><g fill="#fff"><circle cx="6" cy="6" r="2.4"/><circle cx="6" cy="18" r="2.4"/><circle cx="18" cy="12" r="2.4"/><path d="M6 8.4V15.6M8 6.5L16 11" stroke="#fff" stroke-width="1.6" fill="none"/></g></svg>
+      </div>
+      <div data-s="muted" style="font-family:JetBrains Mono,monospace;font-size:clamp(9px,1vw,11px);color:#55585f;white-space:nowrap;">Git</div>
+    </div>
+
+    <!-- GitHub -->
+    <div style="position:absolute;left:12%;top:92%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .2s;" data-m="node" class="hv-node">
+      <div data-s="solid" style="width:clamp(34px,4.4vw,48px);height:clamp(34px,4.4vw,48px);border-radius:28%;background:#171717;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,0.18);">
+        <svg width="58%" height="58%" viewBox="0 0 24 24" fill="#fff"><path d="M12 2C6.48 2 2 6.58 2 12.2c0 4.5 2.87 8.32 6.84 9.67.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.46-1.2-1.11-1.52-1.11-1.52-.91-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.9 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.64-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.73 0 0 .84-.27 2.75 1.05a9.3 9.3 0 015 0c1.9-1.32 2.74-1.05 2.74-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.63 1.03 2.75 0 3.93-2.35 4.79-4.58 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0022 12.2C22 6.58 17.52 2 12 2z"/></svg>
+      </div>
+      <div data-s="muted" style="font-family:JetBrains Mono,monospace;font-size:clamp(9px,1vw,11px);color:#55585f;white-space:nowrap;">GitHub</div>
+    </div>
+
+    <!-- Figma -->
+    <div style="position:absolute;left:32%;top:94%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .2s;" data-m="node" class="hv-node">
+      <div style="width:clamp(34px,4.4vw,48px);height:clamp(34px,4.4vw,48px);border-radius:50%;background:#fff;border:1px solid rgba(23,23,23,0.12);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+        <svg width="42%" height="62%" viewBox="0 0 24 36">
+          <path d="M6 0h6v12H6a6 6 0 010-12z" fill="#f24e1e"/>
+          <path d="M0 18a6 6 0 016-6h6v12H6a6 6 0 01-6-6z" fill="#a259ff"/>
+          <path d="M0 30a6 6 0 016-6h6v6a6 6 0 11-12 0z" fill="#0acf83"/>
+          <path d="M12 0h6a6 6 0 010 12h-6z" fill="#ff7262"/>
+          <circle cx="18" cy="18" r="6" fill="#1abcfe"/>
+        </svg>
+      </div>
+      <div data-s="muted" style="font-family:JetBrains Mono,monospace;font-size:clamp(9px,1vw,11px);color:#55585f;white-space:nowrap;">Figma</div>
+    </div>
+
+    <!-- Node.js -->
+    <div style="position:absolute;left:66%;top:94%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .2s;" data-m="node" class="hv-node">
+      <div style="width:clamp(34px,4.4vw,48px);height:clamp(34px,4.4vw,48px);background:#339933;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,0.18);">
+        <span style="color:#fff;font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(9px,1vw,11px);">JS</span>
+      </div>
+      <div data-s="muted" style="font-family:JetBrains Mono,monospace;font-size:clamp(9px,1vw,11px);color:#55585f;white-space:nowrap;">Node.js</div>
+    </div>
+
+    <!-- PostgreSQL -->
+    <div style="position:absolute;left:90%;top:68%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .2s;" data-m="node" class="hv-node">
+      <div style="width:clamp(34px,4.4vw,48px);height:clamp(34px,4.4vw,48px);border-radius:28%;background:#336791;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,0.18);">
+        <span style="color:#fff;font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(10px,1.1vw,12px);">PG</span>
+      </div>
+      <div data-s="muted" style="font-family:JetBrains Mono,monospace;font-size:clamp(9px,1vw,11px);color:#55585f;white-space:nowrap;text-align:center;">PostgreSQL</div>
+    </div>
   </div>
 </section>

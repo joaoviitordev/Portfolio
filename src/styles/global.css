@@ -1,94 +1,61 @@
-@import "tailwindcss";
+/* Estilos globais do portfólio.
+   Bloco copiado 1:1 do <helmet> do design DC (dark mode + keyframes + responsivo),
+   acrescido das classes .hv-* que substituem os antigos `style-hover` (hover inline). */
 
-@theme {
-  --color-primary: #0d0d0d;
-  --color-background-start: #f2f2f2;
-  --color-background-end: #888888;
-  --color-text-light: #535353;
-  --color-link-hover: linear-gradient(-30deg, var(--color-background-start), #b6b6b6);
+body { margin: 0; scroll-behavior: smooth; background:#ffffff; }
+::selection { background:#171717; color:#fff; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(14px);} to { opacity:1; transform:translateY(0);} }
 
-  /* Fontsource registra estas famílias (antes vinham do next/font como CSS vars) */
-  --font-poppins: "Poppins";
-  --font-space-mono: "Space Mono";
+html[data-theme="dark"] body { background:#0c0c0d; }
+html[data-theme="dark"] ::selection { background:#f4f4f5; color:#0c0c0d; }
+html[data-theme="dark"] [data-theme-root] { background:#0c0c0d !important; color:#f4f4f5 !important; }
+html[data-theme="dark"] header { background:rgba(12,12,13,0.85) !important; border-color:rgba(255,255,255,0.1) !important; }
+html[data-theme="dark"] h1, html[data-theme="dark"] nav a { color:#f4f4f5 !important; }
+html[data-theme="dark"] [data-s="page"] { background:#0c0c0d !important; border-top-color:rgba(255,255,255,0.1) !important; }
+html[data-theme="dark"] [data-s="pill"] { background:linear-gradient(180deg,#1e1e24,#15151a) !important; border-color:rgba(255,255,255,0.14) !important; color:#f4f4f5 !important; }
+html[data-theme="dark"] [data-s="pill"] * { color:#f4f4f5 !important; }
+html[data-theme="dark"] [data-s="pill"] [stroke] { stroke:#f4f4f5 !important; }
+html[data-theme="dark"] [data-s="pill"] svg[fill]:not([fill="none"]),
+html[data-theme="dark"] [data-s="pill"] circle[fill], html[data-theme="dark"] [data-s="pill"] path[fill]:not([fill="none"]) { fill:#f4f4f5 !important; }
+html[data-theme="dark"] [data-s="card"] { background:#16161a !important; border-color:rgba(255,255,255,0.12) !important; color:#f4f4f5 !important; }
+html[data-theme="dark"] [data-s="solid"] { background:#f4f4f5 !important; color:#0c0c0d !important; }
+html[data-theme="dark"] [data-s="solid"] * { color:#0c0c0d !important; }
+html[data-theme="dark"] [data-s="solid"] [stroke] { stroke:#0c0c0d !important; }
+html[data-theme="dark"] [data-s="solid"] svg[fill]:not([fill="none"]),
+html[data-theme="dark"] [data-s="solid"] circle[fill], html[data-theme="dark"] [data-s="solid"] path[fill]:not([fill="none"]) { fill:#0c0c0d !important; }
+html[data-theme="dark"] [data-s="muted"] { color:#a9a9b2 !important; }
+html[data-theme="dark"] [data-m="menu-link"] { color:#f4f4f5 !important; border-bottom-color:rgba(255,255,255,0.08) !important; }
+html[data-theme="dark"] [data-m="panel"] { background:rgba(12,12,13,0.97) !important; }
+html[data-theme="dark"] [style*="repeating-linear-gradient"] { background:repeating-linear-gradient(135deg,#141418,#141418 10px,#1c1c21 10px,#1c1c21 20px) !important; }
+html[data-theme="dark"] g[stroke*="23,23,23"] { stroke:rgba(255,255,255,0.22) !important; }
 
-  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-space-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-
-  /* Custom Transitions */
-  --transition-duration-slow: 0.6s;
-  --transition-duration-medium: 0.4s;
-  --transition-duration-fast: 0.3s;
-
-  @keyframes marquee-anim {
-    100% {
-      transform: translateX(-100%);
-    }
-  }
+@media (max-width:900px) {
+  [data-m="hero"] { grid-template-columns:1fr !important; gap:34px !important; padding-top:44px !important; }
+  [data-m="bar"] { gap:12px !important; padding-top:14px !important; padding-bottom:14px !important; }
+  [data-m="nav"] { gap:10px !important; }
+  [data-m="nav-links"] { display:none !important; }
+  [data-m="menu-btn"] { display:flex !important; order:9 !important; }
+  [data-mm="tap"] { width:44px !important; height:44px !important; }
+  [data-m="graph"] { position:static !important; aspect-ratio:auto !important; max-width:none !important; display:flex !important; flex-wrap:wrap !important; justify-content:center !important; gap:22px 14px !important; }
+  [data-m="graph-lines"], [data-m="hub"] { display:none !important; }
+  [data-m="node"] { position:static !important; left:auto !important; top:auto !important; transform:none !important; width:84px !important; }
+}
+@media (max-width:520px) {
+  [data-m="brand"] { font-size:12px !important; }
+  [data-m="cta"] { width:100% !important; justify-content:center !important; }
+  [data-m="node"] { width:74px !important; }
 }
 
-html,
-body {
-  /* scroll-behavior: smooth removido — conflita com o ScrollSmoother do GSAP */
-  overflow-x: hidden;
-}
+/* ---- Hover (substituem os `style-hover` do DC) ---- */
+.hv-nav:hover { color:#6b7280; }
+.hv-pill:hover { background:linear-gradient(180deg,#f7f7f8,#e4e4e7); }
+.hv-solid:hover { background:#000; }
+.hv-solid-cta:hover { background:#000; box-shadow:0 4px 14px rgba(0,0,0,0.25); }
+.hv-card:hover { transform:translateY(-3px); box-shadow:0 16px 34px -20px rgba(0,0,0,0.3); }
+.hv-node:hover { transform:translate(-50%,-50%) scale(1.12); }
+.hv-top:hover { background:linear-gradient(180deg,#eaeaec,#dcdce0); }
 
-body {
-  font-family: "Poppins", sans-serif;
-  color: #0d0d0d;
-  overflow-x: hidden;
-  background: #f2f2f2;
-  background: radial-gradient(
-    circle,
-    rgba(242, 242, 242, 1) 40%,
-    rgba(136, 136, 136, 1) 100%
-  );
-}
-
-/* Modal Animations */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
-@keyframes modalIn {
-  from {
-    opacity: 0;
-    transform: scale(0.92) translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-@keyframes modalOut {
-  from {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.92) translateY(12px);
-  }
-}
-
-.modal-backdrop-enter {
-  animation: fadeIn 0.25s ease-out forwards;
-}
-
-.modal-backdrop-exit {
-  animation: fadeOut 0.3s ease-in forwards;
-}
-
-.modal-content-enter {
-  animation: modalIn 0.3s ease-out forwards;
-}
-
-.modal-content-exit {
-  animation: modalOut 0.3s ease-in forwards;
-}
+/* Ajustes de hover no dark (as regras dark usam !important e cobririam o hover claro) */
+html[data-theme="dark"] .hv-pill:hover { background:linear-gradient(180deg,#26262e,#1b1b21) !important; }
+html[data-theme="dark"] .hv-solid:hover,
+html[data-theme="dark"] .hv-solid-cta:hover { background:#ffffff !important; }

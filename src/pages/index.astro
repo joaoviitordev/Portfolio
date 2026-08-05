@@ -5,38 +5,18 @@ import Hero from '../components/sections/Hero.astro';
 import About from '../components/sections/About.astro';
 import Projects from '../components/sections/Projects.astro';
 import Technologies from '../components/sections/Technologies.astro';
-import Footer from '../components/layout/Footer.astro';
-import Icon from '../components/ui/Icon.astro';
+import Contact from '../components/sections/Contact.astro';
 ---
 
 <BaseLayout path="/">
-  {/* Preloader — some via GSAP (gsap-init.ts) */}
-  <div
-    id="preloader"
-    class="fixed inset-0 z-9999 bg-primary flex items-center justify-center pointer-events-none"
-  >
-    <span id="preloader-count" class="font-mono text-4xl sm:text-9xl text-background-start font-bold">0%</span>
-  </div>
-
   <Header />
-  <main>
-    <Hero />
-    <About />
-    <Projects />
-    <Technologies />
-  </main>
-  <Footer />
-
-  {/* Back to top — visibilidade controlada por ScrollTrigger (gsap-init.ts) */}
-  <button
-    id="backToTop"
-    aria-label="Voltar ao topo"
-    class="fixed bottom-7.5 sm:bottom-20 right-5 sm:right-16.25 w-12.5 sm:w-15 h-12.5 sm:h-15 bg-linear-to-br from-background-start to-background-end text-primary rounded-full flex items-center justify-center shadow-[0_4px_15px_rgba(0,0,0,0.2)] z-3000 cursor-pointer transition-all duration-medium ease-in-out hover:scale-110 hover:shadow-[0_6px_20px_rgba(0,0,0,0.3)] active:scale-90 opacity-0 invisible translate-y-5"
-  >
-    <Icon name="arrow-up" class="w-5 h-5 sm:w-6 sm:h-6" />
-  </button>
+  <Hero />
+  <About />
+  <Projects />
+  <Technologies />
+  <Contact />
 </BaseLayout>
 
 <script>
-  import '../scripts/gsap-init.ts';
+  import '../scripts/ui.ts';
 </script>

@@ -1,23 +1,21 @@
 ---
-// Sobre mim — estático.
+// Sobre mim.
 ---
 
-<section id="sobre" class="w-full h-auto sm:h-screen px-[4vw] py-15 sm:py-6 flex flex-col justify-center">
-  <h2 class="font-mono text-primary text-2xl sm:text-2xl font-bold pb-17">
-    /* SOBRE MIM */
-  </h2>
-  <article class="flex flex-col items-start">
-    <p class="text-[6vw] sm:text-[3.5vw] lg:text-[2.4vw] font-bold text-primary leading-tight">
-      Sou desenvolvedor full-stack júnior focado em criar interfaces modernas e funcionais. Trabalho com atenção em detalhes de UI/UX, usabilidade e performance, entregando experiências digitais consistentes.
-    </p>
-    <p class="text-[4vw] sm:text-[2.5vw] lg:text-[1.8vw] text-text-light pt-9.5 pb-9 leading-snug">
-      Transformo ideias em soluções práticas, unindo código, design e boas práticas para construir projetos eficientes e bem estruturados.
-    </p>
-    <a
-      href="/doc/joaovitor_curriculo_BR.pdf"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="w-35 h-12.5 rounded-[30px] bg-linear-to-br from-background-start to-background-end hover:translate-y-[-5%] transition-transform duration-500 ease-out flex items-center justify-center text-primary text-base hover:font-medium"
-    >CURRÍCULO</a>
-  </article>
+<section data-screen-label="Sobre" id="sobre" style="max-width:1200px;margin:0 auto;padding:clamp(40px,6vw,70px) clamp(20px,4vw,40px);">
+  <div data-i18n="aboutTitle" style="font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(18px,2.4vw,24px);margin-bottom:36px;">/* SOBRE MIM */</div>
+  <div style="max-width:900px;">
+    <p data-i18n="aboutLead" style="font-size:clamp(16px,1.9vw,20px);font-weight:600;line-height:1.5;margin:0 0 22px;">Sou desenvolvedor full-stack focado em criar interfaces modernas e funcionais. Trabalho com atenção em detalhes de UI/UX, usabilidade e performance, entregando experiências digitais consistentes.</p>
+    <p data-s="muted" data-i18n="aboutBody" style="font-size:clamp(14px,1.5vw,16px);color:#4b4b52;line-height:1.6;margin:0 0 30px;">Minha jornada na tecnologia começou em 2025, movida pela curiosidade de entender como a internet funciona. Desde então, venho mergulhando no ecossistema do desenvolvimento web, partindo da base de HTML, CSS e JavaScript para a criação de experiências altamente interativas utilizando GSAP e Three.js.</p>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;">
+      <a href="https://www.linkedin.com/in/joaovitor-faria/" target="_blank" rel="noopener" data-s="pill" class="hv-pill" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(180deg,#ffffff,#eeeef0);border:1px solid rgba(23,23,23,0.15);color:#171717;border-radius:999px;padding:12px 22px;font-size:14px;font-weight:600;text-decoration:none;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="#171717"><path d="M6.94 5a2 2 0 11-4-.02 2 2 0 014 .02zM3.28 8.98h3.6V21h-3.6V8.98zM9.4 8.98h3.46v1.64h.05c.48-.9 1.65-1.85 3.4-1.85 3.64 0 4.3 2.4 4.3 5.5V21h-3.6v-5.9c0-1.4-.03-3.2-1.96-3.2-1.96 0-2.26 1.53-2.26 3.1V21H9.4V8.98z"/></svg>
+        <span data-i18n="learnMorePlain">Saiba mais</span>
+      </a>
+      <a href="https://github.com/joaoviitordev" target="_blank" rel="noopener" data-s="solid" class="hv-solid" style="display:inline-flex;align-items:center;gap:8px;background:#171717;color:#fff;border-radius:999px;padding:12px 22px;font-size:14px;font-weight:600;text-decoration:none;">
+        GitHub
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M12 2C6.48 2 2 6.58 2 12.2c0 4.5 2.87 8.32 6.84 9.67.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.46-1.2-1.11-1.52-1.11-1.52-.91-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.9 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.64-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.73 0 0 .84-.27 2.75 1.05a9.3 9.3 0 015 0c1.9-1.32 2.74-1.05 2.74-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.63 1.03 2.75 0 3.93-2.35 4.79-4.58 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0022 12.2C22 6.58 17.52 2 12 2z"/></svg>
+      </a>
+    </div>
+  </div>
 </section>

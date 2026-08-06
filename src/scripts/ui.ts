@@ -7,11 +7,15 @@ interface Dict {
   brand: string;
   nav: [string, string, string, string];
   location: string;
+  heroTagline: string;
   cv: string;
   getInTouch: string;
   latest: string;
   learnMore: string;
   learnMorePlain: string;
+  repoBtn: string;
+  deployBtn: string;
+  closeModal: string;
   heroShot: string;
   projShot: string;
   aboutTitle: string;
@@ -32,11 +36,15 @@ const DICT: Record<Lang, Dict> = {
     brand: '/* Desenvolvedor\nFull-Stack */',
     nav: ['PROJETOS', 'SOBRE MIM', 'TECNOLOGIAS', 'CONTATO'],
     location: 'Rio de Janeiro, Brasil',
+    heroTagline: 'Desenvolvedor full-stack focado em criar interfaces modernas e funcionais.',
     cv: 'Vizualizar CV',
     getInTouch: 'Entrar em contato',
     latest: 'Últimos projetos',
     learnMore: 'Saiba mais →',
     learnMorePlain: 'Saiba mais',
+    repoBtn: 'Repositório',
+    deployBtn: 'Ver deploy',
+    closeModal: 'Fechar',
     heroShot: 'prévia do projeto em destaque',
     projShot: 'captura do projeto',
     aboutTitle: '/* SOBRE MIM */',
@@ -57,11 +65,15 @@ const DICT: Record<Lang, Dict> = {
     brand: '/* Full-Stack\nDeveloper */',
     nav: ['PROJECTS', 'ABOUT ME', 'TECH STACK', 'CONTACT'],
     location: 'Rio de Janeiro, Brazil',
+    heroTagline: 'Full-stack developer focused on building modern, functional interfaces.',
     cv: 'View CV',
     getInTouch: 'Get in touch',
     latest: 'Latest projects',
     learnMore: 'Learn more →',
     learnMorePlain: 'Learn more',
+    repoBtn: 'Repository',
+    deployBtn: 'View deploy',
+    closeModal: 'Close',
     heroShot: 'featured project preview',
     projShot: 'project screenshot',
     aboutTitle: '/* ABOUT ME */',

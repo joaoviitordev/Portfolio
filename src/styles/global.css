@@ -55,6 +55,122 @@ html[data-theme="dark"] g[stroke*="23,23,23"] { stroke:rgba(255,255,255,0.22) !i
 .hv-node:hover { transform:translate(-50%,-50%) scale(1.12); }
 .hv-top:hover { background:linear-gradient(180deg,#eaeaec,#dcdce0); }
 
+/* ---- Carrossel dos projetos no hero ---- */
+.hero-slide { transition:opacity .7s ease; }
+.hero-slide-caption {
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:10px 14px;
+  background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.55));
+}
+.hero-slide-label {
+  font-family:JetBrains Mono,monospace;
+  font-size:12px;
+  font-weight:600;
+  color:#fff;
+  text-shadow:0 1px 3px rgba(0,0,0,0.5);
+}
+.hero-dots { display:flex; gap:7px; }
+.hero-dot {
+  width:8px;
+  height:8px;
+  padding:0;
+  border:none;
+  border-radius:50%;
+  background:rgba(255,255,255,0.45);
+  cursor:pointer;
+  transition:background .2s,transform .2s;
+}
+.hero-dot:hover { background:rgba(255,255,255,0.75); }
+.hero-dot[aria-current="true"] { background:#fff; transform:scale(1.25); }
+@media (prefers-reduced-motion:reduce) {
+  .hero-slide { transition:none; }
+}
+
+/* ---- Modal "Saiba mais" dos projetos (<dialog> nativo) ---- */
+.project-modal {
+  width:min(560px,92vw);
+  max-height:85vh;
+  padding:0;
+  border:1px solid rgba(23,23,23,0.12);
+  border-radius:20px;
+  background:#fff;
+  color:#171717;
+  box-shadow:0 30px 80px -20px rgba(0,0,0,0.45);
+  overflow:visible;
+}
+.project-modal::backdrop { background:rgba(0,0,0,0.55); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); }
+.project-modal[open] { animation:modalIn .22s ease-out; }
+.project-modal[open]::backdrop { animation:backdropIn .22s ease-out; }
+@keyframes modalIn { from { opacity:0; transform:translateY(10px) scale(0.98);} to { opacity:1; transform:none;} }
+@keyframes backdropIn { from { opacity:0;} to { opacity:1;} }
+.project-modal-inner { padding:clamp(22px,3vw,30px); max-height:85vh; overflow-y:auto; border-radius:20px; }
+.project-modal-rule { width:48px; height:2px; background:#171717; opacity:0.25; margin-bottom:20px; }
+.project-close {
+  position:absolute;
+  top:14px;
+  right:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:30px;
+  height:30px;
+  padding:0;
+  border:none;
+  border-radius:50%;
+  background:none;
+  cursor:pointer;
+  transition:background .2s;
+}
+.project-close:hover { background:rgba(23,23,23,0.08); }
+.project-open:hover { opacity:0.6; }
+@media (prefers-reduced-motion:reduce) {
+  .project-modal[open], .project-modal[open]::backdrop { animation:none; }
+}
+
+html[data-theme="dark"] .project-modal { background:#16161a !important; border-color:rgba(255,255,255,0.12) !important; color:#f4f4f5 !important; }
+html[data-theme="dark"] .project-modal-rule { background:#f4f4f5 !important; }
+html[data-theme="dark"] .project-close [stroke] { stroke:#f4f4f5 !important; }
+html[data-theme="dark"] .project-close:hover { background:rgba(255,255,255,0.1); }
+
+/* Logos monocromáticos nos chips de tecnologia: contraste nos dois temas */
+html[data-theme="dark"] .tech-chip img[src$="nextjs.svg"],
+html[data-theme="dark"] .tech-chip img[src$="prisma.svg"] { filter:invert(1); }
+
+/* Header é sticky: compensa a altura dele ao pular para uma âncora */
+section[id] { scroll-margin-top:84px; }
+
+/* ---- Techstack: ícones soltos + nome embaixo ---- */
+.tech-node {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  transform:translate(-50%,-50%);
+  transition:transform .2s;
+}
+.tech-icon {
+  width:clamp(36px,4.6vw,50px);
+  height:clamp(36px,4.6vw,50px);
+  object-fit:contain;
+  display:block;
+}
+.tech-label {
+  font-family:JetBrains Mono,monospace;
+  font-size:clamp(9px,1vw,11px);
+  color:#55585f;
+  white-space:nowrap;
+  text-align:center;
+}
+/* logos monocromáticos escuros ficam ilegíveis no fundo dark */
+html[data-theme="dark"] .tech-icon[data-icon-invert] { filter:invert(1); }
+
 /* Ajustes de hover no dark (as regras dark usam !important e cobririam o hover claro) */
 html[data-theme="dark"] .hv-pill:hover { background:linear-gradient(180deg,#26262e,#1b1b21) !important; }
 html[data-theme="dark"] .hv-solid:hover,

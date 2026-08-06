@@ -74,8 +74,8 @@ export const projects: Project[] = [
   },
   {
     title: 'Stranger Things',
-    url: 'https://joaoviitordev.github.io/Landing-Page-StrangerThings/',
-    repo: 'https://github.com/joaoviitordev/Landing-Page-StrangerThings',
+    url: 'https://joaoviitordev.github.io/StrangerThings/',
+    repo: 'https://github.com/joaoviitordev/StrangerThings',
     img: strangerThings,
     description:
       'Este projeto consiste em uma Landing Page inspirada no site oficial da série Stranger Things da Netflix, desenvolvida com foco em UI/UX, experiência imersiva e identidade visual. A interface foi planejada para transmitir a atmosfera da série, respeitando hierarquia visual, consistência de design e boas práticas de front-end.',
@@ -89,8 +89,8 @@ export const projects: Project[] = [
   },
   {
     title: 'Pringles',
-    url: 'https://joaoviitordev.github.io/Landing-Page-Pringles/',
-    repo: 'https://github.com/joaoviitordev/Landing-Page-Pringles',
+    url: 'https://joaoviitordev.github.io/Pringles/',
+    repo: 'https://github.com/joaoviitordev/Pringles',
     img: pringles,
     description:
       'Assim como o projeto de Stranger Things, este projeto também é uma Landing Page, porém, é inspirada no site oficial da Pringles, desenvolvida com foco em UI/UX, experiência imersiva e identidade visual. A interface foi planejada para transmitir a atmosfera da marca, respeitando hierarquia visual, consistência de design e boas práticas de front-end.',

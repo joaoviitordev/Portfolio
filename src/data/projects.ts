@@ -1,12 +1,13 @@
 import type { ImageMetadata } from 'astro';
 
 // Imagens importadas de src/assets → otimizadas pelo astro:assets (<Image>).
-import strangerThings from '../assets/images/strangerThings.webp';
+import strangerThings from '../assets/images/stranger-things.webp';
 import pringles from '../assets/images/pringles.webp';
-import doutoragenda from '../assets/images/doutoragenda.webp';
-import agencia from '../assets/images/agencia.webp';
-import stockly from '../assets/images/stockly.webp';
+import doutoragenda from '../assets/images/dr-agenda.png';
+import agencia from '../assets/images/webhub.png';
+import stockly from '../assets/images/stockly.png';
 import riff from '../assets/images/riff.png';
+import barber from '../assets/images/barber.png';
 
 export interface Tech {
   name: string;
@@ -38,6 +39,22 @@ export const projects: Project[] = [
       { name: 'PostgreSQL', icon: '/assets/icons/postgresql.svg' },
       { name: 'Tailwind CSS', icon: '/assets/icons/tailwindcss.svg' },
       { name: 'Supabase', icon: '/assets/icons/supabase.svg' },
+    ],
+  },
+  {
+    title: 'FSW Barber',
+    url: 'https://barber-app-rust-theta.vercel.app',
+    repo: 'https://github.com/joaoviitordev/barber-app',
+    img: barber,
+    description:
+      'Aplicação web para agendamento de horários em barbearias. O usuário pesquisa barbearias, visualiza os serviços de cada uma, autentica-se com a conta Google e reserva um horário para o serviço desejado, além de acompanhar e cancelar seus agendamentos. O foco foi entregar uma interface responsiva — desktop e mobile — com fluxo de reserva curto e sem fricção.',
+    techs: [
+      { name: 'Next.js', icon: '/assets/icons/nextjs.svg' },
+      { name: 'React', icon: '/assets/icons/react.svg' },
+      { name: 'TypeScript', icon: '/assets/icons/typescript.svg' },
+      { name: 'PostgreSQL', icon: '/assets/icons/postgresql.svg' },
+      { name: 'Tailwind CSS', icon: '/assets/icons/tailwindcss.svg' },
+      { name: 'Prisma ORM', icon: '/assets/icons/prisma.svg' },
     ],
   },
   {

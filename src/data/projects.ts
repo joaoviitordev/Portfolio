@@ -8,6 +8,7 @@ import agencia from '../assets/images/webhub.png';
 import stockly from '../assets/images/stockly.png';
 import riff from '../assets/images/riff.png';
 import barber from '../assets/images/barber.png';
+import spiderman from '../assets/images/spiderman-1920x1200.png';
 
 export interface Tech {
   name: string;
@@ -17,8 +18,10 @@ export interface Tech {
 
 export interface Project {
   title: string;
-  url: string;
-  repo: string;
+  /** Ausente enquanto o projeto não tiver deploy publicado. */
+  url?: string;
+  /** Ausente enquanto o repositório não for publicado. */
+  repo?: string;
   img: ImageMetadata;
   description: string;
   techs: Tech[];
@@ -87,6 +90,19 @@ export const projects: Project[] = [
       { name: 'Node.js', icon: '/assets/icons/nodejs2.svg' },
       { name: 'PostgreSQL', icon: '/assets/icons/postgresql.svg' },
       { name: 'Prisma ORM', icon: '/assets/icons/prisma.svg' },
+    ],
+  },
+  {
+    title: 'Spider-Man',
+    img: spiderman,
+    description:
+      'Landing page do filme Spider-Man: Um Novo Dia, construída com foco em UI/UX e narrativa visual. A navegação é conduzida por animações em GSAP — transições de seção, revelações de texto e efeitos de scroll — que acompanham a atmosfera do filme. Recursos de IA foram usados como apoio na concepção e no refinamento da interface.',
+    techs: [
+      { name: 'HTML5', icon: '/assets/icons/html5.svg' },
+      { name: 'CSS3', icon: '/assets/icons/css3.svg' },
+      { name: 'JavaScript', icon: '/assets/icons/js.svg' },
+      { name: 'GSAP', icon: '/assets/icons/gsap2.svg' },
+      { name: 'IA', icon: '/assets/icons/ai.svg' },
     ],
   },
   {

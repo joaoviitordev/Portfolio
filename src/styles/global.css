@@ -141,6 +141,7 @@ html[data-theme="dark"] .project-close:hover { background:rgba(255,255,255,0.1);
 
 /* Logos monocromáticos nos chips de tecnologia: contraste nos dois temas */
 html[data-theme="dark"] .tech-chip img[src$="nextjs.svg"],
+html[data-theme="dark"] .tech-chip img[src$="ai.svg"],
 html[data-theme="dark"] .tech-chip img[src$="prisma.svg"] { filter:invert(1); }
 
 /* Header é sticky: compensa a altura dele ao pular para uma âncora */

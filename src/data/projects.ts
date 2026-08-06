@@ -94,6 +94,8 @@ export const projects: Project[] = [
   },
   {
     title: 'Spider-Man',
+    url: 'https://joaoviitordev.github.io/spiderman/',
+    repo: 'https://github.com/joaoviitordev/spiderman',
     img: spiderman,
     description:
       'Landing page do filme Spider-Man: Um Novo Dia, construída com foco em UI/UX e narrativa visual. A navegação é conduzida por animações em GSAP — transições de seção, revelações de texto e efeitos de scroll — que acompanham a atmosfera do filme. Recursos de IA foram usados como apoio na concepção e no refinamento da interface.',

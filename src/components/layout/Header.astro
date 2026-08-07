@@ -38,4 +38,8 @@ Full-Stack */</div>
       ))}
     </div>
   </div>
+
+  {/* Barra de progresso sobre a borda inferior: cresce da esquerda para a direita
+      conforme a página rola (escala aplicada em src/scripts/ui.ts). */}
+  <div id="scroll-progress" aria-hidden="true" style="position:absolute;left:0;right:0;bottom:-1px;height:2px;background:#171717;transform:scaleX(0);transform-origin:left center;will-change:transform;pointer-events:none;"></div>
 </header>

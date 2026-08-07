@@ -147,6 +147,10 @@ html[data-theme="dark"] .tech-chip img[src$="prisma.svg"] { filter:invert(1); }
 /* Header é sticky: compensa a altura dele ao pular para uma âncora */
 section[id] { scroll-margin-top:84px; }
 
+/* Barra de progresso sobre a borda inferior do header (escala vinda de ui.ts) */
+#scroll-progress { transition:background .25s; }
+html[data-theme="dark"] #scroll-progress { background:#f4f4f5 !important; }
+
 /* ---- Techstack: ícones soltos + nome embaixo ---- */
 .tech-node {
   display:flex;

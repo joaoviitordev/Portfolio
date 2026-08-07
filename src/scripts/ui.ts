@@ -182,6 +182,32 @@ document.querySelectorAll('.menu-close').forEach((el) =>
   el.addEventListener('click', () => setMenu(false))
 );
 
+// ---------- Barra de progresso da rolagem (borda inferior do header) ----------
+const progressBar = document.getElementById('scroll-progress');
+if (progressBar) {
+  let queued = false;
+
+  const drawProgress = () => {
+    queued = false;
+    const max = root.scrollHeight - window.innerHeight;
+    const ratio = max > 0 ? Math.min(Math.max(window.scrollY / max, 0), 1) : 0;
+    progressBar.style.transform = `scaleX(${ratio})`;
+  };
+
+  // rAF evita recalcular a cada evento de scroll (que dispara muitas vezes por frame)
+  const queueProgress = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(drawProgress);
+  };
+
+  window.addEventListener('scroll', queueProgress, { passive: true });
+  window.addEventListener('resize', queueProgress);
+  // A altura da página muda com imagens carregando e com o menu mobile abrindo
+  new ResizeObserver(queueProgress).observe(document.body);
+  drawProgress();
+}
+
 // ---------- Ano / data ----------
 const now = new Date();
 const pad = (n: number) => String(n).padStart(2, '0');

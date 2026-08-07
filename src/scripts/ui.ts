@@ -5,7 +5,7 @@ type Lang = 'pt' | 'en';
 
 interface Dict {
   brand: string;
-  nav: [string, string, string, string];
+  nav: [string, string, string, string, string];
   location: string;
   heroTagline: string;
   cv: string;
@@ -24,6 +24,11 @@ interface Dict {
   projectsTitle: string;
   projectsSub: string;
   stackSub: string;
+  eduTitle: string;
+  eduSub: string;
+  eduSoon: string;
+  eduSoonBody: string;
+  eduFooter: string;
   contactTitle: string;
   contactLead: string;
   menuAria: string;
@@ -34,7 +39,7 @@ interface Dict {
 const DICT: Record<Lang, Dict> = {
   pt: {
     brand: '/* Desenvolvedor\nFull-Stack */',
-    nav: ['PROJETOS', 'SOBRE MIM', 'TECNOLOGIAS', 'CONTATO'],
+    nav: ['PROJETOS', 'SOBRE MIM', 'TECNOLOGIAS', 'EDUCAÇÃO', 'CONTATO'],
     location: 'Rio de Janeiro, Brasil',
     heroTagline: 'Desenvolvedor full-stack focado em criar interfaces modernas e funcionais.',
     cv: 'Vizualizar CV',
@@ -55,6 +60,12 @@ const DICT: Record<Lang, Dict> = {
     projectsTitle: '/* PROJETOS */',
     projectsSub: '// aplicações full-stack, landing pages e experiências interativas',
     stackSub: '// ecossistema de tecnologias que uso no dia a dia',
+    eduTitle: '/* EDUCAÇÃO */',
+    eduSub: '// formação acadêmica e cursos',
+    eduSoon: 'Em construção',
+    eduSoonBody:
+      'Esta seção está sendo preparada e em breve trará minha formação acadêmica e certificações.',
+    eduFooter: '// Em constante evolução',
     contactTitle: '/* CONTATO */',
     contactLead: 'Vamos iniciar algo incrível!',
     menuAria: 'Abrir menu',
@@ -63,7 +74,7 @@ const DICT: Record<Lang, Dict> = {
   },
   en: {
     brand: '/* Full-Stack\nDeveloper */',
-    nav: ['PROJECTS', 'ABOUT ME', 'TECH STACK', 'CONTACT'],
+    nav: ['PROJECTS', 'ABOUT ME', 'TECH STACK', 'EDUCATION', 'CONTACT'],
     location: 'Rio de Janeiro, Brazil',
     heroTagline: 'Full-stack developer focused on building modern, functional interfaces.',
     cv: 'View CV',
@@ -84,6 +95,12 @@ const DICT: Record<Lang, Dict> = {
     projectsTitle: '/* PROJECTS */',
     projectsSub: '// full-stack applications, landing pages and interactive experiences',
     stackSub: '// the technology ecosystem I work with every day',
+    eduTitle: '/* EDUCATION */',
+    eduSub: '// academic background and courses',
+    eduSoon: 'Under construction',
+    eduSoonBody:
+      'This section is being prepared and will soon feature my academic background and certifications.',
+    eduFooter: '// Always evolving',
     contactTitle: '/* CONTACT */',
     contactLead: "Let's start something incredible!",
     menuAria: 'Open menu',
@@ -118,7 +135,7 @@ function applyLang(lang: Lang) {
 
   document.querySelectorAll<HTMLElement>('[data-i18n]').forEach((el) => {
     const key = el.getAttribute('data-i18n') || '';
-    const navMatch = /^nav([0-3])$/.exec(key);
+    const navMatch = /^nav([0-4])$/.exec(key);
     if (navMatch) {
       el.textContent = t.nav[Number(navMatch[1])];
     } else if (key in t) {

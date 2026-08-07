@@ -147,6 +147,9 @@ function applyTheme(theme: 'light' | 'dark') {
   store('jv-portfolio-theme', theme);
   const icon = document.getElementById('theme-icon');
   if (icon) icon.innerHTML = theme === 'dark' ? ICONS.sun : ICONS.moon;
+  // Favicon acompanha o tema do site (fundo preto no dark, branco no claro).
+  const favicon = document.getElementById('favicon');
+  if (favicon) favicon.setAttribute('href', `/favicon/myfavicon-${theme}.svg`);
 }
 
 // ---------- Menu ----------

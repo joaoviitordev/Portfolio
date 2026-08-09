@@ -44,6 +44,10 @@ const { title, description, path } = Astro.props;
           var fav = document.getElementById('favicon');
           if (fav) fav.setAttribute('href', '/favicon/myfavicon-' + t + '.svg');
 
+          // Marca que há JS antes do paint: só então o CSS esconde os [data-anim]
+          // para a animação de entrada. Sem JS, o conteúdo nasce visível.
+          document.documentElement.setAttribute('data-js', '');
+
           var l = localStorage.getItem('jv-portfolio-lang');
           if (l !== 'pt' && l !== 'en') {
             l = (navigator.language || 'pt').toLowerCase().indexOf('pt') === 0 ? 'pt' : 'en';

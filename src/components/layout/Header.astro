@@ -2,8 +2,8 @@
 // Header — nav + botões de tema/idioma/menu + painel mobile.
 // Renderiza em PT; o toggle de idioma troca os textos via data-i18n (src/scripts/ui.ts).
 const navLinks = [
-  { key: 'nav0', href: '#projetos', label: 'PROJETOS' },
-  { key: 'nav1', href: '#sobre', label: 'SOBRE MIM' },
+  { key: 'nav0', href: '#sobre', label: 'SOBRE MIM' },
+  { key: 'nav1', href: '#projetos', label: 'PROJETOS' },
   { key: 'nav2', href: '#tecnologias', label: 'TECNOLOGIAS' },
   { key: 'nav3', href: '#educacao', label: 'EDUCAÇÃO' },
   { key: 'nav4', href: '#contato', label: 'CONTATO' },
@@ -17,7 +17,7 @@ Full-Stack */</div>
     <nav data-m="nav" style="display:flex;align-items:center;gap:clamp(14px,2.4vw,32px);">
       <div data-m="nav-links" style="display:flex;align-items:center;gap:clamp(16px,3vw,40px);">
         {navLinks.map((link) => (
-          <a href={link.href} data-i18n={link.key} class="hv-nav" style="font-size:14px;font-weight:600;letter-spacing:0.04em;color:#171717;text-decoration:none;">{link.label}</a>
+          <a href={link.href} data-i18n={link.key} data-nav-link={link.href} class="hv-nav" style="font-size:14px;font-weight:600;letter-spacing:0.04em;color:#171717;text-decoration:none;">{link.label}</a>
         ))}
       </div>
       <button type="button" id="menu-btn" data-s="pill" data-m="menu-btn" data-mm="tap" data-i18n-aria="menuAria" aria-label="Abrir menu" title="Abrir menu" style="display:none;width:34px;height:34px;flex:none;align-items:center;justify-content:center;padding:0;border:1px solid rgba(23,23,23,0.15);border-radius:10px;background:linear-gradient(180deg,#ffffff,#eeeef0);cursor:pointer;color:#171717;" class="hv-pill">
@@ -35,7 +35,7 @@ Full-Stack */</div>
   <div id="menu-panel" data-m="panel" hidden style="border-top:1px solid rgba(23,23,23,0.08);background:rgba(255,255,255,0.97);">
     <div style="max-width:1200px;margin:0 auto;padding:8px clamp(20px,4vw,40px) 18px;display:flex;flex-direction:column;">
       {navLinks.map((link) => (
-        <a href={link.href} data-i18n={link.key} data-m="menu-link" class="hv-nav menu-close" style="font-size:15px;font-weight:600;letter-spacing:0.04em;color:#171717;text-decoration:none;padding:13px 0;border-bottom:1px solid rgba(23,23,23,0.07);">{link.label}</a>
+        <a href={link.href} data-i18n={link.key} data-nav-link={link.href} data-m="menu-link" class="hv-nav menu-close" style="font-size:15px;font-weight:600;letter-spacing:0.04em;color:#171717;text-decoration:none;padding:13px 0;border-bottom:1px solid rgba(23,23,23,0.07);">{link.label}</a>
       ))}
     </div>
   </div>

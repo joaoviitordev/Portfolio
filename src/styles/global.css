@@ -46,13 +46,64 @@ html[data-theme="dark"] g[stroke*="23,23,23"] { stroke:rgba(255,255,255,0.22) !i
   [data-m="node"] { width:74px !important; }
 }
 
+/* ---- Entrada das seções: fadeUp em cascata (disparado por src/scripts/ui.ts) ----
+   O estado escondido só existe quando há JS (data-js vem do script pré-paint do
+   BaseLayout); assim o conteúdo nunca fica invisível se o script falhar.
+   Depois da animação o ui.ts remove o data-anim, devolvendo o transform ao :hover. */
+html[data-js] [data-anim] { opacity:0; }
+html[data-js] [data-anim].is-in {
+  animation:fadeUp .6s cubic-bezier(.22,.61,.36,1) both;
+  animation-delay:calc(var(--i,0) * 70ms);
+}
+@media (prefers-reduced-motion:reduce) {
+  html[data-js] [data-anim] { opacity:1; }
+  html[data-js] [data-anim].is-in { animation:none; }
+}
+
+/* ---- Link do header sublinhado conforme a seção visível ---- */
+[data-m="nav-links"] [data-nav-link] { position:relative; }
+[data-m="nav-links"] [data-nav-link]::after {
+  content:'';
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-6px;
+  height:2px;
+  border-radius:2px;
+  background:currentColor;
+  transform:scaleX(0);
+  transform-origin:left center;
+  transition:transform .3s cubic-bezier(.22,.61,.36,1);
+}
+[data-m="nav-links"] [data-nav-link][aria-current="true"]::after { transform:scaleX(1); }
+@media (prefers-reduced-motion:reduce) {
+  [data-m="nav-links"] [data-nav-link]::after { transition:none; }
+}
+
+/* ---- Troca de tema: círculo que nasce no botão (View Transitions API) ----
+   O UA aplica plus-lighter nos dois snapshots para o cross-fade padrão; com o
+   círculo isso lavaria as cores, então voltamos para normal. */
+@keyframes themeReveal {
+  from { clip-path:circle(0 at var(--vt-x,50%) var(--vt-y,0)); }
+  to { clip-path:circle(var(--vt-r,150vmax) at var(--vt-x,50%) var(--vt-y,0)); }
+}
+::view-transition-old(root),
+::view-transition-new(root) { mix-blend-mode:normal; }
+::view-transition-old(root) { animation:none; }
+::view-transition-new(root) { animation:themeReveal .5s cubic-bezier(.22,.61,.36,1); }
+/* o cross-fade do wrapper brigaria com o círculo */
+html[data-theme-swap] [data-theme-root] { transition:none !important; }
+@media (prefers-reduced-motion:reduce) {
+  ::view-transition-new(root) { animation:none; }
+}
+
 /* ---- Hover (substituem os `style-hover` do DC) ---- */
 .hv-nav:hover { color:#6b7280; }
 .hv-pill:hover { background:linear-gradient(180deg,#f7f7f8,#e4e4e7); }
 .hv-solid:hover { background:#000; }
 .hv-solid-cta:hover { background:#000; box-shadow:0 4px 14px rgba(0,0,0,0.25); }
 .hv-card:hover { transform:translateY(-3px); box-shadow:0 16px 34px -20px rgba(0,0,0,0.3); }
-.hv-node:hover { transform:translate(-50%,-50%) scale(1.12); }
+.hv-node:hover { --ms:1.12; }
 .hv-top:hover { background:linear-gradient(180deg,#eaeaec,#dcdce0); }
 
 /* ---- Carrossel dos projetos no hero ---- */
@@ -91,6 +142,14 @@ html[data-theme="dark"] g[stroke*="23,23,23"] { stroke:rgba(255,255,255,0.22) !i
 .hero-dot[aria-current="true"] { background:#fff; transform:scale(1.25); }
 @media (prefers-reduced-motion:reduce) {
   .hero-slide { transition:none; }
+}
+
+/* ---- Zoom da captura no hover do card de projeto ---- */
+.project-shot img { transition:transform .45s cubic-bezier(.22,.61,.36,1); }
+.hv-card:hover .project-shot img { transform:scale(1.05); }
+@media (prefers-reduced-motion:reduce) {
+  .project-shot img { transition:none; }
+  .hv-card:hover .project-shot img { transform:none; }
 }
 
 /* ---- Modal "Saiba mais" dos projetos (<dialog> nativo) ---- */
@@ -152,13 +211,21 @@ section[id] { scroll-margin-top:84px; }
 html[data-theme="dark"] #scroll-progress { background:#f4f4f5 !important; }
 
 /* ---- Techstack: ícones soltos + nome embaixo ---- */
+/* --mx/--my vêm do ímã em ui.ts e --ms do :hover; os três precisam morar no mesmo
+   transform, senão um sobrescreve o outro. O -50% é o que centra o nó na coordenada. */
 .tech-node {
   display:flex;
   flex-direction:column;
   align-items:center;
   gap:8px;
-  transform:translate(-50%,-50%);
-  transition:transform .2s;
+  --mx:0px;
+  --my:0px;
+  --ms:1;
+  transform:translate(calc(-50% + var(--mx)),calc(-50% + var(--my))) scale(var(--ms));
+  transition:transform .28s cubic-bezier(.22,.61,.36,1);
+}
+@media (prefers-reduced-motion:reduce) {
+  .tech-node { transition:none; }
 }
 .tech-icon {
   width:clamp(36px,4.6vw,50px);

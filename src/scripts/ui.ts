@@ -1,5 +1,5 @@
 // Interatividade do portfólio (substitui a DCLogic do design DC):
-// tema claro/escuro, idioma PT/EN, menu mobile, ícones dinâmicos e ano/data.
+// tema claro/escuro, idioma PT/EN, menu mobile, ícones dinâmicos e ano do copyright.
 
 type Lang = 'pt' | 'en';
 
@@ -31,6 +31,7 @@ interface Dict {
   eduFooter: string;
   contactTitle: string;
   contactLead: string;
+  lastUpdate: string;
   menuAria: string;
   themeAria: string;
   langAria: string;
@@ -39,7 +40,7 @@ interface Dict {
 const DICT: Record<Lang, Dict> = {
   pt: {
     brand: '/* Desenvolvedor\nFull-Stack */',
-    nav: ['PROJETOS', 'SOBRE MIM', 'TECNOLOGIAS', 'EDUCAÇÃO', 'CONTATO'],
+    nav: ['SOBRE MIM', 'PROJETOS', 'TECNOLOGIAS', 'EDUCAÇÃO', 'CONTATO'],
     location: 'Rio de Janeiro, Brasil',
     heroTagline: 'Desenvolvedor full-stack focado em criar interfaces modernas e funcionais.',
     cv: 'Vizualizar CV',
@@ -54,7 +55,7 @@ const DICT: Record<Lang, Dict> = {
     projShot: 'captura do projeto',
     aboutTitle: '/* SOBRE MIM */',
     aboutLead:
-      'Sou desenvolvedor full-stack focado em criar interfaces modernas e funcionais. Trabalho com atenção em detalhes de UI/UX, usabilidade e performance, entregando experiências digitais consistentes.',
+      'Sou desenvolvedor full-stack focado em construir aplicações web completas — do front-end em React e Next.js ao back-end em Node.js, com deploy em produção. Trabalho com atenção em detalhes de UI/UX, usabilidade e performance, entregando experiências digitais consistentes.',
     aboutBody:
       'Minha jornada na tecnologia começou em 2025, movida pela curiosidade de entender como a internet funciona. Desde então, venho mergulhando no ecossistema do desenvolvimento web, partindo da base de HTML, CSS e JavaScript para a criação de experiências altamente interativas utilizando GSAP e Three.js.',
     projectsTitle: '/* PROJETOS */',
@@ -68,13 +69,14 @@ const DICT: Record<Lang, Dict> = {
     eduFooter: '// Em constante evolução',
     contactTitle: '/* CONTATO */',
     contactLead: 'Vamos iniciar algo incrível!',
+    lastUpdate: 'Última atualização:',
     menuAria: 'Abrir menu',
     themeAria: 'Alternar tema',
     langAria: 'Mudar idioma para inglês',
   },
   en: {
     brand: '/* Full-Stack\nDeveloper */',
-    nav: ['PROJECTS', 'ABOUT ME', 'TECH STACK', 'EDUCATION', 'CONTACT'],
+    nav: ['ABOUT ME', 'PROJECTS', 'TECH STACK', 'EDUCATION', 'CONTACT'],
     location: 'Rio de Janeiro, Brazil',
     heroTagline: 'Full-stack developer focused on building modern, functional interfaces.',
     cv: 'View CV',
@@ -89,7 +91,7 @@ const DICT: Record<Lang, Dict> = {
     projShot: 'project screenshot',
     aboutTitle: '/* ABOUT ME */',
     aboutLead:
-      'I am a full-stack developer focused on building modern, functional interfaces. I work with close attention to UI/UX detail, usability and performance, delivering consistent digital experiences.',
+      'I am a full-stack developer focused on building complete web applications — from the front-end in React and Next.js to the back-end in Node.js, shipped to production. I work with close attention to UI/UX detail, usability and performance, delivering consistent digital experiences.',
     aboutBody:
       'My journey in tech started in 2025, driven by the curiosity to understand how the internet works. Since then I have been diving into the web development ecosystem, going from the fundamentals of HTML, CSS and JavaScript to building highly interactive experiences with GSAP and Three.js.',
     projectsTitle: '/* PROJECTS */',
@@ -103,6 +105,7 @@ const DICT: Record<Lang, Dict> = {
     eduFooter: '// Always evolving',
     contactTitle: '/* CONTACT */',
     contactLead: "Let's start something incredible!",
+    lastUpdate: 'Last updated:',
     menuAria: 'Open menu',
     themeAria: 'Toggle theme',
     langAria: 'Switch language to Portuguese',
@@ -124,6 +127,46 @@ const store = (key: string, value: string) => {
     /* ignore */
   }
 };
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ---------- Entrada das seções ----------
+// O CSS esconde [data-anim] enquanto html[data-js] existir; aqui devolvemos a
+// visibilidade, animada ou não. Roda antes do resto para o conteúdo não ficar
+// preso invisível caso algum bloco abaixo quebre.
+function reveal(el: HTMLElement) {
+  el.classList.add('is-in');
+  // Sem o data-anim o :hover dos cards volta a mandar no transform
+  el.addEventListener('animationend', () => el.removeAttribute('data-anim'), { once: true });
+}
+
+if (reduceMotion || !('IntersectionObserver' in window)) {
+  document.querySelectorAll('[data-anim]').forEach((el) => el.removeAttribute('data-anim'));
+} else {
+  const revealObserver = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target as HTMLElement;
+        obs.unobserve(el);
+        // O grupo revela os filhos de uma vez: assim a cascata segue o --i de cada
+        // um (a ordem do grid) e não a ordem em que entram na tela.
+        if (el.hasAttribute('data-anim-group')) {
+          el.querySelectorAll<HTMLElement>('[data-anim]').forEach(reveal);
+        } else {
+          reveal(el);
+        }
+      });
+    },
+    { rootMargin: '0px 0px -12% 0px' }
+  );
+
+  document.querySelectorAll<HTMLElement>('[data-anim-group], [data-anim]').forEach((el) => {
+    // Filho de grupo é revelado pelo grupo, não sozinho
+    if (el.hasAttribute('data-anim') && el.closest('[data-anim-group]')) return;
+    revealObserver.observe(el);
+  });
+}
 
 // ---------- Idioma ----------
 function currentLang(): Lang {
@@ -182,8 +225,33 @@ applyLang(currentLang());
 applyTheme((root.getAttribute('data-theme') as 'light' | 'dark') || 'light');
 setMenu(false);
 
-document.getElementById('theme-btn')?.addEventListener('click', () => {
-  applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+type ViewTransitionDoc = Document & {
+  startViewTransition?: (cb: () => void) => { finished: Promise<void> };
+};
+
+document.getElementById('theme-btn')?.addEventListener('click', (event) => {
+  const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  const doc = document as ViewTransitionDoc;
+
+  if (reduceMotion || typeof doc.startViewTransition !== 'function') {
+    applyTheme(next);
+    return;
+  }
+
+  // O círculo nasce no centro do botão; o raio vai até o canto mais distante da tela.
+  const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+  const x = rect.left + rect.width / 2;
+  const y = rect.top + rect.height / 2;
+  root.style.setProperty('--vt-x', `${x}px`);
+  root.style.setProperty('--vt-y', `${y}px`);
+  root.style.setProperty(
+    '--vt-r',
+    `${Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y))}px`
+  );
+
+  root.setAttribute('data-theme-swap', '');
+  const done = () => root.removeAttribute('data-theme-swap');
+  doc.startViewTransition(() => applyTheme(next)).finished.then(done, done);
 });
 
 document.getElementById('lang-btn')?.addEventListener('click', () => {
@@ -228,10 +296,151 @@ if (progressBar) {
   drawProgress();
 }
 
-// ---------- Ano / data ----------
-const now = new Date();
-const pad = (n: number) => String(n).padStart(2, '0');
+// ---------- Link ativo no header conforme a seção visível ----------
+const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]'));
+if (navLinks.length) {
+  // Desktop e menu mobile apontam para os mesmos destinos: só uma seção por id
+  const ids = [...new Set(navLinks.map((a) => (a.getAttribute('data-nav-link') || '').slice(1)))];
+  const sections = ids
+    .map((id) => document.getElementById(id))
+    .filter((el): el is HTMLElement => el !== null)
+    .sort((a, b) =>
+      a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1
+    );
+
+  if (sections.length) {
+    // Offsets em cache: medir a cada frame de scroll forçaria reflow.
+    let tops: number[] = [];
+    const measure = () => {
+      tops = sections.map((s) => s.getBoundingClientRect().top + window.scrollY);
+    };
+
+    let activeId: string | null = null;
+    const markActive = () => {
+      // Linha de corte a 40% da tela. Colada no header ela ficava tarde demais: o
+      // primeiro link só acendia depois de rolar o hero inteiro. Nunca acima da
+      // base do header, para o link clicado já chegar ativo (scroll-margin-top:84px).
+      const line = window.scrollY + Math.max(85, window.innerHeight * 0.4);
+      let index = -1;
+      for (let i = 0; i < tops.length; i++) {
+        if (tops[i] <= line) index = i;
+      }
+      // A última seção nunca chega à linha de corte (não há página abaixo dela),
+      // então ela vence assim que o scroll bate no fundo.
+      if (window.scrollY + window.innerHeight >= root.scrollHeight - 2) {
+        index = sections.length - 1;
+      }
+
+      const next = index >= 0 ? sections[index].id : '';
+      if (next === activeId) return;
+      activeId = next;
+      navLinks.forEach((a) => {
+        if (next && a.getAttribute('data-nav-link') === `#${next}`) {
+          a.setAttribute('aria-current', 'true');
+        } else {
+          a.removeAttribute('aria-current');
+        }
+      });
+    };
+
+    let navQueued = false;
+    const queueActive = () => {
+      if (navQueued) return;
+      navQueued = true;
+      requestAnimationFrame(() => {
+        navQueued = false;
+        markActive();
+      });
+    };
+
+    const remeasure = () => {
+      measure();
+      markActive();
+    };
+
+    window.addEventListener('scroll', queueActive, { passive: true });
+    window.addEventListener('resize', remeasure);
+    // Imagens carregando e o menu mobile abrindo mudam a posição das seções
+    new ResizeObserver(remeasure).observe(document.body);
+    remeasure();
+  }
+}
+
+// ---------- Techstack: ícone magnético ----------
+// Só com mouse: em toque não existe pointerleave confiável e o ícone ficaria preso
+// deslocado; abaixo de 900px o grafo vira flex-wrap e o CSS já anula o transform.
+const graph = document.querySelector<HTMLElement>('[data-m="graph"]');
+if (graph && !reduceMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  const RADIUS = 95; // alcance do ímã em px
+  const PULL = 0.35; // fração da distância até o cursor que o ícone percorre
+  const nodes = Array.from(graph.querySelectorAll<HTMLElement>('.tech-node'));
+
+  // Coordenadas de página: assim rolar não invalida a medida.
+  let centers: { x: number; y: number }[] = [];
+  const measure = () => {
+    const box = graph.getBoundingClientRect();
+    // offsetLeft/Top ignoram transform, então a medida não é contaminada pelo
+    // deslocamento atual do nó — e com o translate(-50%,-50%) do .tech-node
+    // esse offset já é exatamente o centro visual dele.
+    centers = nodes.map((n) => ({
+      x: box.left + window.scrollX + n.offsetLeft,
+      y: box.top + window.scrollY + n.offsetTop,
+    }));
+  };
+
+  const place = (i: number, dx: number, dy: number) => {
+    nodes[i].style.setProperty('--mx', `${dx}px`);
+    nodes[i].style.setProperty('--my', `${dy}px`);
+  };
+
+  let pointerX = 0;
+  let pointerY = 0;
+  let active = -1;
+  let magnetQueued = false;
+
+  const release = () => {
+    if (active < 0) return;
+    place(active, 0, 0);
+    active = -1;
+  };
+
+  const update = () => {
+    magnetQueued = false;
+    // Só o nó mais próximo dentro do raio se move: um transform por frame.
+    let nearest = -1;
+    let best = RADIUS;
+    for (let i = 0; i < centers.length; i++) {
+      const d = Math.hypot(pointerX - centers[i].x, pointerY - centers[i].y);
+      if (d < best) {
+        best = d;
+        nearest = i;
+      }
+    }
+    if (nearest !== active) release();
+    active = nearest;
+    if (active >= 0) {
+      place(active, (pointerX - centers[active].x) * PULL, (pointerY - centers[active].y) * PULL);
+    }
+  };
+
+  graph.addEventListener('pointermove', (e) => {
+    pointerX = e.pageX;
+    pointerY = e.pageY;
+    if (magnetQueued) return;
+    magnetQueued = true;
+    requestAnimationFrame(update);
+  });
+
+  // Medir na entrada mantém os centros frescos sem observar layout o tempo todo
+  graph.addEventListener('pointerenter', measure);
+  graph.addEventListener('pointerleave', release);
+  // Rolar move o cursor em coordenadas de página sem disparar pointermove
+  window.addEventListener('scroll', release, { passive: true });
+  window.addEventListener('resize', measure);
+  measure();
+}
+
+// ---------- Ano do copyright ----------
+// A data de atualização não entra aqui: ela é a do build, renderizada em Contact.astro.
 const yearEl = document.getElementById('year');
-if (yearEl) yearEl.textContent = String(now.getFullYear());
-const dateEl = document.getElementById('date-str');
-if (dateEl) dateEl.textContent = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()}`;
+if (yearEl) yearEl.textContent = String(new Date().getFullYear());

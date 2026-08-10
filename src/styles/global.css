@@ -24,6 +24,8 @@ html[data-theme="dark"] [data-s="solid"] [stroke] { stroke:#0c0c0d !important; }
 html[data-theme="dark"] [data-s="solid"] svg[fill]:not([fill="none"]),
 html[data-theme="dark"] [data-s="solid"] circle[fill], html[data-theme="dark"] [data-s="solid"] path[fill]:not([fill="none"]) { fill:#0c0c0d !important; }
 html[data-theme="dark"] [data-s="muted"] { color:#a9a9b2 !important; }
+/* O painel escuro do contato já é escuro no tema claro: só a borda precisa mudar */
+html[data-theme="dark"] [data-m="cta-panel"] { border-color:rgba(255,255,255,0.12) !important; }
 html[data-theme="dark"] [data-m="menu-link"] { color:#f4f4f5 !important; border-bottom-color:rgba(255,255,255,0.08) !important; }
 html[data-theme="dark"] [data-m="panel"] { background:rgba(12,12,13,0.97) !important; }
 html[data-theme="dark"] [style*="repeating-linear-gradient"] { background:repeating-linear-gradient(135deg,#141418,#141418 10px,#1c1c21 10px,#1c1c21 20px) !important; }
@@ -103,6 +105,10 @@ html[data-theme-swap] [data-theme-root] { transition:none !important; }
 .hv-solid:hover { background:#000; }
 .hv-solid-cta:hover { background:#000; box-shadow:0 4px 14px rgba(0,0,0,0.25); }
 .hv-card:hover { transform:translateY(-3px); box-shadow:0 16px 34px -20px rgba(0,0,0,0.3); }
+.hv-lift:hover { transform:translateY(-2px); }
+/* CTA clara dentro do painel escuro do contato: o painel não troca no dark, então
+   este hover é fixo nos dois temas. */
+.hv-cta-light:hover { transform:translateY(-2px); background:#ffffff; }
 .hv-node:hover { --ms:1.12; }
 .hv-top:hover { background:linear-gradient(180deg,#eaeaec,#dcdce0); }
 

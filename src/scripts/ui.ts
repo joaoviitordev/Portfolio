@@ -30,7 +30,17 @@ interface Dict {
   eduSoonBody: string;
   eduFooter: string;
   contactTitle: string;
+  contactSub: string;
+  contactAvail: string;
   contactLead: string;
+  contactBody: string;
+  contactCta: string;
+  contactReply: string;
+  jobsLabel: string;
+  jobsTitle: string;
+  jobsBody: string;
+  jobsChips: [string, string, string];
+  jobsCta: string;
   lastUpdate: string;
   menuAria: string;
   themeAria: string;
@@ -69,7 +79,19 @@ const DICT: Record<Lang, Dict> = {
       'Esta seção está sendo preparada e em breve trará minha formação acadêmica e certificações.',
     eduFooter: '// Em constante evolução',
     contactTitle: '/* CONTATO */',
+    contactSub: '// aberto a freelas, vagas full-stack e projetos colaborativos',
+    contactAvail: 'Disponível para novos projetos',
     contactLead: 'Vamos iniciar algo incrível!',
+    contactBody:
+      'Conte sobre a ideia, o prazo e o que já existe. Respondo com um plano inicial e os próximos passos.',
+    contactCta: 'Enviar email',
+    contactReply: '// costumo responder em até 24h',
+    jobsLabel: '// vagas e oportunidades',
+    jobsTitle: 'Aberto a oportunidades full-stack',
+    jobsBody:
+      'Procuro posições júnior ou de estágio em desenvolvimento web e full-stack, no Rio de Janeiro ou remoto. Se o perfil fizer sentido para o time, meu currículo está a um clique.',
+    jobsChips: ['Júnior / Estágio', 'Remoto, híbrido ou presencial', 'CLT ou PJ'],
+    jobsCta: 'Ver LinkedIn',
     lastUpdate: 'Última atualização:',
     menuAria: 'Abrir menu',
     themeAria: 'Alternar tema',
@@ -106,7 +128,19 @@ const DICT: Record<Lang, Dict> = {
       'This section is being prepared and will soon feature my academic background and certifications.',
     eduFooter: '// Always evolving',
     contactTitle: '/* CONTACT */',
+    contactSub: '// open to freelance work, full-stack roles and collaborative projects',
+    contactAvail: 'Available for new projects',
     contactLead: "Let's start something incredible!",
+    contactBody:
+      'Tell me about the idea, the deadline and what already exists. I reply with an initial plan and the next steps.',
+    contactCta: 'Send email',
+    contactReply: '// I usually reply within 24h',
+    jobsLabel: '// jobs and opportunities',
+    jobsTitle: 'Open to full-stack opportunities',
+    jobsBody:
+      'I am looking for junior or internship roles in web and full-stack development, in Rio de Janeiro or remote. If the profile fits your team, my resume is one click away.',
+    jobsChips: ['Junior / Internship', 'Remote, hybrid or on-site', 'Full-time or contract'],
+    jobsCta: 'View LinkedIn',
     lastUpdate: 'Last updated:',
     menuAria: 'Open menu',
     themeAria: 'Toggle theme',
@@ -181,9 +215,11 @@ function applyLang(lang: Lang) {
 
   document.querySelectorAll<HTMLElement>('[data-i18n]').forEach((el) => {
     const key = el.getAttribute('data-i18n') || '';
-    const navMatch = /^nav([0-4])$/.exec(key);
-    if (navMatch) {
-      el.textContent = t.nav[Number(navMatch[1])];
+    // Chaves de lista (nav0…nav4, jobsChips0…): sufixo numérico = índice no array
+    const listMatch = /^(nav|jobsChips)(\d+)$/.exec(key);
+    if (listMatch) {
+      const item = (t as unknown as Record<string, string[]>)[listMatch[1]][Number(listMatch[2])];
+      if (item !== undefined) el.textContent = item;
     } else if (key in t) {
       el.textContent = (t as unknown as Record<string, string>)[key];
     }

@@ -1,0 +1,25 @@
+---
+// Botão flutuante de voltar ao topo. Nasce escondido e é revelado por
+// src/scripts/ui.ts a partir da seção "sobre mim" (mesma linha de corte do
+// link ativo do header). Sem JS ele simplesmente nunca aparece — o rodapé já
+// leva ao topo pelo menu, então nada se perde.
+---
+
+<a
+  id="back-to-top"
+  class="back-to-top hv-top"
+  data-s="pill"
+  href="#hero"
+  data-i18n-aria="topAria"
+  aria-label="Voltar ao topo"
+  title="Voltar ao topo"
+>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path
+      d="M12 19V5M6 11l6-6 6 6"
+      stroke="#171717"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"></path>
+  </svg>
+</a>

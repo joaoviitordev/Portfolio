@@ -106,6 +106,39 @@ html[data-theme-swap] [data-theme-root] { transition:none !important; }
 .hv-node:hover { --ms:1.12; }
 .hv-top:hover { background:linear-gradient(180deg,#eaeaec,#dcdce0); }
 
+/* ---- Botão flutuante "voltar ao topo" ----
+   Fixo no canto inferior direito; a classe .is-visible vem de ui.ts a partir da
+   seção "sobre mim". Escondido ele sai do fluxo de foco (visibility:hidden),
+   para o Tab não parar num botão invisível. */
+.back-to-top {
+  position:fixed;
+  right:clamp(16px,3vw,28px);
+  bottom:clamp(16px,3vw,28px);
+  z-index:40;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:linear-gradient(180deg,#f4f4f5,#e4e4e7);
+  border:1px solid rgba(23,23,23,0.1);
+  box-shadow:0 8px 20px -8px rgba(0,0,0,0.35);
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(10px);
+  transition:opacity .28s ease,transform .28s cubic-bezier(.22,.61,.36,1),visibility .28s,background .2s;
+}
+.back-to-top.is-visible {
+  opacity:1;
+  visibility:visible;
+  transform:none;
+}
+html[data-theme="dark"] .back-to-top { box-shadow:0 8px 20px -8px rgba(0,0,0,0.7); }
+@media (prefers-reduced-motion:reduce) {
+  .back-to-top { transition:none; transform:none; }
+}
+
 /* ---- Carrossel dos projetos no hero ---- */
 .hero-slide { transition:opacity .7s ease; }
 .hero-slide-caption {
@@ -244,6 +277,7 @@ html[data-theme="dark"] #scroll-progress { background:#f4f4f5 !important; }
 html[data-theme="dark"] .tech-icon[data-icon-invert] { filter:invert(1); }
 
 /* Ajustes de hover no dark (as regras dark usam !important e cobririam o hover claro) */
-html[data-theme="dark"] .hv-pill:hover { background:linear-gradient(180deg,#26262e,#1b1b21) !important; }
+html[data-theme="dark"] .hv-pill:hover,
+html[data-theme="dark"] .hv-top:hover { background:linear-gradient(180deg,#26262e,#1b1b21) !important; }
 html[data-theme="dark"] .hv-solid:hover,
 html[data-theme="dark"] .hv-solid-cta:hover { background:#ffffff !important; }

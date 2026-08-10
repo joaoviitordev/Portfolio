@@ -35,6 +35,7 @@ interface Dict {
   menuAria: string;
   themeAria: string;
   langAria: string;
+  topAria: string;
 }
 
 const DICT: Record<Lang, Dict> = {
@@ -73,6 +74,7 @@ const DICT: Record<Lang, Dict> = {
     menuAria: 'Abrir menu',
     themeAria: 'Alternar tema',
     langAria: 'Mudar idioma para inglês',
+    topAria: 'Voltar ao topo',
   },
   en: {
     brand: '/* Full-Stack\nDeveloper */',
@@ -109,6 +111,7 @@ const DICT: Record<Lang, Dict> = {
     menuAria: 'Open menu',
     themeAria: 'Toggle theme',
     langAria: 'Switch language to Portuguese',
+    topAria: 'Back to top',
   },
 };
 
@@ -364,6 +367,47 @@ if (navLinks.length) {
     new ResizeObserver(remeasure).observe(document.body);
     remeasure();
   }
+}
+
+// ---------- Botão flutuante "voltar ao topo" ----------
+// Aparece a partir da seção "sobre mim", usando a mesma linha de corte do link
+// ativo do header: assim o botão surge exatamente quando "SOBRE MIM" acende.
+const topBtn = document.getElementById('back-to-top');
+const aboutSection = document.getElementById('sobre');
+if (topBtn && aboutSection) {
+  let aboutTop = 0;
+  const measureAbout = () => {
+    aboutTop = aboutSection.getBoundingClientRect().top + window.scrollY;
+  };
+
+  let visible = false;
+  const syncTopBtn = () => {
+    const next = window.scrollY + Math.max(85, window.innerHeight * 0.4) >= aboutTop;
+    if (next === visible) return;
+    visible = next;
+    topBtn.classList.toggle('is-visible', next);
+  };
+
+  let topQueued = false;
+  const queueTopBtn = () => {
+    if (topQueued) return;
+    topQueued = true;
+    requestAnimationFrame(() => {
+      topQueued = false;
+      syncTopBtn();
+    });
+  };
+
+  const remeasureTop = () => {
+    measureAbout();
+    syncTopBtn();
+  };
+
+  window.addEventListener('scroll', queueTopBtn, { passive: true });
+  window.addEventListener('resize', remeasureTop);
+  // Imagens carregando e o menu mobile abrindo mudam a posição da seção
+  new ResizeObserver(remeasureTop).observe(document.body);
+  remeasureTop();
 }
 
 // ---------- Techstack: ícone magnético ----------

@@ -12,12 +12,9 @@ interface Dict {
   getInTouch: string;
   latest: string;
   learnMore: string;
-  learnMorePlain: string;
   repoBtn: string;
   deployBtn: string;
   closeModal: string;
-  heroShot: string;
-  projShot: string;
   aboutTitle: string;
   aboutLead: string;
   aboutBody: string;
@@ -55,6 +52,13 @@ interface Dict {
   lastUpdate: string;
   // Repetido 3x na faixa curva (data-i18n-repeat), por isso termina com separador
   marqueeText: string;
+  // Vão para o <head>: o servidor sempre renderiza PT, então quem corrige a aba
+  // e as metatags ao trocar de idioma é o applyLang.
+  pageTitle: string;
+  pageDescription: string;
+  carouselPlay: string;
+  carouselPause: string;
+  skipLink: string;
   menuAria: string;
   themeAria: string;
   langAria: string;
@@ -67,16 +71,13 @@ const DICT: Record<Lang, Dict> = {
     nav: ['SOBRE MIM', 'PROJETOS', 'TECNOLOGIAS', 'EDUCAÇÃO', 'CONTATO'],
     location: 'Rio de Janeiro, Brasil',
     heroTagline: 'Desenvolvedor full-stack focado em criar interfaces modernas e funcionais.',
-    cv: 'Vizualizar CV',
+    cv: 'Visualizar CV',
     getInTouch: 'Entrar em contato',
     latest: 'Últimos projetos',
     learnMore: 'Saiba mais →',
-    learnMorePlain: 'Saiba mais',
     repoBtn: 'Repositório',
     deployBtn: 'Ver deploy',
     closeModal: 'Fechar',
-    heroShot: 'prévia do projeto em destaque',
-    projShot: 'captura do projeto',
     aboutTitle: '/* SOBRE MIM */',
     aboutLead:
       'Sou desenvolvedor full-stack focado em construir aplicações web completas — do front-end em React e Next.js ao back-end em Node.js, com deploy em produção. Trabalho com atenção em detalhes de UI/UX, usabilidade e performance, entregando experiências digitais consistentes.',
@@ -104,7 +105,7 @@ const DICT: Record<Lang, Dict> = {
     contactTitle: '/* CONTATO */',
     contactSub: '// aberto a freelas, vagas full-stack e projetos colaborativos',
     contactAvail: 'Disponível para novos projetos',
-    contactLead: 'Vamos iniciar algo incrível!',
+    contactLead: 'Do protótipo ao deploy em produção.',
     contactBody:
       'Conte sobre a ideia, o prazo e o que já existe. Respondo com um plano inicial e os próximos passos.',
     contactCta: 'Enviar email',
@@ -117,6 +118,12 @@ const DICT: Record<Lang, Dict> = {
     jobsCta: 'Ver LinkedIn',
     lastUpdate: 'Última atualização:',
     marqueeText: 'João Vitor · Desenvolvedor Full-Stack · ',
+    pageTitle: 'João Vitor | Desenvolvedor Full-Stack & UI/UX',
+    pageDescription:
+      'Desenvolvedor Full-Stack especializado em HTML, CSS, JS, React, Next.js, Tailwind, GSAP e UI/UX. Transformo designs complexos em interfaces web de alta performance. Veja meus cases.',
+    carouselPlay: 'Retomar a passagem automática dos projetos',
+    carouselPause: 'Pausar a passagem automática dos projetos',
+    skipLink: 'Pular para o conteúdo',
     menuAria: 'Abrir menu',
     themeAria: 'Alternar tema',
     langAria: 'Mudar idioma para inglês',
@@ -131,12 +138,9 @@ const DICT: Record<Lang, Dict> = {
     getInTouch: 'Get in touch',
     latest: 'Latest projects',
     learnMore: 'Learn more →',
-    learnMorePlain: 'Learn more',
     repoBtn: 'Repository',
     deployBtn: 'View deploy',
     closeModal: 'Close',
-    heroShot: 'featured project preview',
-    projShot: 'project screenshot',
     aboutTitle: '/* ABOUT ME */',
     aboutLead:
       'I am a full-stack developer focused on building complete web applications — from the front-end in React and Next.js to the back-end in Node.js, shipped to production. I work with close attention to UI/UX detail, usability and performance, delivering consistent digital experiences.',
@@ -164,7 +168,7 @@ const DICT: Record<Lang, Dict> = {
     contactTitle: '/* CONTACT */',
     contactSub: '// open to freelance work, full-stack roles and collaborative projects',
     contactAvail: 'Available for new projects',
-    contactLead: "Let's start something incredible!",
+    contactLead: 'From prototype to production deploy.',
     contactBody:
       'Tell me about the idea, the deadline and what already exists. I reply with an initial plan and the next steps.',
     contactCta: 'Send email',
@@ -177,6 +181,12 @@ const DICT: Record<Lang, Dict> = {
     jobsCta: 'View LinkedIn',
     lastUpdate: 'Last updated:',
     marqueeText: 'João Vitor · Full-Stack Developer · ',
+    pageTitle: 'João Vitor | Full-Stack Developer & UI/UX',
+    pageDescription:
+      'Full-stack developer working in HTML, CSS, JS, React, Next.js, Tailwind, GSAP and UI/UX. I turn complex designs into high-performance web interfaces. See my cases.',
+    carouselPlay: 'Resume the automatic project rotation',
+    carouselPause: 'Pause the automatic project rotation',
+    skipLink: 'Skip to content',
     menuAria: 'Open menu',
     themeAria: 'Toggle theme',
     langAria: 'Switch language to Portuguese',
@@ -276,8 +286,27 @@ function applyLang(lang: Lang) {
   const langLabel = document.getElementById('lang-label');
   if (langLabel) langLabel.textContent = lang === 'pt' ? 'EN' : 'PT';
 
+  // O <head> é renderizado em PT no servidor, porque o idioma só é decidido no
+  // cliente (localStorage/navigator). Sem isto, trocar para inglês deixava a aba
+  // e o cartão de compartilhamento em português.
+  document.title = t.pageTitle;
+  const meta = (attr: 'name' | 'property', key: string, value: string) => {
+    document.head.querySelector(`meta[${attr}="${key}"]`)?.setAttribute('content', value);
+  };
+  meta('name', 'description', t.pageDescription);
+  meta('property', 'og:title', t.pageTitle);
+  meta('property', 'og:description', t.pageDescription);
+  meta('property', 'og:image:alt', t.pageTitle);
+  meta('property', 'og:locale', lang === 'pt' ? 'pt_BR' : 'en_US');
+  meta('name', 'twitter:title', t.pageTitle);
+  meta('name', 'twitter:description', t.pageDescription);
+
   root.setAttribute('lang', lang === 'pt' ? 'pt-BR' : 'en');
 }
+
+// O carrossel vive em outro módulo e troca o data-i18n-aria do botão de pausa
+// conforme o estado; este gancho deixa ele pedir a releitura sem conhecer o DICT.
+document.addEventListener('i18n:refresh', () => applyLang(currentLang()));
 
 // ---------- Tema ----------
 function applyTheme(theme: 'light' | 'dark') {
@@ -290,12 +319,43 @@ function applyTheme(theme: 'light' | 'dark') {
   if (favicon) favicon.setAttribute('href', `/favicon/myfavicon-${theme}.svg`);
 }
 
-// ---------- Menu ----------
+// ---------- Menu mobile ----------
+// Padrão "disclosure" da APG, não modal: o painel não bloqueia a página, então o
+// foco NÃO fica preso nele. Prender daria ao usuário de teclado a sensação de um
+// modal que não existe; em vez disso, sair com Tab fecha o painel (focusout
+// abaixo), que é o que a especificação recomenda para este caso.
+const menuBtn = document.getElementById('menu-btn');
+const menuPanel = document.getElementById('menu-panel');
+const header = document.querySelector('header');
+let menuOpen = false;
+
+// ---------- Altura do header ----------
+// O scroll-margin das âncoras e a linha de corte do link ativo dependem dela, e
+// ela muda com o clamp da marca em telas estreitas. Medir uma vez e publicar em
+// --header-h evita repetir o número em três lugares e vê-los divergirem.
+let headerH = 72;
+function measureHeader() {
+  headerH = (header as HTMLElement | null)?.offsetHeight || 72;
+  root.style.setProperty('--header-h', `${headerH}px`);
+}
+measureHeader();
+window.addEventListener('resize', measureHeader);
+
 function setMenu(open: boolean) {
-  const panel = document.getElementById('menu-panel');
-  if (panel) panel.hidden = !open;
+  menuOpen = open;
+  // A classe é o estado; a altura é animada pelo CSS (grid-template-rows 0fr→1fr)
+  menuPanel?.classList.toggle('is-open', open);
+  menuBtn?.setAttribute('aria-expanded', String(open));
   const icon = document.getElementById('menu-icon');
   if (icon) icon.innerHTML = open ? ICONS.x : ICONS.burger;
+}
+
+// returnFocus só quando o usuário fechou de propósito pelo teclado: o foco volta
+// para o botão de onde ele saiu, em vez de cair no começo da página.
+function closeMenu(returnFocus = false) {
+  if (!menuOpen) return;
+  setMenu(false);
+  if (returnFocus) menuBtn?.focus();
 }
 
 // ---------- Init ----------
@@ -339,14 +399,38 @@ document.getElementById('lang-btn')?.addEventListener('click', () => {
   setMenu(false);
 });
 
-document.getElementById('menu-btn')?.addEventListener('click', () => {
-  const panel = document.getElementById('menu-panel');
-  setMenu(!!panel?.hidden);
-});
+menuBtn?.addEventListener('click', () => setMenu(!menuOpen));
 
 document.querySelectorAll('.menu-close').forEach((el) =>
-  el.addEventListener('click', () => setMenu(false))
+  el.addEventListener('click', () => closeMenu())
 );
+
+// Esc fecha e devolve o foco ao botão. Se o menu estiver fechado o closeMenu sai
+// na primeira linha, então isto não rouba o Esc do <dialog> dos projetos.
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') closeMenu(true);
+});
+
+// Clique fora fecha. pointerdown em vez de click, e o botão é excluído de
+// propósito: senão o pointerdown fecharia e o click logo em seguida reabriria.
+document.addEventListener('pointerdown', (event) => {
+  if (!menuOpen) return;
+  const target = event.target as Node;
+  if (!menuPanel?.contains(target) && !menuBtn?.contains(target)) closeMenu();
+});
+
+// Sem foco preso, o Tab sai do painel naturalmente — e aí o menu precisa fechar,
+// senão fica aberto às costas de quem já seguiu para o conteúdo.
+header?.addEventListener('focusout', (event) => {
+  const next = (event as FocusEvent).relatedTarget as Node | null;
+  if (next && !header.contains(next)) closeMenu();
+});
+
+// Acima do breakpoint o botão do menu some (media query em global.css): o painel
+// não pode continuar aberto sem nada que o controle.
+window.matchMedia('(min-width: 901px)').addEventListener('change', (event) => {
+  if (event.matches) closeMenu();
+});
 
 // ---------- Barra de progresso da rolagem (borda inferior do header) ----------
 const progressBar = document.getElementById('scroll-progress');
@@ -358,6 +442,10 @@ if (progressBar) {
     const max = root.scrollHeight - window.innerHeight;
     const ratio = max > 0 ? Math.min(Math.max(window.scrollY / max, 0), 1) : 0;
     progressBar.style.transform = `scaleX(${ratio})`;
+    // Pega carona neste rAF em vez de abrir um segundo listener de scroll: acende
+    // o degradê da base do header (header::after) só quando já há conteúdo
+    // passando por baixo dele.
+    root.toggleAttribute('data-scrolled', window.scrollY > 4);
   };
 
   // rAF evita recalcular a cada evento de scroll (que dispara muitas vezes por frame)
@@ -398,7 +486,7 @@ if (navLinks.length) {
       // Linha de corte a 40% da tela. Colada no header ela ficava tarde demais: o
       // primeiro link só acendia depois de rolar o hero inteiro. Nunca acima da
       // base do header, para o link clicado já chegar ativo (scroll-margin-top:84px).
-      const line = window.scrollY + Math.max(85, window.innerHeight * 0.4);
+      const line = window.scrollY + Math.max(headerH + 6, window.innerHeight * 0.4);
       let index = -1;
       for (let i = 0; i < tops.length; i++) {
         if (tops[i] <= line) index = i;
@@ -457,7 +545,7 @@ if (topBtn && aboutSection) {
 
   let visible = false;
   const syncTopBtn = () => {
-    const next = window.scrollY + Math.max(85, window.innerHeight * 0.4) >= aboutTop;
+    const next = window.scrollY + Math.max(headerH + 6, window.innerHeight * 0.4) >= aboutTop;
     if (next === visible) return;
     visible = next;
     topBtn.classList.toggle('is-visible', next);

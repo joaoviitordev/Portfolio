@@ -12,6 +12,11 @@ interface Props {
 }
 
 const { title, description, path } = Astro.props;
+
+// Uma const só porque o href aparece duas vezes abaixo (preload + fallback noscript)
+// e as duas precisam bater exatamente, senão o browser baixa a folha duas vezes.
+const FONTS_HREF =
+  'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap';
 ---
 
 <!doctype html>
@@ -26,10 +31,13 @@ const { title, description, path } = Astro.props;
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
+    {/* Como <link rel="stylesheet"> a folha do Google bloqueia o primeiro paint:
+        a página espera uma ida ao servidor dela antes de desenhar qualquer coisa.
+        Como preload ela baixa em paralelo e só vira stylesheet quando chega. O
+        display=swap na URL já cuida do texto no intervalo (desenha na fonte de
+        sistema e troca depois). O <noscript> cobre quem não executa o onload. */}
+    <link rel="preload" as="style" href={FONTS_HREF} onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href={FONTS_HREF} /></noscript>
 
     {/* Aplica tema + idioma antes do paint (evita flash claro→escuro / PT→EN) */}
     <script is:inline>
@@ -62,8 +70,12 @@ const { title, description, path } = Astro.props;
   <body>
     <div
       data-theme-root="true"
-      style="background:#ffffff;color:#171717;font-family:Space Grotesk,Helvetica,Arial,sans-serif;overflow-x:clip;position:relative;min-height:100vh;transition:background .25s,color .25s;"
+      style="background:var(--bg);color:var(--ink);font-family:Space Grotesk,Helvetica,Arial,sans-serif;overflow-x:clip;position:relative;min-height:100vh;transition:background .25s,color .25s;"
     >
+      {/* Primeiro elemento focável da página: com o Tab ele desce da borda superior
+          e leva direto ao <main>, pulando os 5 links do header. Fora do foco fica
+          escondido acima do viewport, sem ocupar espaço. */}
+      <a href="#conteudo" class="skip-link" data-i18n="skipLink">Pular para o conteúdo</a>
       <slot />
     </div>
   </body>

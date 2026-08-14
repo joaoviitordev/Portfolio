@@ -1,25 +1,35 @@
 ---
 // Tecnologias — grafo de nós (SVG). Ícones soltos de /public/assets/icons.
 // invert: logos monocromáticos escuros que precisam ser clareados no tema dark.
+//
+// A posição não é decorativa: cada nó fica dentro do raio do hub que o classifica
+// (as <line> abaixo ligam um ao outro), então mover um nó de grupo é mudar o x/y
+// para o slot do grupo certo. Os comentários marcam onde cada bloco termina.
 const nodes = [
+  // FRONT-END — hub em 30,30
   { name: "Next.js", icon: "nextjs.svg", x: 22, y: 12, invert: true },
   { name: "React", icon: "react.svg", x: 38, y: 14 },
   { name: "TypeScript", icon: "typescript.svg", x: 10, y: 34 },
-  { name: "JavaScript", icon: "js.svg", x: 28, y: 46 },
+  { name: "GSAP", icon: "gsap2.svg", x: 28, y: 46 },
+  // BASE — hub em 72,30
   { name: "HTML5", icon: "html5.svg", x: 62, y: 10 },
   { name: "CSS3", icon: "css3.svg", x: 84, y: 10 },
-  { name: "GSAP", icon: "gsap2.svg", x: 92, y: 34 },
+  { name: "JavaScript", icon: "js.svg", x: 92, y: 34 },
+  // TOOLS — hub em 28,76
   { name: "Git", icon: "git.svg", x: 8, y: 68 },
   { name: "GitHub", icon: "github.svg", x: 12, y: 92, invert: true },
   { name: "Figma", icon: "figma.svg", x: 32, y: 94 },
+  // Único logo colorido do grafo: o laranja da marca já contrasta nos dois temas.
+  { name: "Claude", icon: "claude.svg", x: 44, y: 86 },
+  // BACK-END — hub em 74,76
   { name: "Node.js", icon: "nodejs2.svg", x: 66, y: 94 },
   { name: "PostgreSQL", icon: "postgresql.svg", x: 90, y: 68 },
 ];
 ---
 
 <section data-screen-label="Tecnologias" id="tecnologias" style="max-width:1200px;margin:0 auto;padding:clamp(72px,9vw,120px) clamp(20px,4vw,40px) clamp(80px,10vw,130px);">
-  <div data-anim style="--i:0;font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(18px,2.4vw,24px);margin-bottom:8px;">/* TECHSTACK */</div>
-  <div data-i18n="stackSub" data-anim style="--i:1;font-family:JetBrains Mono,monospace;font-size:13px;color:#8b8b92;margin-bottom:clamp(30px,5vw,50px);">// ecossistema de tecnologias que uso no dia a dia</div>
+  <h2 data-anim style="--i:0;font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(18px,2.4vw,24px);margin:0 0 8px;">/* TECHSTACK */</h2>
+  <div data-i18n="stackSub" data-anim style="--i:1;font-family:JetBrains Mono,monospace;font-size:13px;color:var(--ink-faint);margin-bottom:clamp(30px,5vw,50px);">// ecossistema de tecnologias que uso no dia a dia</div>
 
   <div data-m="graph" data-anim style="--i:2;position:relative;width:100%;max-width:960px;margin:0 auto;aspect-ratio:960/560;">
     <svg data-m="graph-lines" viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;">
@@ -41,6 +51,7 @@ const nodes = [
         <line x1="28" y1="76" x2="8" y2="68"/>
         <line x1="28" y1="76" x2="12" y2="92"/>
         <line x1="28" y1="76" x2="32" y2="94"/>
+        <line x1="28" y1="76" x2="44" y2="86"/>
 
         <line x1="74" y1="76" x2="66" y2="94"/>
         <line x1="74" y1="76" x2="90" y2="68"/>
@@ -49,25 +60,25 @@ const nodes = [
 
     <!-- center -->
     <div style="position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;" data-m="hub">
-      <div data-s="solid" style="width:clamp(12px,1.6vw,16px);height:clamp(12px,1.6vw,16px);border-radius:50%;background:#171717;"></div>
-      <div style="font-family:JetBrains Mono,monospace;font-size:clamp(9px,1vw,11px);letter-spacing:0.08em;color:#8b8b92;white-space:nowrap;">STACK</div>
+      <div data-s="solid" style="width:clamp(12px,1.6vw,16px);height:clamp(12px,1.6vw,16px);border-radius:50%;"></div>
+      <div style="font-family:JetBrains Mono,monospace;font-size:clamp(9px,1vw,11px);letter-spacing:0.08em;color:var(--ink-faint);white-space:nowrap;">STACK</div>
     </div>
     <!-- category dots -->
     <div style="position:absolute;left:30%;top:30%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px;" data-m="hub">
-      <div style="width:clamp(7px,1vw,9px);height:clamp(7px,1vw,9px);border-radius:50%;background:#a1a1aa;"></div>
-      <div style="font-family:JetBrains Mono,monospace;font-size:clamp(8px,0.85vw,10px);letter-spacing:0.06em;color:#a1a1aa;white-space:nowrap;">FRONT-END</div>
+      <div style="width:clamp(7px,1vw,9px);height:clamp(7px,1vw,9px);border-radius:50%;background:var(--graph-dot);"></div>
+      <div style="font-family:JetBrains Mono,monospace;font-size:clamp(8px,0.85vw,10px);letter-spacing:0.06em;color:var(--graph-dot);white-space:nowrap;">FRONT-END</div>
     </div>
     <div style="position:absolute;left:72%;top:30%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px;" data-m="hub">
-      <div style="width:clamp(7px,1vw,9px);height:clamp(7px,1vw,9px);border-radius:50%;background:#a1a1aa;"></div>
-      <div style="font-family:JetBrains Mono,monospace;font-size:clamp(8px,0.85vw,10px);letter-spacing:0.06em;color:#a1a1aa;white-space:nowrap;">BASE</div>
+      <div style="width:clamp(7px,1vw,9px);height:clamp(7px,1vw,9px);border-radius:50%;background:var(--graph-dot);"></div>
+      <div style="font-family:JetBrains Mono,monospace;font-size:clamp(8px,0.85vw,10px);letter-spacing:0.06em;color:var(--graph-dot);white-space:nowrap;">BASE</div>
     </div>
     <div style="position:absolute;left:28%;top:76%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px;" data-m="hub">
-      <div style="width:clamp(7px,1vw,9px);height:clamp(7px,1vw,9px);border-radius:50%;background:#a1a1aa;"></div>
-      <div style="font-family:JetBrains Mono,monospace;font-size:clamp(8px,0.85vw,10px);letter-spacing:0.06em;color:#a1a1aa;white-space:nowrap;">TOOLS</div>
+      <div style="width:clamp(7px,1vw,9px);height:clamp(7px,1vw,9px);border-radius:50%;background:var(--graph-dot);"></div>
+      <div style="font-family:JetBrains Mono,monospace;font-size:clamp(8px,0.85vw,10px);letter-spacing:0.06em;color:var(--graph-dot);white-space:nowrap;">TOOLS</div>
     </div>
     <div style="position:absolute;left:74%;top:76%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px;" data-m="hub">
-      <div style="width:clamp(7px,1vw,9px);height:clamp(7px,1vw,9px);border-radius:50%;background:#a1a1aa;"></div>
-      <div style="font-family:JetBrains Mono,monospace;font-size:clamp(8px,0.85vw,10px);letter-spacing:0.06em;color:#a1a1aa;white-space:nowrap;">BACK-END</div>
+      <div style="width:clamp(7px,1vw,9px);height:clamp(7px,1vw,9px);border-radius:50%;background:var(--graph-dot);"></div>
+      <div style="font-family:JetBrains Mono,monospace;font-size:clamp(8px,0.85vw,10px);letter-spacing:0.06em;color:var(--graph-dot);white-space:nowrap;">BACK-END</div>
     </div>
 
     {nodes.map((n) => (

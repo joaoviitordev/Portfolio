@@ -2,34 +2,168 @@
    Bloco copiado 1:1 do <helmet> do design DC (dark mode + keyframes + responsivo),
    acrescido das classes .hv-* que substituem os antigos `style-hover` (hover inline). */
 
-body { margin: 0; scroll-behavior: smooth; background:#ffffff; }
-::selection { background:#171717; color:#fff; }
+/* scroll-behavior precisa morar no elemento raiz: quem rola é o viewport, e só o
+   valor de html chega nele. Em body a declaração era ignorada, então as âncoras do
+   header, do menu mobile e o "voltar ao topo" saltavam seco. */
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+/* ============================================================================
+   TOKENS
+   Fonte única das cores. Antes cada cor era escrita à mão no style="" de cada
+   elemento, e o tema escuro era remendado por cima com !important — inline vence
+   seletor, então não havia outro jeito. Com as cores aqui, trocar de tema é
+   redefinir esta lista, e nenhum remendo precisa ganhar de ninguém.
+   ========================================================================== */
+:root {
+  color-scheme: light;
+
+  /* superfícies */
+  --bg:             #ffffff;
+  --bg-sunken:      linear-gradient(180deg,#ffffff,#fafafa);
+  --bg-footer:      linear-gradient(90deg,#f4f4f5,#ffffff);
+  --surface:        #ffffff;                                  /* cards */
+  --bar-bg:         linear-gradient(180deg,#f4f4f5,#e4e4e7);  /* faixas de topo de card */
+  --pill-bg:        linear-gradient(180deg,#ffffff,#eeeef0);
+  --pill-bg-hover:  linear-gradient(180deg,#f7f7f8,#e4e4e7);
+  --solid-bg:       #171717;
+  --solid-bg-hover: #000000;
+  --chrome-bg:      rgba(255,255,255,0.85);   /* header translúcido */
+  --panel-bg:       rgba(255,255,255,0.97);   /* painel do menu mobile */
+  /* hachura de fundo atrás das capturas, enquanto a imagem não carrega */
+  --stripe: repeating-linear-gradient(135deg,#fafafa,#fafafa 10px,#f1f1f2 10px,#f1f1f2 20px);
+
+  /* texto — três níveis, do mais forte ao mais apagado */
+  --ink:            #171717;   /* 15.9:1 sobre --bg */
+  --ink-muted:      #4b4b52;   /*  8.7:1 */
+  --ink-faint:      #71717a;   /*  4.8:1 — era #8b8b92, que dava 3.4:1 e reprovava AA */
+  --ink-on-solid:   #ffffff;
+  --ink-nav-hover:  #6b7280;
+
+  /* traços */
+  --line:           rgba(23,23,23,0.1);
+  --line-strong:    rgba(23,23,23,0.15);
+  --line-soft:      rgba(23,23,23,0.08);
+  --graph-line:     rgba(23,23,23,0.18);
+  --graph-dot:      #a1a1aa;   /* igual nos dois temas: cinza medio ja legivel em ambos */
+  --wash:           rgba(23,23,23,0.07);   /* realce discreto: chip, hover de ícone */
+
+  --focus-ring:     #171717;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg:             #0c0c0d;
+  --bg-sunken:      #0c0c0d;
+  --bg-footer:      #0c0c0d;
+  --surface:        #16161a;
+  --bar-bg:         linear-gradient(180deg,#1e1e24,#15151a);
+  --pill-bg:        linear-gradient(180deg,#1e1e24,#15151a);
+  --pill-bg-hover:  linear-gradient(180deg,#26262e,#1b1b21);
+  --solid-bg:       #f4f4f5;
+  --solid-bg-hover: #ffffff;
+  --chrome-bg:      rgba(12,12,13,0.85);
+  --panel-bg:       rgba(12,12,13,0.97);
+  --stripe: repeating-linear-gradient(135deg,#141418,#141418 10px,#1c1c21 10px,#1c1c21 20px);
+
+  --ink:            #f4f4f5;
+  --ink-muted:      #a9a9b2;
+  --ink-faint:      #8b8b92;
+  --ink-on-solid:   #0c0c0d;
+  --ink-nav-hover:  #a1a1aa;
+
+  --line:           rgba(255,255,255,0.12);
+  --line-strong:    rgba(255,255,255,0.14);
+  --line-soft:      rgba(255,255,255,0.1);
+  --graph-line:     rgba(255,255,255,0.22);
+  --graph-dot:      #a1a1aa;
+  --wash:           rgba(255,255,255,0.1);
+
+  --focus-ring:     #f4f4f5;
+}
+
+/* ---- Preferências de sistema ----
+   Com as cores em tokens, atender estas duas preferências é redefinir alguns
+   valores em vez de caçar cada superfície. */
+
+/* Translucidez reduzida: por decisão do João, o vidro do header e do painel do
+   menu fica de pé mesmo com a preferência ligada — é a assinatura visual da
+   chrome, e no Windows esse ajuste costuma estar desligado por desempenho, não
+   por necessidade. O que sai é só o desfoque do fundo do modal, que ali serve de
+   véu e não de identidade. */
+@media (prefers-reduced-transparency: reduce) {
+  .project-modal::backdrop { -webkit-backdrop-filter:none; backdrop-filter:none; background:rgba(0,0,0,0.8); }
+}
+
+/* Contraste alto: traços deixam de ser insinuados e o texto apagado sobe para o
+   mesmo nível do secundário. As superfícies translúcidas também viram sólidas —
+   sem isso, o texto por baixo continuaria atravessando o header. */
+@media (prefers-contrast: more) {
+  :root {
+    --chrome-bg:#ffffff;
+    --panel-bg:#ffffff;
+    --ink-faint:#4b4b52;      /* 8.7:1, mesmo nível do --ink-muted */
+    --line:rgba(23,23,23,0.34);
+    --line-strong:rgba(23,23,23,0.5);
+    --line-soft:rgba(23,23,23,0.28);
+    --wash:rgba(23,23,23,0.16);
+    --graph-line:rgba(23,23,23,0.45);
+  }
+  html[data-theme="dark"] {
+    --chrome-bg:#0c0c0d;
+    --panel-bg:#0c0c0d;
+    --ink-faint:#c9c9d1;
+    --line:rgba(255,255,255,0.38);
+    --line-strong:rgba(255,255,255,0.55);
+    --line-soft:rgba(255,255,255,0.3);
+    --wash:rgba(255,255,255,0.22);
+    --graph-line:rgba(255,255,255,0.5);
+  }
+  header { -webkit-backdrop-filter:none; backdrop-filter:none; }
+}
+
+body { margin: 0; background:var(--bg); }
+::selection { background:var(--ink); color:var(--bg); }
 @keyframes fadeUp { from { opacity:0; transform:translateY(14px);} to { opacity:1; transform:translateY(0);} }
 
-html[data-theme="dark"] body { background:#0c0c0d; }
-html[data-theme="dark"] ::selection { background:#f4f4f5; color:#0c0c0d; }
-html[data-theme="dark"] [data-theme-root] { background:#0c0c0d !important; color:#f4f4f5 !important; }
-html[data-theme="dark"] header { background:rgba(12,12,13,0.85) !important; border-color:rgba(255,255,255,0.1) !important; }
-html[data-theme="dark"] h1, html[data-theme="dark"] nav a { color:#f4f4f5 !important; }
-html[data-theme="dark"] [data-s="page"] { background:#0c0c0d !important; border-top-color:rgba(255,255,255,0.1) !important; }
-html[data-theme="dark"] [data-s="pill"] { background:linear-gradient(180deg,#1e1e24,#15151a) !important; border-color:rgba(255,255,255,0.14) !important; color:#f4f4f5 !important; }
-html[data-theme="dark"] [data-s="pill"] * { color:#f4f4f5 !important; }
-html[data-theme="dark"] [data-s="pill"] [stroke] { stroke:#f4f4f5 !important; }
-html[data-theme="dark"] [data-s="pill"] svg[fill]:not([fill="none"]),
-html[data-theme="dark"] [data-s="pill"] circle[fill], html[data-theme="dark"] [data-s="pill"] path[fill]:not([fill="none"]) { fill:#f4f4f5 !important; }
-html[data-theme="dark"] [data-s="card"] { background:#16161a !important; border-color:rgba(255,255,255,0.12) !important; color:#f4f4f5 !important; }
-html[data-theme="dark"] [data-s="solid"] { background:#f4f4f5 !important; color:#0c0c0d !important; }
-html[data-theme="dark"] [data-s="solid"] * { color:#0c0c0d !important; }
-html[data-theme="dark"] [data-s="solid"] [stroke] { stroke:#0c0c0d !important; }
-html[data-theme="dark"] [data-s="solid"] svg[fill]:not([fill="none"]),
-html[data-theme="dark"] [data-s="solid"] circle[fill], html[data-theme="dark"] [data-s="solid"] path[fill]:not([fill="none"]) { fill:#0c0c0d !important; }
-html[data-theme="dark"] [data-s="muted"] { color:#a9a9b2 !important; }
-/* O painel escuro do contato já é escuro no tema claro: só a borda precisa mudar */
-html[data-theme="dark"] [data-m="cta-panel"] { border-color:rgba(255,255,255,0.12) !important; }
-html[data-theme="dark"] [data-m="menu-link"] { color:#f4f4f5 !important; border-bottom-color:rgba(255,255,255,0.08) !important; }
-html[data-theme="dark"] [data-m="panel"] { background:rgba(12,12,13,0.97) !important; }
-html[data-theme="dark"] [style*="repeating-linear-gradient"] { background:repeating-linear-gradient(135deg,#141418,#141418 10px,#1c1c21 10px,#1c1c21 20px) !important; }
-html[data-theme="dark"] g[stroke*="23,23,23"] { stroke:rgba(255,255,255,0.22) !important; }
+/* ---- Papéis (data-s) ----
+   Estes atributos já marcavam o papel de cada superfície; agora eles também a
+   pintam, em vez de só servirem de gancho para o remendo do dark. Sem !important:
+   as cores saíram do inline, então a cascata normal basta. */
+[data-s="page"]  { background:var(--bg-sunken); border-top-color:var(--line-soft); }
+[data-s="card"]  { background:var(--surface); border-color:var(--line); color:var(--ink); }
+[data-s="pill"]  { background:var(--pill-bg); border-color:var(--line-strong); color:var(--ink); }
+[data-s="solid"] { background:var(--solid-bg); color:var(--ink-on-solid); }
+
+/* Os ícones trazem stroke/fill como atributo SVG, que qualquer regra CSS vence —
+   é o que dispensa o !important que estas linhas usavam antes. currentColor em vez
+   de um token fixo: assim o ícone acompanha a cor do próprio elemento, e um filho
+   que apaga o texto (o pill de localização, por exemplo) leva o ícone junto. */
+[data-s="pill"] [stroke],
+[data-s="solid"] [stroke] { stroke:currentColor; }
+[data-s="pill"] svg[fill]:not([fill="none"]),
+[data-s="pill"] circle[fill],
+[data-s="pill"] path[fill]:not([fill="none"]),
+[data-s="solid"] svg[fill]:not([fill="none"]),
+[data-s="solid"] circle[fill],
+[data-s="solid"] path[fill]:not([fill="none"]) { fill:currentColor; }
+
+[data-m="graph-lines"] g { stroke:var(--graph-line); }
+
+/* O painel do contato é escuro nos dois temas — é a única superfície que não
+   acompanha o tema. Em vez de literais espalhados, ele redefine os tokens de
+   texto para si: como custom property herda, todo filho que usa var(--ink-*)
+   já pega o valor de fundo escuro, nos dois temas. É isso que deixa o
+   --ink-faint global escurecer para passar no contraste sobre branco sem
+   apagar o "// costumo responder em até 24h" aqui dentro. */
+[data-m="cta-panel"] {
+  --ink:       #f4f4f5;
+  --ink-muted: #b8b8c0;
+  --ink-faint: #8b8b92;   /* 5.3:1 sobre o painel */
+  border-color:var(--line);
+}
 
 @media (max-width:900px) {
   [data-m="hero"] { grid-template-columns:1fr !important; gap:34px !important; padding-top:44px !important; }
@@ -106,18 +240,35 @@ html[data-theme-swap] [data-theme-root] { transition:none !important; }
 [data-m="marquee"] { --marquee-band:#171717; --marquee-ink:#ffffff; }
 html[data-theme="dark"] [data-m="marquee"] { --marquee-band:#f4f4f5; --marquee-ink:#0c0c0d; }
 
-/* ---- Hover (substituem os `style-hover` do DC) ---- */
-.hv-nav:hover { color:#6b7280; }
-.hv-pill:hover { background:linear-gradient(180deg,#f7f7f8,#e4e4e7); }
-.hv-solid:hover { background:#000; }
-.hv-solid-cta:hover { background:#000; box-shadow:0 4px 14px rgba(0,0,0,0.25); }
+/* ---- Superfícies interativas: nav-link, pill, solid, cta-light ----
+   A cor destes elementos morava no style="" de cada um. Estilo inline vence
+   qualquer seletor, então os :hover nunca chegavam a aplicar no tema claro — no
+   escuro sobreviviam só porque o bloco do dark usa !important. Base e hover agora
+   moram na mesma classe, e voltam a disputar pela cascata normal. */
+.nav-link { color:var(--ink); text-decoration:none; }
+.nav-link:hover { color:var(--ink-nav-hover); }
+
+/* A base de .pill e .solid vem do papel [data-s] lá em cima; aqui fica só o que
+   o papel não descreve — a borda (que é do componente, não da superfície) e os
+   estados. */
+.pill { border:1px solid var(--line-strong); }
+.pill:hover { background:var(--pill-bg-hover); }
+
+.solid:hover { background:var(--solid-bg-hover); }
+/* A CTA principal do hero é a única com sombra própria */
+.solid-cta { box-shadow:0 1px 2px rgba(0,0,0,0.15); }
+.solid-cta:hover { box-shadow:0 4px 14px rgba(0,0,0,0.25); }
+
+/* CTA clara dentro do painel escuro do contato: o painel não troca no dark,
+   então esta dupla é fixa nos dois temas. */
+.cta-light { background:#f4f4f5; color:#171717; }
+.cta-light:hover { background:#ffffff; transform:translateY(-2px); }
+
+/* Estes já funcionavam: mexem em transform, que ninguém escreve inline. */
 .hv-card:hover { transform:translateY(-3px); box-shadow:0 16px 34px -20px rgba(0,0,0,0.3); }
 .hv-lift:hover { transform:translateY(-2px); }
-/* CTA clara dentro do painel escuro do contato: o painel não troca no dark, então
-   este hover é fixo nos dois temas. */
-.hv-cta-light:hover { transform:translateY(-2px); background:#ffffff; }
 .hv-node:hover { --ms:1.12; }
-.hv-top:hover { background:linear-gradient(180deg,#eaeaec,#dcdce0); }
+.hv-top:hover { background:var(--pill-bg-hover); }
 
 /* ---- Botão flutuante "voltar ao topo" ----
    Fixo no canto inferior direito; a classe .is-visible vem de ui.ts a partir da
@@ -134,8 +285,8 @@ html[data-theme="dark"] [data-m="marquee"] { --marquee-band:#f4f4f5; --marquee-i
   width:40px;
   height:40px;
   border-radius:50%;
-  background:linear-gradient(180deg,#f4f4f5,#e4e4e7);
-  border:1px solid rgba(23,23,23,0.1);
+  background:var(--bar-bg);
+  border:1px solid var(--line);
   box-shadow:0 8px 20px -8px rgba(0,0,0,0.35);
   opacity:0;
   visibility:hidden;
@@ -153,7 +304,14 @@ html[data-theme="dark"] .back-to-top { box-shadow:0 8px 20px -8px rgba(0,0,0,0.7
 }
 
 /* ---- Carrossel dos projetos no hero ---- */
+/* pan-y: a rolagem vertical da página continua sendo do browser; só o eixo
+   horizontal chega ao nosso gesto. */
+.hero-carousel { touch-action:pan-y; }
 .hero-slide { transition:opacity .7s ease; }
+/* Durante o arrasto a opacidade tem de ser imediata: o slide que entra aparece
+   junto com o dedo, e um cross-fade de 0.7s o deixaria fantasma no caminho. */
+.hero-carousel.is-dragging .hero-slide { transition:none; }
+.hero-carousel.is-dragging { cursor:grabbing; }
 .hero-slide-caption {
   position:absolute;
   left:0;
@@ -173,6 +331,23 @@ html[data-theme="dark"] .back-to-top { box-shadow:0 8px 20px -8px rgba(0,0,0,0.7
   color:#fff;
   text-shadow:0 1px 3px rgba(0,0,0,0.5);
 }
+.hero-controls { display:flex; align-items:center; gap:12px; }
+.hero-toggle {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:20px;
+  height:20px;
+  padding:0;
+  border:none;
+  border-radius:50%;
+  background:rgba(255,255,255,0.2);
+  color:#ffffff;
+  cursor:pointer;
+  transition:background .2s;
+}
+.hero-toggle:hover { background:rgba(255,255,255,0.38); }
+.hero-toggle:focus-visible { outline-color:#ffffff; outline-offset:2px; }
 .hero-dots { display:flex; gap:7px; }
 .hero-dot {
   width:8px;
@@ -203,20 +378,33 @@ html[data-theme="dark"] .back-to-top { box-shadow:0 8px 20px -8px rgba(0,0,0,0.7
   width:min(560px,92vw);
   max-height:85vh;
   padding:0;
-  border:1px solid rgba(23,23,23,0.12);
+  border:1px solid var(--line);
   border-radius:20px;
-  background:#fff;
-  color:#171717;
+  background:var(--surface);
+  color:var(--ink);
   box-shadow:0 30px 80px -20px rgba(0,0,0,0.45);
   overflow:visible;
 }
 .project-modal::backdrop { background:rgba(0,0,0,0.55); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); }
-.project-modal[open] { animation:modalIn .22s ease-out; }
-.project-modal[open]::backdrop { animation:backdropIn .22s ease-out; }
-@keyframes modalIn { from { opacity:0; transform:translateY(10px) scale(0.98);} to { opacity:1; transform:none;} }
-@keyframes backdropIn { from { opacity:0;} to { opacity:1;} }
+/* --origin vem do script: é o centro do botão "Saiba mais" que abriu este modal,
+   convertido para coordenadas da própria caixa do <dialog>. Com a origem ali, a
+   escala faz o painel crescer de dentro do botão em vez de brotar do meio da
+   tela — a relação entre o que foi tocado e o que apareceu fica explícita. */
+.project-modal { transform-origin:var(--origin,50% 50%); }
+.project-modal[open] { animation:modalIn .24s cubic-bezier(.22,.61,.36,1); }
+.project-modal[open]::backdrop { animation:backdropIn .24s ease-out; }
+/* A saída refaz o mesmo caminho, com a curva invertida (os pontos de controle
+   espelhados), para o painel voltar para o botão de onde veio. Vem depois das
+   regras [open] de propósito: mesma especificidade, então esta ganha enquanto
+   fecha — o <dialog> ainda tem [open] nesse intervalo. */
+.project-modal.is-closing { animation:modalOut .2s cubic-bezier(.64,0,.78,.39); }
+.project-modal.is-closing::backdrop { animation:backdropOut .2s ease-in; }
+@keyframes modalIn  { from { opacity:0; transform:scale(0.88);} to { opacity:1; transform:none;} }
+@keyframes modalOut { from { opacity:1; transform:none;} to { opacity:0; transform:scale(0.88);} }
+@keyframes backdropIn  { from { opacity:0;} to { opacity:1;} }
+@keyframes backdropOut { from { opacity:1;} to { opacity:0;} }
 .project-modal-inner { padding:clamp(22px,3vw,30px); max-height:85vh; overflow-y:auto; border-radius:20px; }
-.project-modal-rule { width:48px; height:2px; background:#171717; opacity:0.25; margin-bottom:20px; }
+.project-modal-rule { width:48px; height:2px; background:var(--ink); opacity:0.25; margin-bottom:20px; }
 .project-close {
   position:absolute;
   top:14px;
@@ -233,28 +421,138 @@ html[data-theme="dark"] .back-to-top { box-shadow:0 8px 20px -8px rgba(0,0,0,0.7
   cursor:pointer;
   transition:background .2s;
 }
-.project-close:hover { background:rgba(23,23,23,0.08); }
+.project-close [stroke] { stroke:var(--ink); }
+.project-close:hover { background:var(--wash); }
 .project-open:hover { opacity:0.6; }
 @media (prefers-reduced-motion:reduce) {
-  .project-modal[open], .project-modal[open]::backdrop { animation:none; }
+  .project-modal[open], .project-modal[open]::backdrop,
+  .project-modal.is-closing, .project-modal.is-closing::backdrop { animation:none; }
 }
 
-html[data-theme="dark"] .project-modal { background:#16161a !important; border-color:rgba(255,255,255,0.12) !important; color:#f4f4f5 !important; }
-html[data-theme="dark"] .project-modal-rule { background:#f4f4f5 !important; }
-html[data-theme="dark"] .project-close [stroke] { stroke:#f4f4f5 !important; }
-html[data-theme="dark"] .project-close:hover { background:rgba(255,255,255,0.1); }
 
 /* Logos monocromáticos nos chips de tecnologia: contraste nos dois temas */
 html[data-theme="dark"] .tech-chip img[src$="nextjs.svg"],
 html[data-theme="dark"] .tech-chip img[src$="ai.svg"],
 html[data-theme="dark"] .tech-chip img[src$="prisma.svg"] { filter:invert(1); }
 
-/* Header é sticky: compensa a altura dele ao pular para uma âncora */
-section[id] { scroll-margin-top:84px; }
+/* ---- Tracking por tamanho ----
+   As letras parecem mais afastadas conforme o corpo cresce, então título grande
+   pede tracking negativo (o h1 já traz o dele, -0.02em). Nos monos pequenos de
+   12-13px não mexemos de propósito: a JetBrains Mono já nasce espaçada, e um
+   tracking positivo ali afrouxaria o que já está frouxo. */
+h2 { letter-spacing:-0.01em; }
+[data-i18n="jobsTitle"] { letter-spacing:-0.01em; }
+[data-i18n="contactLead"] { letter-spacing:-0.015em; }
 
-/* Barra de progresso sobre a borda inferior do header (escala vinda de ui.ts) */
+/* Header é sticky: compensa a altura dele ao pular para uma âncora.
+   --header-h é medida e publicada por ui.ts; o valor aqui é só o fallback. */
+section[id] { scroll-margin-top:calc(var(--header-h,72px) + 6px); }
+
+/* Barra de progresso na base do header (escala vinda de ui.ts) */
 #scroll-progress { transition:background .25s; }
-html[data-theme="dark"] #scroll-progress { background:#f4f4f5 !important; }
+
+/* ---- Emenda do header ----
+   O header é translúcido e o conteúdo passa por baixo dele; a separação só
+   precisa existir quando há de fato algo ali, daí o data-scrolled (ui.ts) em vez
+   de uma borda acesa já no topo da página, sobre o branco vazio.
+   Isto já foi um degradê de 10px. Enquanto o painel do menu fechado ocupava 27px,
+   ele caía longe da barra e passava; encostado nela virou sombra — no escuro era
+   preto a 50%. Uma régua de 1px, no mesmo tom das outras do projeto, separa sem
+   pesar, e o tom vem do token, então o tema já vai junto. */
+header::after {
+  content:'';
+  position:absolute;
+  left:0;
+  right:0;
+  top:100%;
+  height:1px;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .25s ease;
+  background:var(--line-soft);
+}
+html[data-scrolled] header::after { opacity:1; }
+@media (prefers-reduced-motion:reduce) {
+  header::after { transition:none; }
+}
+
+/* ---- Foco de teclado ----
+   O anel padrão do browser some sobre os pills pretos (data-s="solid") e sobre as
+   fotos do carrossel. Com outline-offset ele fica fora do elemento, sempre contra
+   o fundo da página — e o outline moderno já acompanha o border-radius sozinho. */
+:root { --focus-ring:#171717; }
+html[data-theme="dark"] { --focus-ring:#f4f4f5; }
+
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline:2px solid var(--focus-ring);
+  outline-offset:3px;
+}
+/* Os dots ficam sobre a captura do projeto: ali o anel escuro desapareceria. */
+.hero-dot:focus-visible { outline-color:#ffffff; outline-offset:2px; }
+/* O <main> só recebe foco como destino do skip link. Um anel em volta da página
+   inteira não comunicaria nada — o que informa ali é o salto que o usuário acabou
+   de pedir. */
+main[tabindex]:focus, main[tabindex]:focus-visible { outline:none; }
+
+/* ---- Painel do menu mobile ----
+   O recolhimento só existe com JS (mesma lógica do [data-anim]): sem script o
+   painel nasce aberto, senão o mobile ficaria sem navegação nenhuma.
+   grid-template-rows 0fr→1fr anima a altura sem precisar medir nada em JS, então
+   o conteúdo abaixo é empurrado junto em vez de saltar. visibility tira os links
+   da ordem de tabulação enquanto está fechado. */
+#menu-panel { background:var(--panel-bg); }
+/* Nada de padding ou borda aqui: o item de grid mantém a espessura mesmo com a
+   linha em 0fr, e era isso que deixava 27px de header morto com o menu fechado.
+   Toda espessura mora em .menu-panel-inner, que é recortado junto. */
+.menu-panel-row { min-height:0; }
+.menu-panel-inner {
+  max-width:1200px;
+  margin:0 auto;
+  padding:8px clamp(20px,4vw,40px) 18px;
+  display:flex;
+  flex-direction:column;
+}
+html[data-js] #menu-panel {
+  display:grid;
+  grid-template-rows:0fr;
+  opacity:0;
+  visibility:hidden;
+  overflow:hidden;
+  transition:grid-template-rows .28s cubic-bezier(.22,.61,.36,1),opacity .2s ease,visibility .28s;
+}
+html[data-js] #menu-panel.is-open {
+  grid-template-rows:1fr;
+  opacity:1;
+  visibility:visible;
+}
+@media (prefers-reduced-motion:reduce) {
+  html[data-js] #menu-panel { transition:opacity .15s ease,visibility .15s; }
+}
+
+/* ---- Skip link ----
+   Primeiro focável do documento. Escondido acima do viewport em vez de
+   display:none, senão ele sairia da ordem de tabulação e nunca apareceria. */
+.skip-link {
+  position:fixed;
+  top:0;
+  left:clamp(20px,4vw,40px);
+  z-index:60;
+  padding:12px 20px;
+  border-radius:0 0 12px 12px;
+  background:var(--solid-bg);
+  color:var(--ink-on-solid);
+  font-size:14px;
+  font-weight:600;
+  text-decoration:none;
+  transform:translateY(-120%);
+  transition:transform .2s cubic-bezier(.22,.61,.36,1);
+}
+.skip-link:focus-visible { transform:translateY(0); }
+@media (prefers-reduced-motion:reduce) {
+  .skip-link { transition:none; }
+}
 
 /* ---- Techstack: ícones soltos + nome embaixo ---- */
 /* --mx/--my vêm do ímã em ui.ts e --ms do :hover; os três precisam morar no mesmo
@@ -282,7 +580,7 @@ html[data-theme="dark"] #scroll-progress { background:#f4f4f5 !important; }
 .tech-label {
   font-family:JetBrains Mono,monospace;
   font-size:clamp(9px,1vw,11px);
-  color:#55585f;
+  color:var(--ink-muted);
   white-space:nowrap;
   text-align:center;
 }
@@ -291,11 +589,13 @@ html[data-theme="dark"] .tech-icon[data-icon-invert] { filter:invert(1); }
 
 /* ---- Educação: linha do tempo (badge no trilho + card) ---- */
 .edu-group + .edu-group { margin-top:clamp(30px,4.5vw,46px); }
+/* h3 desde a hierarquia de headings: zera a margem que o browser dá por padrão */
 .edu-group-label {
   font-family:JetBrains Mono,monospace;
   font-size:13px;
-  color:#8b8b92;
-  margin-bottom:16px;
+  font-weight:400;
+  color:var(--ink-faint);
+  margin:0 0 16px;
 }
 .edu-list { list-style:none; margin:0; padding:0; display:grid; gap:16px; }
 .edu-item { position:relative; display:flex; align-items:flex-start; gap:16px; }
@@ -309,15 +609,15 @@ html[data-theme="dark"] .tech-icon[data-icon-invert] { filter:invert(1); }
   bottom:-16px;
   width:2px;
   border-radius:2px;
-  background:rgba(23,23,23,0.12);
+  background:var(--line-strong);
 }
 .edu-item:last-child::before { display:none; }
+/* Fundo do badge e do card vêm dos papéis data-s="solid" / data-s="card" */
 .edu-badge {
   flex:none;
   width:44px;
   height:44px;
   border-radius:12px;
-  background:#171717;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -325,9 +625,8 @@ html[data-theme="dark"] .tech-icon[data-icon-invert] { filter:invert(1); }
 .edu-card {
   flex:1;
   min-width:0;
-  border:1px solid rgba(23,23,23,0.1);
+  border:1px solid var(--line);
   border-radius:14px;
-  background:#fff;
   padding:clamp(14px,2vw,18px) clamp(16px,2.2vw,20px);
   transition:transform .2s,box-shadow .2s;
 }
@@ -344,8 +643,7 @@ html[data-theme="dark"] .tech-icon[data-icon-invert] { filter:invert(1); }
   font-family:JetBrains Mono,monospace;
   font-size:12px;
   white-space:nowrap;
-  background:linear-gradient(180deg,#ffffff,#eeeef0);
-  border:1px solid rgba(23,23,23,0.14);
+  border:1px solid var(--line-strong);
   border-radius:999px;
   padding:4px 11px;
 }
@@ -355,22 +653,42 @@ html[data-theme="dark"] .tech-icon[data-icon-invert] { filter:invert(1); }
   font-size:11px;
   letter-spacing:0.04em;
   text-transform:uppercase;
-  color:#171717;
-  background:rgba(23,23,23,0.07);
+  color:var(--ink);
+  background:var(--wash);
   border-radius:999px;
   padding:3px 9px;
 }
-.edu-detail { font-size:13.5px; line-height:1.6; color:#4b4b52; margin:10px 0 0; }
-html[data-theme="dark"] .edu-item::before { background:rgba(255,255,255,0.14); }
-html[data-theme="dark"] .edu-status { color:#f4f4f5 !important; background:rgba(255,255,255,0.1); }
+.edu-detail { font-size:13.5px; line-height:1.6; color:var(--ink-muted); margin:10px 0 0; }
 @media (max-width:520px) {
   .edu-item { gap:12px; }
   .edu-badge { width:38px; height:38px; border-radius:11px; }
   .edu-item::before { left:18px; top:38px; }
 }
 
-/* Ajustes de hover no dark (as regras dark usam !important e cobririam o hover claro) */
-html[data-theme="dark"] .hv-pill:hover,
-html[data-theme="dark"] .hv-top:hover { background:linear-gradient(180deg,#26262e,#1b1b21) !important; }
-html[data-theme="dark"] .hv-solid:hover,
-html[data-theme="dark"] .hv-solid-cta:hover { background:#ffffff !important; }
+/* Os hovers do dark sumiram daqui: agora .pill:hover e .solid:hover apontam para
+   --pill-bg-hover / --solid-bg-hover, e é o token que troca com o tema. */
+
+/* ---- Pressionado ----
+   Fica no fim do arquivo de propósito: mesma especificidade dos :hover acima, então
+   quem está embaixo vence enquanto o dedo/cursor segura. Em toque não existe hover,
+   e sem isto o site não dava retorno nenhum ao ser pressionado. */
+.nav-link, .pill, .solid, .cta-light, .hero-dot,
+.project-open, .project-close, .back-to-top { -webkit-tap-highlight-color:transparent; }
+
+.pill:active,
+.solid:active,
+.hero-dot:active,
+.project-open:active,
+.project-close:active,
+.back-to-top:active { transform:scale(0.97); transition:transform 100ms ease-out; }
+
+/* Estes sobem no hover: o clique desfaz a subida em vez de somar transforms */
+.cta-light:active,
+.hv-lift:active,
+a.hv-card:active { transform:translateY(0) scale(0.98); transition:transform 100ms ease-out; }
+
+@media (prefers-reduced-motion:reduce) {
+  .pill:active, .solid:active, .cta-light:active, .hero-dot:active,
+  .project-open:active, .project-close:active, .back-to-top:active,
+  .hv-lift:active, a.hv-card:active { transform:none; opacity:0.75; transition:none; }
+}

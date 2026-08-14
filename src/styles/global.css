@@ -35,9 +35,9 @@ html { scroll-behavior: smooth; }
   --stripe: repeating-linear-gradient(135deg,#fafafa,#fafafa 10px,#f1f1f2 10px,#f1f1f2 20px);
 
   /* texto — três níveis, do mais forte ao mais apagado */
-  --ink:            #171717;
-  --ink-muted:      #4b4b52;
-  --ink-faint:      #8b8b92;
+  --ink:            #171717;   /* 15.9:1 sobre --bg */
+  --ink-muted:      #4b4b52;   /*  8.7:1 */
+  --ink-faint:      #71717a;   /*  4.8:1 — era #8b8b92, que dava 3.4:1 e reprovava AA */
   --ink-on-solid:   #ffffff;
   --ink-nav-hover:  #6b7280;
 
@@ -113,9 +113,17 @@ body { margin: 0; background:var(--bg); }
 [data-m="graph-lines"] g { stroke:var(--graph-line); }
 
 /* O painel do contato é escuro nos dois temas — é a única superfície que não
-   acompanha o tema, então as cores dele são literais de propósito. Só a borda
-   precisa acompanhar, para não sumir contra o fundo escuro. */
-[data-m="cta-panel"] { border-color:var(--line); }
+   acompanha o tema. Em vez de literais espalhados, ele redefine os tokens de
+   texto para si: como custom property herda, todo filho que usa var(--ink-*)
+   já pega o valor de fundo escuro, nos dois temas. É isso que deixa o
+   --ink-faint global escurecer para passar no contraste sobre branco sem
+   apagar o "// costumo responder em até 24h" aqui dentro. */
+[data-m="cta-panel"] {
+  --ink:       #f4f4f5;
+  --ink-muted: #b8b8c0;
+  --ink-faint: #8b8b92;   /* 5.3:1 sobre o painel */
+  border-color:var(--line);
+}
 
 @media (max-width:900px) {
   [data-m="hero"] { grid-template-columns:1fr !important; gap:34px !important; padding-top:44px !important; }

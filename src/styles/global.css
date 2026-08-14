@@ -289,6 +289,86 @@ html[data-theme="dark"] #scroll-progress { background:#f4f4f5 !important; }
 /* logos monocromáticos escuros ficam ilegíveis no fundo dark */
 html[data-theme="dark"] .tech-icon[data-icon-invert] { filter:invert(1); }
 
+/* ---- Educação: linha do tempo (badge no trilho + card) ---- */
+.edu-group + .edu-group { margin-top:clamp(30px,4.5vw,46px); }
+.edu-group-label {
+  font-family:JetBrains Mono,monospace;
+  font-size:13px;
+  color:#8b8b92;
+  margin-bottom:16px;
+}
+.edu-list { list-style:none; margin:0; padding:0; display:grid; gap:16px; }
+.edu-item { position:relative; display:flex; align-items:flex-start; gap:16px; }
+/* Trilho ligando um badge ao próximo: do pé do badge até o topo do item seguinte
+   (daí o bottom negativo, do tamanho do gap). O último item não liga a nada. */
+.edu-item::before {
+  content:"";
+  position:absolute;
+  left:21px;
+  top:44px;
+  bottom:-16px;
+  width:2px;
+  border-radius:2px;
+  background:rgba(23,23,23,0.12);
+}
+.edu-item:last-child::before { display:none; }
+.edu-badge {
+  flex:none;
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  background:#171717;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.edu-card {
+  flex:1;
+  min-width:0;
+  border:1px solid rgba(23,23,23,0.1);
+  border-radius:14px;
+  background:#fff;
+  padding:clamp(14px,2vw,18px) clamp(16px,2.2vw,20px);
+  transition:transform .2s,box-shadow .2s;
+}
+.edu-head { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; }
+.edu-course {
+  font-family:JetBrains Mono,monospace;
+  font-weight:700;
+  font-size:clamp(14px,1.8vw,16px);
+  line-height:1.35;
+  margin:0;
+}
+.edu-year {
+  flex:none;
+  font-family:JetBrains Mono,monospace;
+  font-size:12px;
+  white-space:nowrap;
+  background:linear-gradient(180deg,#ffffff,#eeeef0);
+  border:1px solid rgba(23,23,23,0.14);
+  border-radius:999px;
+  padding:4px 11px;
+}
+.edu-inst { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:8px; font-size:14px; font-weight:500; }
+.edu-status {
+  font-family:JetBrains Mono,monospace;
+  font-size:11px;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  color:#171717;
+  background:rgba(23,23,23,0.07);
+  border-radius:999px;
+  padding:3px 9px;
+}
+.edu-detail { font-size:13.5px; line-height:1.6; color:#4b4b52; margin:10px 0 0; }
+html[data-theme="dark"] .edu-item::before { background:rgba(255,255,255,0.14); }
+html[data-theme="dark"] .edu-status { color:#f4f4f5 !important; background:rgba(255,255,255,0.1); }
+@media (max-width:520px) {
+  .edu-item { gap:12px; }
+  .edu-badge { width:38px; height:38px; border-radius:11px; }
+  .edu-item::before { left:18px; top:38px; }
+}
+
 /* Ajustes de hover no dark (as regras dark usam !important e cobririam o hover claro) */
 html[data-theme="dark"] .hv-pill:hover,
 html[data-theme="dark"] .hv-top:hover { background:linear-gradient(180deg,#26262e,#1b1b21) !important; }

@@ -26,8 +26,19 @@ interface Dict {
   stackSub: string;
   eduTitle: string;
   eduSub: string;
-  eduSoon: string;
-  eduSoonBody: string;
+  eduGroupAcademic: string;
+  eduGroupCourses: string;
+  eduCurrent: string;
+  // Um par Title/Body por item de src/data/education.ts (a chave lá é o prefixo)
+  eduAdsTitle: string;
+  eduNextTitle: string;
+  eduNextBody: string;
+  eduBootcampTitle: string;
+  eduBootcampBody: string;
+  eduWebTitle: string;
+  eduWebBody: string;
+  eduFundTitle: string;
+  eduFundBody: string;
   eduFooter: string;
   contactTitle: string;
   contactSub: string;
@@ -76,9 +87,19 @@ const DICT: Record<Lang, Dict> = {
     stackSub: '// ecossistema de tecnologias que uso no dia a dia',
     eduTitle: '/* EDUCAÇÃO */',
     eduSub: '// formação acadêmica e cursos',
-    eduSoon: 'Em construção',
-    eduSoonBody:
-      'Esta seção está sendo preparada e em breve trará minha formação acadêmica e certificações.',
+    eduGroupAcademic: '// formação acadêmica',
+    eduGroupCourses: '// cursos complementares',
+    eduCurrent: 'Cursando',
+    eduAdsTitle: 'Análise e Desenvolvimento de Sistemas — Tecnólogo',
+    eduNextTitle: 'Formação Next.js',
+    eduNextBody:
+      'CSR, SSR, SSG & ISR · Client e Server Components · Composition Pattern · App Router e rotas · Streaming & Suspense · Data Fetching · Caching & Revalidations · Server Actions · build e deploy na Vercel.',
+    eduBootcampTitle: 'Bootcamp Full-Stack',
+    eduBootcampBody: 'Construção de um SaaS completo com Next.js, React e Node.js.',
+    eduWebTitle: 'Desenvolvimento Web',
+    eduWebBody: 'HTML5, CSS3, JavaScript, GSAP e animações avançadas.',
+    eduFundTitle: 'HTML5, CSS3 e JavaScript',
+    eduFundBody: 'Fundamentos da web, semântica e boas práticas de código.',
     eduFooter: '// Em constante evolução',
     contactTitle: '/* CONTATO */',
     contactSub: '// aberto a freelas, vagas full-stack e projetos colaborativos',
@@ -126,9 +147,19 @@ const DICT: Record<Lang, Dict> = {
     stackSub: '// the technology ecosystem I work with every day',
     eduTitle: '/* EDUCATION */',
     eduSub: '// academic background and courses',
-    eduSoon: 'Under construction',
-    eduSoonBody:
-      'This section is being prepared and will soon feature my academic background and certifications.',
+    eduGroupAcademic: '// academic background',
+    eduGroupCourses: '// complementary courses',
+    eduCurrent: 'In progress',
+    eduAdsTitle: 'Systems Analysis and Development — Technologist',
+    eduNextTitle: 'Next.js Track',
+    eduNextBody:
+      'CSR, SSR, SSG & ISR · Client and Server Components · Composition Pattern · App Router and routing · Streaming & Suspense · Data Fetching · Caching & Revalidations · Server Actions · build and deploy on Vercel.',
+    eduBootcampTitle: 'Full-Stack Bootcamp',
+    eduBootcampBody: 'Building a complete SaaS with Next.js, React and Node.js.',
+    eduWebTitle: 'Web Development',
+    eduWebBody: 'HTML5, CSS3, JavaScript, GSAP and advanced animations.',
+    eduFundTitle: 'HTML5, CSS3 and JavaScript',
+    eduFundBody: 'Web fundamentals, semantics and clean code practices.',
     eduFooter: '// Always evolving',
     contactTitle: '/* CONTACT */',
     contactSub: '// open to freelance work, full-stack roles and collaborative projects',

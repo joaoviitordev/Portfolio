@@ -24,4 +24,7 @@ pnpm-debug.log*
 .idea/
 .vercel
 
+# claude code local settings (skills in .claude/skills/ are versioned)
+.claude/settings.local.json
+
 .vercel

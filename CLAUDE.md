@@ -8,6 +8,13 @@ astro dev --background
 
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
+## Skills
+
+Two design skills live in `.claude/skills/` and are versioned with the project:
+
+- **apple-design** — Apple's interface and fluid-motion principles translated to the web (spring physics, direct manipulation, rubber-banding, materials, typography). Use for gesture-driven UI, animations, transitions, and reduced-motion work.
+- **frontend-design** — forces committing to an aesthetic direction before writing CSS. Use when building new UI or reshaping an existing section.
+
 ## Documentation
 
 Full documentation: https://docs.astro.build

@@ -13,13 +13,17 @@ import BackToTop from '../components/layout/BackToTop.astro';
 
 <BaseLayout path="/">
   <Header />
-  <Hero />
-  <Marquee />
-  <About />
-  <Projects />
-  <Technologies />
-  <Education />
-  <Contact />
+  {/* tabindex=-1 para o skip link conseguir pousar o foco aqui: sem ele o browser
+      rola até a âncora mas o foco continua no topo, e o Tab seguinte volta ao header. */}
+  <main id="conteudo" tabindex="-1">
+    <Hero />
+    <Marquee />
+    <About />
+    <Projects />
+    <Technologies />
+    <Education />
+    <Contact />
+  </main>
   <BackToTop />
 </BaseLayout>
 

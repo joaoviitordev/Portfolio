@@ -324,6 +324,34 @@ button:focus-visible,
 }
 /* Os dots ficam sobre a captura do projeto: ali o anel escuro desapareceria. */
 .hero-dot:focus-visible { outline-color:#ffffff; outline-offset:2px; }
+/* O <main> só recebe foco como destino do skip link. Um anel em volta da página
+   inteira não comunicaria nada — o que informa ali é o salto que o usuário acabou
+   de pedir. */
+main[tabindex]:focus, main[tabindex]:focus-visible { outline:none; }
+
+/* ---- Skip link ----
+   Primeiro focável do documento. Escondido acima do viewport em vez de
+   display:none, senão ele sairia da ordem de tabulação e nunca apareceria. */
+.skip-link {
+  position:fixed;
+  top:0;
+  left:clamp(20px,4vw,40px);
+  z-index:60;
+  padding:12px 20px;
+  border-radius:0 0 12px 12px;
+  background:#171717;
+  color:#ffffff;
+  font-size:14px;
+  font-weight:600;
+  text-decoration:none;
+  transform:translateY(-120%);
+  transition:transform .2s cubic-bezier(.22,.61,.36,1);
+}
+.skip-link:focus-visible { transform:translateY(0); }
+html[data-theme="dark"] .skip-link { background:#f4f4f5; color:#0c0c0d; }
+@media (prefers-reduced-motion:reduce) {
+  .skip-link { transition:none; }
+}
 
 /* ---- Techstack: ícones soltos + nome embaixo ---- */
 /* --mx/--my vêm do ímã em ui.ts e --ms do :hover; os três precisam morar no mesmo
@@ -360,11 +388,13 @@ html[data-theme="dark"] .tech-icon[data-icon-invert] { filter:invert(1); }
 
 /* ---- Educação: linha do tempo (badge no trilho + card) ---- */
 .edu-group + .edu-group { margin-top:clamp(30px,4.5vw,46px); }
+/* h3 desde a hierarquia de headings: zera a margem que o browser dá por padrão */
 .edu-group-label {
   font-family:JetBrains Mono,monospace;
   font-size:13px;
+  font-weight:400;
   color:#8b8b92;
-  margin-bottom:16px;
+  margin:0 0 16px;
 }
 .edu-list { list-style:none; margin:0; padding:0; display:grid; gap:16px; }
 .edu-item { position:relative; display:flex; align-items:flex-start; gap:16px; }

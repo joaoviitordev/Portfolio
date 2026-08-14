@@ -52,6 +52,7 @@ interface Dict {
   lastUpdate: string;
   // Repetido 3x na faixa curva (data-i18n-repeat), por isso termina com separador
   marqueeText: string;
+  skipLink: string;
   menuAria: string;
   themeAria: string;
   langAria: string;
@@ -111,6 +112,7 @@ const DICT: Record<Lang, Dict> = {
     jobsCta: 'Ver LinkedIn',
     lastUpdate: 'Última atualização:',
     marqueeText: 'João Vitor · Desenvolvedor Full-Stack · ',
+    skipLink: 'Pular para o conteúdo',
     menuAria: 'Abrir menu',
     themeAria: 'Alternar tema',
     langAria: 'Mudar idioma para inglês',
@@ -168,6 +170,7 @@ const DICT: Record<Lang, Dict> = {
     jobsCta: 'View LinkedIn',
     lastUpdate: 'Last updated:',
     marqueeText: 'João Vitor · Full-Stack Developer · ',
+    skipLink: 'Skip to content',
     menuAria: 'Open menu',
     themeAria: 'Toggle theme',
     langAria: 'Switch language to Portuguese',

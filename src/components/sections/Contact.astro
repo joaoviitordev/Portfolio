@@ -16,7 +16,7 @@ const linkedin = 'https://www.linkedin.com/in/joaovitor-faria/';
 
 <section data-screen-label="Contato" id="contato" data-s="page" style="background:linear-gradient(180deg,#ffffff,#fafafa);border-top:1px solid rgba(23,23,23,0.08);">
   <div style="max-width:1200px;margin:0 auto;padding:clamp(72px,9vw,120px) clamp(20px,4vw,40px) clamp(30px,4vw,50px);">
-    <div data-i18n="contactTitle" data-anim style="--i:0;font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(18px,2.4vw,24px);margin-bottom:8px;">/* CONTATO */</div>
+    <h2 data-i18n="contactTitle" data-anim style="--i:0;font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(18px,2.4vw,24px);margin:0 0 8px;">/* CONTATO */</h2>
 
     <div data-i18n="contactSub" data-s="muted" data-anim style="--i:1;font-family:JetBrains Mono,monospace;font-size:13px;color:#8b8b92;margin-bottom:36px;">// aberto a freelas, vagas full-stack e projetos colaborativos</div>
 
@@ -30,7 +30,7 @@ const linkedin = 'https://www.linkedin.com/in/joaovitor-faria/';
             </div>
             <div data-i18n="jobsLabel" data-s="muted" style="font-family:JetBrains Mono,monospace;font-size:13px;color:#8b8b92;">// vagas e oportunidades</div>
           </div>
-          <div data-i18n="jobsTitle" style="font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(18px,2.2vw,24px);line-height:1.25;">Aberto a oportunidades full-stack</div>
+          <h3 data-i18n="jobsTitle" style="margin:0;font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(18px,2.2vw,24px);line-height:1.25;">Aberto a oportunidades full-stack</h3>
           <div data-i18n="jobsBody" data-s="muted" style="font-size:15px;line-height:1.6;color:#4b4b52;max-width:54ch;text-wrap:pretty;">Procuro posições júnior ou de estágio em desenvolvimento web e full-stack, no Rio de Janeiro ou remoto. Se o perfil fizer sentido para o time, meu currículo está a um clique.</div>
           <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:2px;">
             {jobsChips.map((chip, i) => (
@@ -50,7 +50,7 @@ const linkedin = 'https://www.linkedin.com/in/joaovitor-faria/';
         <!-- Painel escuro: convite principal. Não usa data-s porque já é escuro no tema claro. -->
         <div data-m="cta-panel" data-anim style="--i:1;background:#171717;border:1px solid rgba(23,23,23,0.1);border-radius:20px;padding:clamp(26px,3.4vw,36px);display:flex;flex-direction:column;gap:18px;color:#f4f4f5;">
           <div data-i18n="contactAvail" style="align-self:flex-start;font-family:JetBrains Mono,monospace;font-size:12px;color:#c9c9d1;border:1px solid rgba(255,255,255,0.18);border-radius:999px;padding:6px 12px;">Disponível para novos projetos</div>
-          <div data-i18n="contactLead" style="font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(22px,2.8vw,32px);line-height:1.2;">Do protótipo ao deploy em produção.</div>
+          <h3 data-i18n="contactLead" style="margin:0;font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(22px,2.8vw,32px);line-height:1.2;">Do protótipo ao deploy em produção.</h3>
           <div data-i18n="contactBody" style="font-size:15px;line-height:1.65;color:#b8b8c0;max-width:44ch;text-wrap:pretty;">Conte sobre a ideia, o prazo e o que já existe. Respondo com um plano inicial e os próximos passos.</div>
           <a href={`mailto:${email}`} class="cta-light" style="margin-top:auto;display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:999px;padding:15px 24px;font-size:15px;font-weight:600;text-decoration:none;transition:transform .2s,background .2s;">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 6h18v12H3V6z" stroke="#171717" stroke-width="1.8"/><path d="M3 7l9 6 9-6" stroke="#171717" stroke-width="1.8"/></svg>

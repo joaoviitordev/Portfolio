@@ -406,6 +406,31 @@ button:focus-visible,
    de pedir. */
 main[tabindex]:focus, main[tabindex]:focus-visible { outline:none; }
 
+/* ---- Painel do menu mobile ----
+   O recolhimento só existe com JS (mesma lógica do [data-anim]): sem script o
+   painel nasce aberto, senão o mobile ficaria sem navegação nenhuma.
+   grid-template-rows 0fr→1fr anima a altura sem precisar medir nada em JS, então
+   o conteúdo abaixo é empurrado junto em vez de saltar. visibility tira os links
+   da ordem de tabulação enquanto está fechado. */
+#menu-panel { border-top:1px solid var(--line-soft); background:var(--panel-bg); }
+html[data-js] #menu-panel {
+  display:grid;
+  grid-template-rows:0fr;
+  opacity:0;
+  visibility:hidden;
+  overflow:hidden;
+  transition:grid-template-rows .28s cubic-bezier(.22,.61,.36,1),opacity .2s ease,visibility .28s;
+}
+html[data-js] #menu-panel > div { min-height:0; }
+html[data-js] #menu-panel.is-open {
+  grid-template-rows:1fr;
+  opacity:1;
+  visibility:visible;
+}
+@media (prefers-reduced-motion:reduce) {
+  html[data-js] #menu-panel { transition:opacity .15s ease,visibility .15s; }
+}
+
 /* ---- Skip link ----
    Primeiro focável do documento. Escondido acima do viewport em vez de
    display:none, senão ele sairia da ordem de tabulação e nunca apareceria. */

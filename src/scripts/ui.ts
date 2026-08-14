@@ -284,12 +284,31 @@ function applyTheme(theme: 'light' | 'dark') {
   if (favicon) favicon.setAttribute('href', `/favicon/myfavicon-${theme}.svg`);
 }
 
-// ---------- Menu ----------
+// ---------- Menu mobile ----------
+// Padrão "disclosure" da APG, não modal: o painel não bloqueia a página, então o
+// foco NÃO fica preso nele. Prender daria ao usuário de teclado a sensação de um
+// modal que não existe; em vez disso, sair com Tab fecha o painel (focusout
+// abaixo), que é o que a especificação recomenda para este caso.
+const menuBtn = document.getElementById('menu-btn');
+const menuPanel = document.getElementById('menu-panel');
+const header = document.querySelector('header');
+let menuOpen = false;
+
 function setMenu(open: boolean) {
-  const panel = document.getElementById('menu-panel');
-  if (panel) panel.hidden = !open;
+  menuOpen = open;
+  // A classe é o estado; a altura é animada pelo CSS (grid-template-rows 0fr→1fr)
+  menuPanel?.classList.toggle('is-open', open);
+  menuBtn?.setAttribute('aria-expanded', String(open));
   const icon = document.getElementById('menu-icon');
   if (icon) icon.innerHTML = open ? ICONS.x : ICONS.burger;
+}
+
+// returnFocus só quando o usuário fechou de propósito pelo teclado: o foco volta
+// para o botão de onde ele saiu, em vez de cair no começo da página.
+function closeMenu(returnFocus = false) {
+  if (!menuOpen) return;
+  setMenu(false);
+  if (returnFocus) menuBtn?.focus();
 }
 
 // ---------- Init ----------
@@ -333,14 +352,38 @@ document.getElementById('lang-btn')?.addEventListener('click', () => {
   setMenu(false);
 });
 
-document.getElementById('menu-btn')?.addEventListener('click', () => {
-  const panel = document.getElementById('menu-panel');
-  setMenu(!!panel?.hidden);
-});
+menuBtn?.addEventListener('click', () => setMenu(!menuOpen));
 
 document.querySelectorAll('.menu-close').forEach((el) =>
-  el.addEventListener('click', () => setMenu(false))
+  el.addEventListener('click', () => closeMenu())
 );
+
+// Esc fecha e devolve o foco ao botão. Se o menu estiver fechado o closeMenu sai
+// na primeira linha, então isto não rouba o Esc do <dialog> dos projetos.
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') closeMenu(true);
+});
+
+// Clique fora fecha. pointerdown em vez de click, e o botão é excluído de
+// propósito: senão o pointerdown fecharia e o click logo em seguida reabriria.
+document.addEventListener('pointerdown', (event) => {
+  if (!menuOpen) return;
+  const target = event.target as Node;
+  if (!menuPanel?.contains(target) && !menuBtn?.contains(target)) closeMenu();
+});
+
+// Sem foco preso, o Tab sai do painel naturalmente — e aí o menu precisa fechar,
+// senão fica aberto às costas de quem já seguiu para o conteúdo.
+header?.addEventListener('focusout', (event) => {
+  const next = (event as FocusEvent).relatedTarget as Node | null;
+  if (next && !header.contains(next)) closeMenu();
+});
+
+// Acima do breakpoint o botão do menu some (media query em global.css): o painel
+// não pode continuar aberto sem nada que o controle.
+window.matchMedia('(min-width: 901px)').addEventListener('change', (event) => {
+  if (event.matches) closeMenu();
+});
 
 // ---------- Barra de progresso da rolagem (borda inferior do header) ----------
 const progressBar = document.getElementById('scroll-progress');

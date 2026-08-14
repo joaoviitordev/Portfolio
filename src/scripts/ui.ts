@@ -294,6 +294,18 @@ const menuPanel = document.getElementById('menu-panel');
 const header = document.querySelector('header');
 let menuOpen = false;
 
+// ---------- Altura do header ----------
+// O scroll-margin das âncoras e a linha de corte do link ativo dependem dela, e
+// ela muda com o clamp da marca em telas estreitas. Medir uma vez e publicar em
+// --header-h evita repetir o número em três lugares e vê-los divergirem.
+let headerH = 72;
+function measureHeader() {
+  headerH = (header as HTMLElement | null)?.offsetHeight || 72;
+  root.style.setProperty('--header-h', `${headerH}px`);
+}
+measureHeader();
+window.addEventListener('resize', measureHeader);
+
 function setMenu(open: boolean) {
   menuOpen = open;
   // A classe é o estado; a altura é animada pelo CSS (grid-template-rows 0fr→1fr)
@@ -439,7 +451,7 @@ if (navLinks.length) {
       // Linha de corte a 40% da tela. Colada no header ela ficava tarde demais: o
       // primeiro link só acendia depois de rolar o hero inteiro. Nunca acima da
       // base do header, para o link clicado já chegar ativo (scroll-margin-top:84px).
-      const line = window.scrollY + Math.max(85, window.innerHeight * 0.4);
+      const line = window.scrollY + Math.max(headerH + 6, window.innerHeight * 0.4);
       let index = -1;
       for (let i = 0; i < tops.length; i++) {
         if (tops[i] <= line) index = i;
@@ -498,7 +510,7 @@ if (topBtn && aboutSection) {
 
   let visible = false;
   const syncTopBtn = () => {
-    const next = window.scrollY + Math.max(85, window.innerHeight * 0.4) >= aboutTop;
+    const next = window.scrollY + Math.max(headerH + 6, window.innerHeight * 0.4) >= aboutTop;
     if (next === visible) return;
     visible = next;
     topBtn.classList.toggle('is-visible', next);

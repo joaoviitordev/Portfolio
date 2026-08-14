@@ -264,7 +264,14 @@ html[data-theme="dark"] .back-to-top { box-shadow:0 8px 20px -8px rgba(0,0,0,0.7
 }
 
 /* ---- Carrossel dos projetos no hero ---- */
+/* pan-y: a rolagem vertical da página continua sendo do browser; só o eixo
+   horizontal chega ao nosso gesto. */
+.hero-carousel { touch-action:pan-y; }
 .hero-slide { transition:opacity .7s ease; }
+/* Durante o arrasto a opacidade tem de ser imediata: o slide que entra aparece
+   junto com o dedo, e um cross-fade de 0.7s o deixaria fantasma no caminho. */
+.hero-carousel.is-dragging .hero-slide { transition:none; }
+.hero-carousel.is-dragging { cursor:grabbing; }
 .hero-slide-caption {
   position:absolute;
   left:0;
@@ -371,8 +378,9 @@ html[data-theme="dark"] .tech-chip img[src$="nextjs.svg"],
 html[data-theme="dark"] .tech-chip img[src$="ai.svg"],
 html[data-theme="dark"] .tech-chip img[src$="prisma.svg"] { filter:invert(1); }
 
-/* Header é sticky: compensa a altura dele ao pular para uma âncora */
-section[id] { scroll-margin-top:84px; }
+/* Header é sticky: compensa a altura dele ao pular para uma âncora.
+   --header-h é medida e publicada por ui.ts; o valor aqui é só o fallback. */
+section[id] { scroll-margin-top:calc(var(--header-h,72px) + 6px); }
 
 /* Barra de progresso na base do header (escala vinda de ui.ts) */
 #scroll-progress { transition:background .25s; }
@@ -426,7 +434,18 @@ main[tabindex]:focus, main[tabindex]:focus-visible { outline:none; }
    grid-template-rows 0fr→1fr anima a altura sem precisar medir nada em JS, então
    o conteúdo abaixo é empurrado junto em vez de saltar. visibility tira os links
    da ordem de tabulação enquanto está fechado. */
-#menu-panel { border-top:1px solid var(--line-soft); background:var(--panel-bg); }
+#menu-panel { background:var(--panel-bg); }
+/* Nada de padding ou borda aqui: o item de grid mantém a espessura mesmo com a
+   linha em 0fr, e era isso que deixava 27px de header morto com o menu fechado.
+   Toda espessura mora em .menu-panel-inner, que é recortado junto. */
+.menu-panel-row { min-height:0; }
+.menu-panel-inner {
+  max-width:1200px;
+  margin:0 auto;
+  padding:8px clamp(20px,4vw,40px) 18px;
+  display:flex;
+  flex-direction:column;
+}
 html[data-js] #menu-panel {
   display:grid;
   grid-template-rows:0fr;
@@ -435,7 +454,6 @@ html[data-js] #menu-panel {
   overflow:hidden;
   transition:grid-template-rows .28s cubic-bezier(.22,.61,.36,1),opacity .2s ease,visibility .28s;
 }
-html[data-js] #menu-panel > div { min-height:0; }
 html[data-js] #menu-panel.is-open {
   grid-template-rows:1fr;
   opacity:1;

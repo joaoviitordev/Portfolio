@@ -13,7 +13,7 @@ const navLinks = [
 {/* Sem border-bottom: a separação vem do degradê em `header::after` (global.css),
     que só aparece quando há conteúdo passando por baixo. */}
 <header style="position:sticky;top:0;z-index:50;background:var(--chrome-bg);backdrop-filter:blur(10px);">
-  <div data-m="bar" style="max-width:1200px;margin:0 auto;padding:20px clamp(20px,4vw,40px);display:flex;align-items:center;justify-content:space-between;gap:24px;">
+  <div data-m="bar" style="max-width:1200px;margin:0 auto;padding:14px clamp(20px,4vw,40px);display:flex;align-items:center;justify-content:space-between;gap:24px;">
     <div data-m="brand" data-i18n="brand" style="font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(13px,1.6vw,16px);line-height:1.35;white-space:pre-line;">/* Desenvolvedor
 Full-Stack */</div>
     <nav data-m="nav" style="display:flex;align-items:center;gap:clamp(14px,2.4vw,32px);">
@@ -37,11 +37,17 @@ Full-Stack */</div>
   {/* Sem `hidden`: quem recolhe o painel é o CSS, e só quando html[data-js] existe.
       Assim, sem JS ele nasce aberto — é a única navegação que sobra no mobile,
       onde os links do header estão escondidos pela media query. */}
+  {/* Três níveis de propósito: o item de grid (menu-panel-row) não pode ter
+      padding nem borda, senão eles continuam ocupando altura mesmo com a linha
+      colapsada em 0fr. Tudo o que tem espessura mora no nível de dentro, que é
+      recortado junto. */}
   <div id="menu-panel" data-m="panel">
-    <div style="max-width:1200px;margin:0 auto;padding:8px clamp(20px,4vw,40px) 18px;display:flex;flex-direction:column;">
-      {navLinks.map((link) => (
-        <a href={link.href} data-i18n={link.key} data-nav-link={link.href} data-m="menu-link" class="nav-link menu-close" style="font-size:15px;font-weight:600;letter-spacing:0.04em;padding:13px 0;border-bottom:1px solid var(--line-soft);">{link.label}</a>
-      ))}
+    <div class="menu-panel-row">
+      <div class="menu-panel-inner">
+        {navLinks.map((link) => (
+          <a href={link.href} data-i18n={link.key} data-nav-link={link.href} data-m="menu-link" class="nav-link menu-close" style="font-size:15px;font-weight:600;letter-spacing:0.04em;padding:13px 0;border-bottom:1px solid var(--line-soft);">{link.label}</a>
+        ))}
+      </div>
     </div>
   </div>
 

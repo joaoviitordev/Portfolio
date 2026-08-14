@@ -101,6 +101,162 @@ import { projects } from '../../data/projects';
       })
     );
 
+    // ---------- Arrasto ----------
+    // O conteúdo acompanha o dedo 1:1 enquanto ele está na tela; ao soltar, a
+    // posição de destino sai da projeção do momento (não de onde o dedo parou),
+    // e a mola que leva até lá começa com a velocidade da soltura. É isso que
+    // tira a emenda entre arrastar e animar.
+    const HYSTERESIS = 10; // px antes de assumir que o gesto é horizontal
+    const DECEL = 0.998; // mesma taxa de desaceleração do scroll do sistema
+    const OMEGA = 18; // mola criticamente amortecida, ~0.35s para assentar
+
+    let offset = 0; // deslocamento horizontal atual, em px
+    let dir = 0; // +1 entra o próximo (pela direita), -1 o anterior
+    let neighbor = -1;
+    let raf = 0;
+    let dragging = false;
+    let locked = false; // já decidiu que o gesto é horizontal
+    let startX = 0;
+    let startY = 0;
+    let trail: { x: number; t: number }[] = [];
+
+    const width = () => carousel.clientWidth || 1;
+
+    function paint() {
+      slides[current].style.transform = `translateX(${offset}px)`;
+      if (neighbor >= 0) {
+        slides[neighbor].style.transform = `translateX(${offset + dir * width()}px)`;
+      }
+    }
+
+    // Trocar de direção no meio do arrasto troca quem é o vizinho: o slide que
+    // estava entrando volta a ficar escondido, sem transição de opacidade.
+    function setDir(next: number) {
+      if (next === dir) return;
+      if (neighbor >= 0) {
+        slides[neighbor].style.opacity = '0';
+        slides[neighbor].style.transform = '';
+      }
+      dir = next;
+      neighbor = next === 0 ? -1 : (current + next + slides.length) % slides.length;
+      if (neighbor >= 0) slides[neighbor].style.opacity = '1';
+    }
+
+    // Limpa o estado de arrasto e deixa o carrossel de volta no modo opacidade
+    function reset(committed: number) {
+      if (neighbor >= 0 && neighbor !== committed) {
+        slides[neighbor].style.opacity = '0';
+      }
+      slides.forEach((s) => {
+        s.style.transform = '';
+        s.style.willChange = '';
+      });
+      offset = 0;
+      dir = 0;
+      neighbor = -1;
+      carousel!.classList.remove('is-dragging');
+      show(committed);
+      start();
+    }
+
+    function settle(target: number, velocity: number, committed: number) {
+      if (reduceMotion) {
+        reset(committed);
+        return;
+      }
+      let x = offset;
+      let v = velocity;
+      let last = performance.now();
+      const step = (now: number) => {
+        const dt = Math.min((now - last) / 1000, 0.032);
+        last = now;
+        // aceleração da mola: puxa para o alvo e freia proporcional à velocidade
+        v += (-OMEGA * OMEGA * (x - target) - 2 * OMEGA * v) * dt;
+        x += v * dt;
+        if (Math.abs(x - target) < 0.5 && Math.abs(v) < 30) {
+          offset = target;
+          paint();
+          reset(committed);
+          return;
+        }
+        offset = x;
+        paint();
+        raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame(step);
+    }
+
+    carousel.addEventListener('pointerdown', (e) => {
+      // Os dots vivem dentro do carrossel: um toque neles não é arrasto
+      if ((e.target as HTMLElement).closest('button')) return;
+      if (slides.length < 2) return;
+      cancelAnimationFrame(raf); // pega a animação em voo e continua de onde está
+      dragging = true;
+      locked = false;
+      startX = e.clientX;
+      startY = e.clientY;
+      trail = [{ x: e.clientX, t: performance.now() }];
+      stop();
+    });
+
+    carousel.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+
+      if (!locked) {
+        // Enquanto não passou da histerese, o gesto ainda pode virar rolagem
+        // vertical — nesse caso desiste e devolve o controle para a página.
+        if (Math.abs(dx) < HYSTERESIS && Math.abs(dy) < HYSTERESIS) return;
+        if (Math.abs(dy) > Math.abs(dx)) {
+          dragging = false;
+          start();
+          return;
+        }
+        locked = true;
+        carousel!.classList.add('is-dragging');
+        carousel!.setPointerCapture(e.pointerId);
+        slides.forEach((s) => (s.style.willChange = 'transform'));
+      }
+
+      offset = dx;
+      setDir(offset < 0 ? 1 : offset > 0 ? -1 : 0);
+      trail.push({ x: e.clientX, t: performance.now() });
+      if (trail.length > 5) trail.shift();
+      paint();
+    });
+
+    function endDrag() {
+      if (!dragging) return;
+      dragging = false;
+      if (!locked) {
+        start();
+        return;
+      }
+
+      // Velocidade dos últimos milissegundos, não do gesto inteiro: é a soltura
+      // que importa, e uma média longa apagaria o impulso final.
+      const first = trail[0];
+      const last = trail[trail.length - 1];
+      const dt = (last.t - first.t) / 1000;
+      const velocity = dt > 0.001 ? (last.x - first.x) / dt : 0;
+
+      // Para onde o gesto ia parar se nada o interrompesse (decaimento
+      // exponencial, a mesma curva da inércia de rolagem).
+      const projected = offset + (velocity / 1000) * (DECEL / (1 - DECEL));
+      const w = width();
+      const commit = neighbor >= 0 && Math.abs(projected) >= w / 2;
+
+      if (commit) {
+        settle(dir * -w, velocity, neighbor);
+      } else {
+        settle(0, velocity, current);
+      }
+    }
+
+    carousel.addEventListener('pointerup', endDrag);
+    carousel.addEventListener('pointercancel', endDrag);
+
     // Pausa enquanto o usuário olha/interage com o card
     carousel.addEventListener('mouseenter', stop);
     carousel.addEventListener('mouseleave', start);

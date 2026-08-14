@@ -97,6 +97,50 @@ import { projects } from '../../data/projects';
     html.style.paddingRight = '';
   }
 
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const EXIT_MS = 200; // igual à duração de modalOut em global.css
+
+  // As duas medidas saem do mesmo instante, depois de travar o scroll e abrir o
+  // painel: é nesse layout que a animação vai rodar. Medir o botão antes do lock
+  // parece mais fiel ao que o usuário viu, mas o lock compensa a barra de rolagem
+  // e desloca a página — aí a origem erra o botão por essa largura.
+  // O <dialog>, de todo modo, só tem caixa depois do showModal().
+  function anchorTo(dialog: HTMLDialogElement, trigger: Element) {
+    const t = trigger.getBoundingClientRect();
+    const d = dialog.getBoundingClientRect();
+    dialog.style.setProperty(
+      '--origin',
+      `${t.left + t.width / 2 - d.left}px ${t.top + t.height / 2 - d.top}px`
+    );
+  }
+
+  function closeModal(dialog: HTMLDialogElement) {
+    if (dialog.classList.contains('is-closing')) return;
+    if (reduceMotion) {
+      dialog.close();
+      return;
+    }
+    dialog.classList.add('is-closing');
+
+    let done = false;
+    function finish() {
+      if (done) return;
+      done = true;
+      dialog.removeEventListener('animationend', onEnd);
+      dialog.classList.remove('is-closing');
+      dialog.close();
+    }
+    // Filtra pelo nome: o ::backdrop dispara animationend no próprio <dialog>,
+    // e sem o filtro a saída do backdrop encerraria a do painel antes da hora.
+    function onEnd(event: AnimationEvent) {
+      if (event.animationName === 'modalOut') finish();
+    }
+    dialog.addEventListener('animationend', onEnd);
+    // Um <dialog> preso aberto é pior que uma saída sem animação: rede de
+    // segurança para o caso de o animationend não chegar.
+    window.setTimeout(finish, EXIT_MS + 80);
+  }
+
   document.querySelectorAll<HTMLButtonElement>('.project-open').forEach((btn) => {
     btn.addEventListener('click', () => {
       const idx = Number(btn.dataset.projectIndex);
@@ -104,16 +148,23 @@ import { projects } from '../../data/projects';
       if (!dialog) return;
       lockScroll();
       dialog.showModal();
+      anchorTo(dialog, btn);
     });
   });
 
   modals.forEach((dialog) => {
-    dialog.querySelector('.project-close')?.addEventListener('click', () => dialog.close());
+    dialog.querySelector('.project-close')?.addEventListener('click', () => closeModal(dialog));
     // Clique fora do conteúdo (na área do próprio <dialog>) fecha
     dialog.addEventListener('click', (e) => {
-      if (e.target === dialog) dialog.close();
+      if (e.target === dialog) closeModal(dialog);
     });
-    // Cobre todos os caminhos de fechamento, inclusive o Esc nativo
+    // O Esc nativo fecharia de imediato; intercepta para a saída refazer o mesmo
+    // caminho da entrada. O foco volta ao botão sozinho, é comportamento do dialog.
+    dialog.addEventListener('cancel', (e) => {
+      e.preventDefault();
+      closeModal(dialog);
+    });
+    // Cobre todos os caminhos de fechamento
     dialog.addEventListener('close', unlockScroll);
   });
 </script>

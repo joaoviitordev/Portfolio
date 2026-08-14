@@ -322,10 +322,23 @@ html[data-theme="dark"] .back-to-top { box-shadow:0 8px 20px -8px rgba(0,0,0,0.7
   overflow:visible;
 }
 .project-modal::backdrop { background:rgba(0,0,0,0.55); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); }
-.project-modal[open] { animation:modalIn .22s ease-out; }
-.project-modal[open]::backdrop { animation:backdropIn .22s ease-out; }
-@keyframes modalIn { from { opacity:0; transform:translateY(10px) scale(0.98);} to { opacity:1; transform:none;} }
-@keyframes backdropIn { from { opacity:0;} to { opacity:1;} }
+/* --origin vem do script: é o centro do botão "Saiba mais" que abriu este modal,
+   convertido para coordenadas da própria caixa do <dialog>. Com a origem ali, a
+   escala faz o painel crescer de dentro do botão em vez de brotar do meio da
+   tela — a relação entre o que foi tocado e o que apareceu fica explícita. */
+.project-modal { transform-origin:var(--origin,50% 50%); }
+.project-modal[open] { animation:modalIn .24s cubic-bezier(.22,.61,.36,1); }
+.project-modal[open]::backdrop { animation:backdropIn .24s ease-out; }
+/* A saída refaz o mesmo caminho, com a curva invertida (os pontos de controle
+   espelhados), para o painel voltar para o botão de onde veio. Vem depois das
+   regras [open] de propósito: mesma especificidade, então esta ganha enquanto
+   fecha — o <dialog> ainda tem [open] nesse intervalo. */
+.project-modal.is-closing { animation:modalOut .2s cubic-bezier(.64,0,.78,.39); }
+.project-modal.is-closing::backdrop { animation:backdropOut .2s ease-in; }
+@keyframes modalIn  { from { opacity:0; transform:scale(0.88);} to { opacity:1; transform:none;} }
+@keyframes modalOut { from { opacity:1; transform:none;} to { opacity:0; transform:scale(0.88);} }
+@keyframes backdropIn  { from { opacity:0;} to { opacity:1;} }
+@keyframes backdropOut { from { opacity:1;} to { opacity:0;} }
 .project-modal-inner { padding:clamp(22px,3vw,30px); max-height:85vh; overflow-y:auto; border-radius:20px; }
 .project-modal-rule { width:48px; height:2px; background:var(--ink); opacity:0.25; margin-bottom:20px; }
 .project-close {
@@ -348,7 +361,8 @@ html[data-theme="dark"] .back-to-top { box-shadow:0 8px 20px -8px rgba(0,0,0,0.7
 .project-close:hover { background:var(--wash); }
 .project-open:hover { opacity:0.6; }
 @media (prefers-reduced-motion:reduce) {
-  .project-modal[open], .project-modal[open]::backdrop { animation:none; }
+  .project-modal[open], .project-modal[open]::backdrop,
+  .project-modal.is-closing, .project-modal.is-closing::backdrop { animation:none; }
 }
 
 

@@ -99,6 +99,13 @@ html[data-theme-swap] [data-theme-root] { transition:none !important; }
   ::view-transition-new(root) { animation:none; }
 }
 
+/* ---- Faixa curva com o nome ----
+   A fita e o texto usam variáveis em vez de cor fixa porque no dark eles trocam
+   de papel: fita clara com texto escuro. Ficam aqui, e não inline no componente,
+   porque o seletor do tema é o html[data-theme] — inalcançável de dentro dele. */
+[data-m="marquee"] { --marquee-band:#171717; --marquee-ink:#ffffff; }
+html[data-theme="dark"] [data-m="marquee"] { --marquee-band:#f4f4f5; --marquee-ink:#0c0c0d; }
+
 /* ---- Hover (substituem os `style-hover` do DC) ---- */
 .hv-nav:hover { color:#6b7280; }
 .hv-pill:hover { background:linear-gradient(180deg,#f7f7f8,#e4e4e7); }

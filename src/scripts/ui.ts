@@ -42,6 +42,8 @@ interface Dict {
   jobsChips: [string, string, string];
   jobsCta: string;
   lastUpdate: string;
+  // Repetido 3x na faixa curva (data-i18n-repeat), por isso termina com separador
+  marqueeText: string;
   menuAria: string;
   themeAria: string;
   langAria: string;
@@ -93,6 +95,7 @@ const DICT: Record<Lang, Dict> = {
     jobsChips: ['Júnior / Estágio', 'Remoto, híbrido ou presencial', 'CLT ou PJ'],
     jobsCta: 'Ver LinkedIn',
     lastUpdate: 'Última atualização:',
+    marqueeText: 'João Vitor · Desenvolvedor Full-Stack · ',
     menuAria: 'Abrir menu',
     themeAria: 'Alternar tema',
     langAria: 'Mudar idioma para inglês',
@@ -142,6 +145,7 @@ const DICT: Record<Lang, Dict> = {
     jobsChips: ['Junior / Internship', 'Remote, hybrid or on-site', 'Full-time or contract'],
     jobsCta: 'View LinkedIn',
     lastUpdate: 'Last updated:',
+    marqueeText: 'João Vitor · Full-Stack Developer · ',
     menuAria: 'Open menu',
     themeAria: 'Toggle theme',
     langAria: 'Switch language to Portuguese',
@@ -221,7 +225,11 @@ function applyLang(lang: Lang) {
       const item = (t as unknown as Record<string, string[]>)[listMatch[1]][Number(listMatch[2])];
       if (item !== undefined) el.textContent = item;
     } else if (key in t) {
-      el.textContent = (t as unknown as Record<string, string>)[key];
+      const value = (t as unknown as Record<string, string>)[key];
+      // data-i18n-repeat: a faixa curva precisa da frase repetida para o ciclo
+      // fechar; repetir aqui evita guardar a mesma string 3x no dicionário.
+      const times = Number(el.getAttribute('data-i18n-repeat')) || 1;
+      el.textContent = times > 1 ? value.repeat(times) : value;
     }
   });
 
@@ -444,6 +452,57 @@ if (topBtn && aboutSection) {
   // Imagens carregando e o menu mobile abrindo mudam a posição da seção
   new ResizeObserver(remeasureTop).observe(document.body);
   remeasureTop();
+}
+
+// ---------- Faixa curva: texto deslizando pela curva ----------
+// Reproduz o `scrub` do ScrollTrigger sem GSAP. Dois motivos para o lerp em vez
+// do rAF-com-flag usado nos blocos acima: o alvo precisa ser perseguido com
+// inércia (é ela que dá o peso do efeito), e `startOffset` é atributo SVG, não
+// propriedade CSS — nem `transition` nem `animation-timeline` chegam nele.
+const marquee = document.querySelector<HTMLElement>('[data-m="marquee"]');
+const marqueeText = marquee?.querySelector('textPath');
+
+if (marquee && marqueeText && !reduceMotion && 'IntersectionObserver' in window) {
+  const FROM = 0;
+  const TO = -100 / 3; // quanto do percurso o texto recua ponta a ponta do scroll
+  const EASE = 0.08; // equivalente ao scrub:2 do GSAP; maior = mais colado no scroll
+
+  let target = 0;
+  let current = 0;
+  let running = false;
+
+  // 0 quando o topo da faixa entra pela base da tela, 1 quando a base sai pelo topo
+  const progress = () => {
+    const box = marquee.getBoundingClientRect();
+    const ratio = (window.innerHeight - box.top) / (window.innerHeight + box.height);
+    return Math.min(Math.max(ratio, 0), 1);
+  };
+
+  const tick = () => {
+    current += (target - current) * EASE;
+    // Sem este corte o lerp nunca chega ao alvo e o rAF roda para sempre
+    if (Math.abs(target - current) < 0.0002) current = target;
+    marqueeText.setAttribute('startOffset', `${FROM + (TO - FROM) * current}%`);
+    running = current !== target;
+    if (running) requestAnimationFrame(tick);
+  };
+
+  const queueMarquee = () => {
+    target = progress();
+    if (running) return;
+    running = true;
+    requestAnimationFrame(tick);
+  };
+
+  // Fora da tela o listener sai: zero trabalho por frame enquanto a faixa não aparece
+  new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) {
+      window.addEventListener('scroll', queueMarquee, { passive: true });
+      queueMarquee();
+    } else {
+      window.removeEventListener('scroll', queueMarquee);
+    }
+  }).observe(marquee);
 }
 
 // ---------- Techstack: ícone magnético ----------

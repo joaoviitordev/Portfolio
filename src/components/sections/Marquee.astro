@@ -1,0 +1,57 @@
+---
+// Faixa curva com o nome, entre o hero e o "sobre mim".
+// O texto desliza sobre a curva conforme a rolagem (bloco "Faixa curva" em ui.ts).
+//
+// A curva é uma linha só, com stroke-width 120: é a espessura do traço que vira
+// a fita — não há forma preenchida. Ela começa em x=-71 e termina em x=1511,
+// fora do viewBox de 1440, de propósito: assim a fita sangra pelas duas bordas
+// (o overflow:hidden da <section> corta o excesso).
+//
+// O mesmo path serve de trilho para o texto (<textPath>) e de traço para a fita
+// (<use>), então editar o `d` move os dois juntos e eles nunca desalinham.
+const CURVE = 'M-90 400 Q 20 50 720 190 Q 1000 250 1511 200';
+
+// O viewBox é recortado no eixo Y (90→350) porque a fita só ocupa essa faixa
+// dentro da área visível; sem isso sobraria vazio acima e abaixo dela.
+---
+
+<section
+  data-m="marquee"
+  aria-hidden="true"
+  style="overflow:hidden;margin:clamp(-10px,-0vw,90px) 0;"
+>
+  <svg
+    viewBox="0 90 1440 260"
+    width="100%"
+    xmlns="http://www.w3.org/2000/svg"
+    style="display:block;overflow:visible;"
+  >
+    <defs>
+      <path id="marquee-curve" d={CURVE} />
+    </defs>
+
+    <use
+      href="#marquee-curve"
+      stroke="var(--marquee-band)"
+      stroke-width="120"
+      stroke-linecap="round"
+      fill="none"
+    />
+
+    <text style="fill:var(--marquee-ink);font-family:Space Grotesk,Helvetica,Arial,sans-serif;font-size:80px;font-weight:700;letter-spacing:-0.03em;text-transform:uppercase;user-select:none;">
+      {/* Repetido 3x pelo data-i18n-repeat: conforme o startOffset fica negativo
+          a frase recua para fora do início do trilho, e sem sobra o fim da curva
+          apareceria vazio. O texto só precisa ser mais longo que o percurso mais
+          o recuo máximo — 3x cobre com folga. */}
+      <textPath
+        href="#marquee-curve"
+        startOffset="0%"
+        alignment-baseline="middle"
+        data-i18n="marqueeText"
+        data-i18n-repeat="3"
+      >
+        João Vitor · Desenvolvedor Full-Stack · João Vitor · Desenvolvedor Full-Stack · João Vitor · Desenvolvedor Full-Stack ·
+      </textPath>
+    </text>
+  </svg>
+</section>

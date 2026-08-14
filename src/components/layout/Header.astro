@@ -12,7 +12,7 @@ const navLinks = [
 
 {/* Sem border-bottom: a separação vem do degradê em `header::after` (global.css),
     que só aparece quando há conteúdo passando por baixo. */}
-<header style="position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.85);backdrop-filter:blur(10px);">
+<header style="position:sticky;top:0;z-index:50;background:var(--chrome-bg);backdrop-filter:blur(10px);">
   <div data-m="bar" style="max-width:1200px;margin:0 auto;padding:20px clamp(20px,4vw,40px);display:flex;align-items:center;justify-content:space-between;gap:24px;">
     <div data-m="brand" data-i18n="brand" style="font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(13px,1.6vw,16px);line-height:1.35;white-space:pre-line;">/* Desenvolvedor
 Full-Stack */</div>
@@ -34,10 +34,10 @@ Full-Stack */</div>
     </nav>
   </div>
 
-  <div id="menu-panel" data-m="panel" hidden style="border-top:1px solid rgba(23,23,23,0.08);background:rgba(255,255,255,0.97);">
+  <div id="menu-panel" data-m="panel" hidden style="border-top:1px solid var(--line-soft);background:var(--panel-bg);">
     <div style="max-width:1200px;margin:0 auto;padding:8px clamp(20px,4vw,40px) 18px;display:flex;flex-direction:column;">
       {navLinks.map((link) => (
-        <a href={link.href} data-i18n={link.key} data-nav-link={link.href} data-m="menu-link" class="nav-link menu-close" style="font-size:15px;font-weight:600;letter-spacing:0.04em;padding:13px 0;border-bottom:1px solid rgba(23,23,23,0.07);">{link.label}</a>
+        <a href={link.href} data-i18n={link.key} data-nav-link={link.href} data-m="menu-link" class="nav-link menu-close" style="font-size:15px;font-weight:600;letter-spacing:0.04em;padding:13px 0;border-bottom:1px solid var(--line-soft);">{link.label}</a>
       ))}
     </div>
   </div>
@@ -45,5 +45,5 @@ Full-Stack */</div>
   {/* Barra de progresso na base do header: cresce da esquerda para a direita
       conforme a página rola (escala aplicada em src/scripts/ui.ts).
       z-index a mais para ficar acima do degradê do ::after. */}
-  <div id="scroll-progress" aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:2px;z-index:1;background:#171717;transform:scaleX(0);transform-origin:left center;will-change:transform;pointer-events:none;"></div>
+  <div id="scroll-progress" aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:2px;z-index:1;background:var(--ink);transform:scaleX(0);transform-origin:left center;will-change:transform;pointer-events:none;"></div>
 </header>

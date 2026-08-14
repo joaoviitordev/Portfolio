@@ -9,38 +9,113 @@ html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
-body { margin: 0; background:#ffffff; }
-::selection { background:#171717; color:#fff; }
+/* ============================================================================
+   TOKENS
+   Fonte única das cores. Antes cada cor era escrita à mão no style="" de cada
+   elemento, e o tema escuro era remendado por cima com !important — inline vence
+   seletor, então não havia outro jeito. Com as cores aqui, trocar de tema é
+   redefinir esta lista, e nenhum remendo precisa ganhar de ninguém.
+   ========================================================================== */
+:root {
+  color-scheme: light;
+
+  /* superfícies */
+  --bg:             #ffffff;
+  --bg-sunken:      linear-gradient(180deg,#ffffff,#fafafa);
+  --bg-footer:      linear-gradient(90deg,#f4f4f5,#ffffff);
+  --surface:        #ffffff;                                  /* cards */
+  --bar-bg:         linear-gradient(180deg,#f4f4f5,#e4e4e7);  /* faixas de topo de card */
+  --pill-bg:        linear-gradient(180deg,#ffffff,#eeeef0);
+  --pill-bg-hover:  linear-gradient(180deg,#f7f7f8,#e4e4e7);
+  --solid-bg:       #171717;
+  --solid-bg-hover: #000000;
+  --chrome-bg:      rgba(255,255,255,0.85);   /* header translúcido */
+  --panel-bg:       rgba(255,255,255,0.97);   /* painel do menu mobile */
+  /* hachura de fundo atrás das capturas, enquanto a imagem não carrega */
+  --stripe: repeating-linear-gradient(135deg,#fafafa,#fafafa 10px,#f1f1f2 10px,#f1f1f2 20px);
+
+  /* texto — três níveis, do mais forte ao mais apagado */
+  --ink:            #171717;
+  --ink-muted:      #4b4b52;
+  --ink-faint:      #8b8b92;
+  --ink-on-solid:   #ffffff;
+  --ink-nav-hover:  #6b7280;
+
+  /* traços */
+  --line:           rgba(23,23,23,0.1);
+  --line-strong:    rgba(23,23,23,0.15);
+  --line-soft:      rgba(23,23,23,0.08);
+  --graph-line:     rgba(23,23,23,0.18);
+  --graph-dot:      #a1a1aa;   /* igual nos dois temas: cinza medio ja legivel em ambos */
+  --wash:           rgba(23,23,23,0.07);   /* realce discreto: chip, hover de ícone */
+
+  --focus-ring:     #171717;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg:             #0c0c0d;
+  --bg-sunken:      #0c0c0d;
+  --bg-footer:      #0c0c0d;
+  --surface:        #16161a;
+  --bar-bg:         linear-gradient(180deg,#1e1e24,#15151a);
+  --pill-bg:        linear-gradient(180deg,#1e1e24,#15151a);
+  --pill-bg-hover:  linear-gradient(180deg,#26262e,#1b1b21);
+  --solid-bg:       #f4f4f5;
+  --solid-bg-hover: #ffffff;
+  --chrome-bg:      rgba(12,12,13,0.85);
+  --panel-bg:       rgba(12,12,13,0.97);
+  --stripe: repeating-linear-gradient(135deg,#141418,#141418 10px,#1c1c21 10px,#1c1c21 20px);
+
+  --ink:            #f4f4f5;
+  --ink-muted:      #a9a9b2;
+  --ink-faint:      #8b8b92;
+  --ink-on-solid:   #0c0c0d;
+  --ink-nav-hover:  #a1a1aa;
+
+  --line:           rgba(255,255,255,0.12);
+  --line-strong:    rgba(255,255,255,0.14);
+  --line-soft:      rgba(255,255,255,0.1);
+  --graph-line:     rgba(255,255,255,0.22);
+  --graph-dot:      #a1a1aa;
+  --wash:           rgba(255,255,255,0.1);
+
+  --focus-ring:     #f4f4f5;
+}
+
+body { margin: 0; background:var(--bg); }
+::selection { background:var(--ink); color:var(--bg); }
 @keyframes fadeUp { from { opacity:0; transform:translateY(14px);} to { opacity:1; transform:translateY(0);} }
 
-html[data-theme="dark"] body { background:#0c0c0d; }
-html[data-theme="dark"] ::selection { background:#f4f4f5; color:#0c0c0d; }
-html[data-theme="dark"] [data-theme-root] { background:#0c0c0d !important; color:#f4f4f5 !important; }
-html[data-theme="dark"] header { background:rgba(12,12,13,0.85) !important; }
-html[data-theme="dark"] h1 { color:#f4f4f5 !important; }
-/* Sem !important: a cor do link saiu do style="" inline, então a cascata basta —
-   e é isso que deixa o :hover abaixo conseguir ganhar. */
-html[data-theme="dark"] .nav-link { color:#f4f4f5; }
-html[data-theme="dark"] .nav-link:hover { color:#a1a1aa; }
-html[data-theme="dark"] [data-s="page"] { background:#0c0c0d !important; border-top-color:rgba(255,255,255,0.1) !important; }
-html[data-theme="dark"] [data-s="pill"] { background:linear-gradient(180deg,#1e1e24,#15151a) !important; border-color:rgba(255,255,255,0.14) !important; color:#f4f4f5 !important; }
-html[data-theme="dark"] [data-s="pill"] * { color:#f4f4f5 !important; }
-html[data-theme="dark"] [data-s="pill"] [stroke] { stroke:#f4f4f5 !important; }
-html[data-theme="dark"] [data-s="pill"] svg[fill]:not([fill="none"]),
-html[data-theme="dark"] [data-s="pill"] circle[fill], html[data-theme="dark"] [data-s="pill"] path[fill]:not([fill="none"]) { fill:#f4f4f5 !important; }
-html[data-theme="dark"] [data-s="card"] { background:#16161a !important; border-color:rgba(255,255,255,0.12) !important; color:#f4f4f5 !important; }
-html[data-theme="dark"] [data-s="solid"] { background:#f4f4f5 !important; color:#0c0c0d !important; }
-html[data-theme="dark"] [data-s="solid"] * { color:#0c0c0d !important; }
-html[data-theme="dark"] [data-s="solid"] [stroke] { stroke:#0c0c0d !important; }
-html[data-theme="dark"] [data-s="solid"] svg[fill]:not([fill="none"]),
-html[data-theme="dark"] [data-s="solid"] circle[fill], html[data-theme="dark"] [data-s="solid"] path[fill]:not([fill="none"]) { fill:#0c0c0d !important; }
-html[data-theme="dark"] [data-s="muted"] { color:#a9a9b2 !important; }
-/* O painel escuro do contato já é escuro no tema claro: só a borda precisa mudar */
-html[data-theme="dark"] [data-m="cta-panel"] { border-color:rgba(255,255,255,0.12) !important; }
-html[data-theme="dark"] [data-m="menu-link"] { border-bottom-color:rgba(255,255,255,0.08) !important; }
-html[data-theme="dark"] [data-m="panel"] { background:rgba(12,12,13,0.97) !important; }
-html[data-theme="dark"] [style*="repeating-linear-gradient"] { background:repeating-linear-gradient(135deg,#141418,#141418 10px,#1c1c21 10px,#1c1c21 20px) !important; }
-html[data-theme="dark"] g[stroke*="23,23,23"] { stroke:rgba(255,255,255,0.22) !important; }
+/* ---- Papéis (data-s) ----
+   Estes atributos já marcavam o papel de cada superfície; agora eles também a
+   pintam, em vez de só servirem de gancho para o remendo do dark. Sem !important:
+   as cores saíram do inline, então a cascata normal basta. */
+[data-s="page"]  { background:var(--bg-sunken); border-top-color:var(--line-soft); }
+[data-s="card"]  { background:var(--surface); border-color:var(--line); color:var(--ink); }
+[data-s="pill"]  { background:var(--pill-bg); border-color:var(--line-strong); color:var(--ink); }
+[data-s="solid"] { background:var(--solid-bg); color:var(--ink-on-solid); }
+
+/* Os ícones trazem stroke/fill como atributo SVG, que qualquer regra CSS vence —
+   é o que dispensa o !important que estas linhas usavam antes. currentColor em vez
+   de um token fixo: assim o ícone acompanha a cor do próprio elemento, e um filho
+   que apaga o texto (o pill de localização, por exemplo) leva o ícone junto. */
+[data-s="pill"] [stroke],
+[data-s="solid"] [stroke] { stroke:currentColor; }
+[data-s="pill"] svg[fill]:not([fill="none"]),
+[data-s="pill"] circle[fill],
+[data-s="pill"] path[fill]:not([fill="none"]),
+[data-s="solid"] svg[fill]:not([fill="none"]),
+[data-s="solid"] circle[fill],
+[data-s="solid"] path[fill]:not([fill="none"]) { fill:currentColor; }
+
+[data-m="graph-lines"] g { stroke:var(--graph-line); }
+
+/* O painel do contato é escuro nos dois temas — é a única superfície que não
+   acompanha o tema, então as cores dele são literais de propósito. Só a borda
+   precisa acompanhar, para não sumir contra o fundo escuro. */
+[data-m="cta-panel"] { border-color:var(--line); }
 
 @media (max-width:900px) {
   [data-m="hero"] { grid-template-columns:1fr !important; gap:34px !important; padding-top:44px !important; }
@@ -122,18 +197,16 @@ html[data-theme="dark"] [data-m="marquee"] { --marquee-band:#f4f4f5; --marquee-i
    qualquer seletor, então os :hover nunca chegavam a aplicar no tema claro — no
    escuro sobreviviam só porque o bloco do dark usa !important. Base e hover agora
    moram na mesma classe, e voltam a disputar pela cascata normal. */
-.nav-link { color:#171717; text-decoration:none; }
-.nav-link:hover { color:#6b7280; }
+.nav-link { color:var(--ink); text-decoration:none; }
+.nav-link:hover { color:var(--ink-nav-hover); }
 
-.pill {
-  background:linear-gradient(180deg,#ffffff,#eeeef0);
-  border:1px solid rgba(23,23,23,0.15);
-  color:#171717;
-}
-.pill:hover { background:linear-gradient(180deg,#f7f7f8,#e4e4e7); }
+/* A base de .pill e .solid vem do papel [data-s] lá em cima; aqui fica só o que
+   o papel não descreve — a borda (que é do componente, não da superfície) e os
+   estados. */
+.pill { border:1px solid var(--line-strong); }
+.pill:hover { background:var(--pill-bg-hover); }
 
-.solid { background:#171717; color:#ffffff; }
-.solid:hover { background:#000000; }
+.solid:hover { background:var(--solid-bg-hover); }
 /* A CTA principal do hero é a única com sombra própria */
 .solid-cta { box-shadow:0 1px 2px rgba(0,0,0,0.15); }
 .solid-cta:hover { box-shadow:0 4px 14px rgba(0,0,0,0.25); }
@@ -147,7 +220,7 @@ html[data-theme="dark"] [data-m="marquee"] { --marquee-band:#f4f4f5; --marquee-i
 .hv-card:hover { transform:translateY(-3px); box-shadow:0 16px 34px -20px rgba(0,0,0,0.3); }
 .hv-lift:hover { transform:translateY(-2px); }
 .hv-node:hover { --ms:1.12; }
-.hv-top:hover { background:linear-gradient(180deg,#eaeaec,#dcdce0); }
+.hv-top:hover { background:var(--pill-bg-hover); }
 
 /* ---- Botão flutuante "voltar ao topo" ----
    Fixo no canto inferior direito; a classe .is-visible vem de ui.ts a partir da
@@ -164,8 +237,8 @@ html[data-theme="dark"] [data-m="marquee"] { --marquee-band:#f4f4f5; --marquee-i
   width:40px;
   height:40px;
   border-radius:50%;
-  background:linear-gradient(180deg,#f4f4f5,#e4e4e7);
-  border:1px solid rgba(23,23,23,0.1);
+  background:var(--bar-bg);
+  border:1px solid var(--line);
   box-shadow:0 8px 20px -8px rgba(0,0,0,0.35);
   opacity:0;
   visibility:hidden;
@@ -233,10 +306,10 @@ html[data-theme="dark"] .back-to-top { box-shadow:0 8px 20px -8px rgba(0,0,0,0.7
   width:min(560px,92vw);
   max-height:85vh;
   padding:0;
-  border:1px solid rgba(23,23,23,0.12);
+  border:1px solid var(--line);
   border-radius:20px;
-  background:#fff;
-  color:#171717;
+  background:var(--surface);
+  color:var(--ink);
   box-shadow:0 30px 80px -20px rgba(0,0,0,0.45);
   overflow:visible;
 }
@@ -246,7 +319,7 @@ html[data-theme="dark"] .back-to-top { box-shadow:0 8px 20px -8px rgba(0,0,0,0.7
 @keyframes modalIn { from { opacity:0; transform:translateY(10px) scale(0.98);} to { opacity:1; transform:none;} }
 @keyframes backdropIn { from { opacity:0;} to { opacity:1;} }
 .project-modal-inner { padding:clamp(22px,3vw,30px); max-height:85vh; overflow-y:auto; border-radius:20px; }
-.project-modal-rule { width:48px; height:2px; background:#171717; opacity:0.25; margin-bottom:20px; }
+.project-modal-rule { width:48px; height:2px; background:var(--ink); opacity:0.25; margin-bottom:20px; }
 .project-close {
   position:absolute;
   top:14px;
@@ -263,16 +336,13 @@ html[data-theme="dark"] .back-to-top { box-shadow:0 8px 20px -8px rgba(0,0,0,0.7
   cursor:pointer;
   transition:background .2s;
 }
-.project-close:hover { background:rgba(23,23,23,0.08); }
+.project-close [stroke] { stroke:var(--ink); }
+.project-close:hover { background:var(--wash); }
 .project-open:hover { opacity:0.6; }
 @media (prefers-reduced-motion:reduce) {
   .project-modal[open], .project-modal[open]::backdrop { animation:none; }
 }
 
-html[data-theme="dark"] .project-modal { background:#16161a !important; border-color:rgba(255,255,255,0.12) !important; color:#f4f4f5 !important; }
-html[data-theme="dark"] .project-modal-rule { background:#f4f4f5 !important; }
-html[data-theme="dark"] .project-close [stroke] { stroke:#f4f4f5 !important; }
-html[data-theme="dark"] .project-close:hover { background:rgba(255,255,255,0.1); }
 
 /* Logos monocromáticos nos chips de tecnologia: contraste nos dois temas */
 html[data-theme="dark"] .tech-chip img[src$="nextjs.svg"],
@@ -284,7 +354,6 @@ section[id] { scroll-margin-top:84px; }
 
 /* Barra de progresso na base do header (escala vinda de ui.ts) */
 #scroll-progress { transition:background .25s; }
-html[data-theme="dark"] #scroll-progress { background:#f4f4f5 !important; }
 
 /* ---- Emenda do header: degradê em vez de régua de 1px ----
    O header é translúcido e o conteúdo rola por baixo dele; a separação só precisa
@@ -339,8 +408,8 @@ main[tabindex]:focus, main[tabindex]:focus-visible { outline:none; }
   z-index:60;
   padding:12px 20px;
   border-radius:0 0 12px 12px;
-  background:#171717;
-  color:#ffffff;
+  background:var(--solid-bg);
+  color:var(--ink-on-solid);
   font-size:14px;
   font-weight:600;
   text-decoration:none;
@@ -348,7 +417,6 @@ main[tabindex]:focus, main[tabindex]:focus-visible { outline:none; }
   transition:transform .2s cubic-bezier(.22,.61,.36,1);
 }
 .skip-link:focus-visible { transform:translateY(0); }
-html[data-theme="dark"] .skip-link { background:#f4f4f5; color:#0c0c0d; }
 @media (prefers-reduced-motion:reduce) {
   .skip-link { transition:none; }
 }
@@ -379,7 +447,7 @@ html[data-theme="dark"] .skip-link { background:#f4f4f5; color:#0c0c0d; }
 .tech-label {
   font-family:JetBrains Mono,monospace;
   font-size:clamp(9px,1vw,11px);
-  color:#55585f;
+  color:var(--ink-muted);
   white-space:nowrap;
   text-align:center;
 }
@@ -393,7 +461,7 @@ html[data-theme="dark"] .tech-icon[data-icon-invert] { filter:invert(1); }
   font-family:JetBrains Mono,monospace;
   font-size:13px;
   font-weight:400;
-  color:#8b8b92;
+  color:var(--ink-faint);
   margin:0 0 16px;
 }
 .edu-list { list-style:none; margin:0; padding:0; display:grid; gap:16px; }
@@ -408,15 +476,15 @@ html[data-theme="dark"] .tech-icon[data-icon-invert] { filter:invert(1); }
   bottom:-16px;
   width:2px;
   border-radius:2px;
-  background:rgba(23,23,23,0.12);
+  background:var(--line-strong);
 }
 .edu-item:last-child::before { display:none; }
+/* Fundo do badge e do card vêm dos papéis data-s="solid" / data-s="card" */
 .edu-badge {
   flex:none;
   width:44px;
   height:44px;
   border-radius:12px;
-  background:#171717;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -424,9 +492,8 @@ html[data-theme="dark"] .tech-icon[data-icon-invert] { filter:invert(1); }
 .edu-card {
   flex:1;
   min-width:0;
-  border:1px solid rgba(23,23,23,0.1);
+  border:1px solid var(--line);
   border-radius:14px;
-  background:#fff;
   padding:clamp(14px,2vw,18px) clamp(16px,2.2vw,20px);
   transition:transform .2s,box-shadow .2s;
 }
@@ -443,8 +510,7 @@ html[data-theme="dark"] .tech-icon[data-icon-invert] { filter:invert(1); }
   font-family:JetBrains Mono,monospace;
   font-size:12px;
   white-space:nowrap;
-  background:linear-gradient(180deg,#ffffff,#eeeef0);
-  border:1px solid rgba(23,23,23,0.14);
+  border:1px solid var(--line-strong);
   border-radius:999px;
   padding:4px 11px;
 }
@@ -454,26 +520,20 @@ html[data-theme="dark"] .tech-icon[data-icon-invert] { filter:invert(1); }
   font-size:11px;
   letter-spacing:0.04em;
   text-transform:uppercase;
-  color:#171717;
-  background:rgba(23,23,23,0.07);
+  color:var(--ink);
+  background:var(--wash);
   border-radius:999px;
   padding:3px 9px;
 }
-.edu-detail { font-size:13.5px; line-height:1.6; color:#4b4b52; margin:10px 0 0; }
-html[data-theme="dark"] .edu-item::before { background:rgba(255,255,255,0.14); }
-html[data-theme="dark"] .edu-status { color:#f4f4f5 !important; background:rgba(255,255,255,0.1); }
+.edu-detail { font-size:13.5px; line-height:1.6; color:var(--ink-muted); margin:10px 0 0; }
 @media (max-width:520px) {
   .edu-item { gap:12px; }
   .edu-badge { width:38px; height:38px; border-radius:11px; }
   .edu-item::before { left:18px; top:38px; }
 }
 
-/* Ajustes de hover no dark. O !important continua necessário aqui porque as regras
-   de tema acima ([data-s="pill"], [data-s="solid"]) já usam !important para pintar
-   a base — sem ele o hover perderia para elas. */
-html[data-theme="dark"] .pill:hover,
-html[data-theme="dark"] .hv-top:hover { background:linear-gradient(180deg,#26262e,#1b1b21) !important; }
-html[data-theme="dark"] .solid:hover { background:#ffffff !important; }
+/* Os hovers do dark sumiram daqui: agora .pill:hover e .solid:hover apontam para
+   --pill-bg-hover / --solid-bg-hover, e é o token que troca com o tema. */
 
 /* ---- Pressionado ----
    Fica no fim do arquivo de propósito: mesma especificidade dos :hover acima, então

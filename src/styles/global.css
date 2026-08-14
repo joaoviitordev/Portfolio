@@ -84,6 +84,46 @@ html[data-theme="dark"] {
   --focus-ring:     #f4f4f5;
 }
 
+/* ---- Preferências de sistema ----
+   Com as cores em tokens, atender estas duas preferências é redefinir alguns
+   valores em vez de caçar cada superfície. */
+
+/* Translucidez reduzida: por decisão do João, o vidro do header e do painel do
+   menu fica de pé mesmo com a preferência ligada — é a assinatura visual da
+   chrome, e no Windows esse ajuste costuma estar desligado por desempenho, não
+   por necessidade. O que sai é só o desfoque do fundo do modal, que ali serve de
+   véu e não de identidade. */
+@media (prefers-reduced-transparency: reduce) {
+  .project-modal::backdrop { -webkit-backdrop-filter:none; backdrop-filter:none; background:rgba(0,0,0,0.8); }
+}
+
+/* Contraste alto: traços deixam de ser insinuados e o texto apagado sobe para o
+   mesmo nível do secundário. As superfícies translúcidas também viram sólidas —
+   sem isso, o texto por baixo continuaria atravessando o header. */
+@media (prefers-contrast: more) {
+  :root {
+    --chrome-bg:#ffffff;
+    --panel-bg:#ffffff;
+    --ink-faint:#4b4b52;      /* 8.7:1, mesmo nível do --ink-muted */
+    --line:rgba(23,23,23,0.34);
+    --line-strong:rgba(23,23,23,0.5);
+    --line-soft:rgba(23,23,23,0.28);
+    --wash:rgba(23,23,23,0.16);
+    --graph-line:rgba(23,23,23,0.45);
+  }
+  html[data-theme="dark"] {
+    --chrome-bg:#0c0c0d;
+    --panel-bg:#0c0c0d;
+    --ink-faint:#c9c9d1;
+    --line:rgba(255,255,255,0.38);
+    --line-strong:rgba(255,255,255,0.55);
+    --line-soft:rgba(255,255,255,0.3);
+    --wash:rgba(255,255,255,0.22);
+    --graph-line:rgba(255,255,255,0.5);
+  }
+  header { -webkit-backdrop-filter:none; backdrop-filter:none; }
+}
+
 body { margin: 0; background:var(--bg); }
 ::selection { background:var(--ink); color:var(--bg); }
 @keyframes fadeUp { from { opacity:0; transform:translateY(14px);} to { opacity:1; transform:translateY(0);} }
@@ -291,6 +331,23 @@ html[data-theme="dark"] .back-to-top { box-shadow:0 8px 20px -8px rgba(0,0,0,0.7
   color:#fff;
   text-shadow:0 1px 3px rgba(0,0,0,0.5);
 }
+.hero-controls { display:flex; align-items:center; gap:12px; }
+.hero-toggle {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:20px;
+  height:20px;
+  padding:0;
+  border:none;
+  border-radius:50%;
+  background:rgba(255,255,255,0.2);
+  color:#ffffff;
+  cursor:pointer;
+  transition:background .2s;
+}
+.hero-toggle:hover { background:rgba(255,255,255,0.38); }
+.hero-toggle:focus-visible { outline-color:#ffffff; outline-offset:2px; }
 .hero-dots { display:flex; gap:7px; }
 .hero-dot {
   width:8px;
@@ -378,6 +435,15 @@ html[data-theme="dark"] .tech-chip img[src$="nextjs.svg"],
 html[data-theme="dark"] .tech-chip img[src$="ai.svg"],
 html[data-theme="dark"] .tech-chip img[src$="prisma.svg"] { filter:invert(1); }
 
+/* ---- Tracking por tamanho ----
+   As letras parecem mais afastadas conforme o corpo cresce, então título grande
+   pede tracking negativo (o h1 já traz o dele, -0.02em). Nos monos pequenos de
+   12-13px não mexemos de propósito: a JetBrains Mono já nasce espaçada, e um
+   tracking positivo ali afrouxaria o que já está frouxo. */
+h2 { letter-spacing:-0.01em; }
+[data-i18n="jobsTitle"] { letter-spacing:-0.01em; }
+[data-i18n="contactLead"] { letter-spacing:-0.015em; }
+
 /* Header é sticky: compensa a altura dele ao pular para uma âncora.
    --header-h é medida e publicada por ui.ts; o valor aqui é só o fallback. */
 section[id] { scroll-margin-top:calc(var(--header-h,72px) + 6px); }
@@ -385,25 +451,27 @@ section[id] { scroll-margin-top:calc(var(--header-h,72px) + 6px); }
 /* Barra de progresso na base do header (escala vinda de ui.ts) */
 #scroll-progress { transition:background .25s; }
 
-/* ---- Emenda do header: degradê em vez de régua de 1px ----
-   O header é translúcido e o conteúdo rola por baixo dele; a separação só precisa
-   existir quando há de fato algo passando ali. Por isso o degradê é preso ao
-   data-scrolled (ui.ts) em vez de ficar aceso no topo da página, onde marcaria
-   uma borda no meio do branco sem nada para separar. */
+/* ---- Emenda do header ----
+   O header é translúcido e o conteúdo passa por baixo dele; a separação só
+   precisa existir quando há de fato algo ali, daí o data-scrolled (ui.ts) em vez
+   de uma borda acesa já no topo da página, sobre o branco vazio.
+   Isto já foi um degradê de 10px. Enquanto o painel do menu fechado ocupava 27px,
+   ele caía longe da barra e passava; encostado nela virou sombra — no escuro era
+   preto a 50%. Uma régua de 1px, no mesmo tom das outras do projeto, separa sem
+   pesar, e o tom vem do token, então o tema já vai junto. */
 header::after {
   content:'';
   position:absolute;
   left:0;
   right:0;
   top:100%;
-  height:10px;
+  height:1px;
   pointer-events:none;
   opacity:0;
   transition:opacity .25s ease;
-  background:linear-gradient(180deg,rgba(23,23,23,0.08),rgba(23,23,23,0));
+  background:var(--line-soft);
 }
 html[data-scrolled] header::after { opacity:1; }
-html[data-theme="dark"] header::after { background:linear-gradient(180deg,rgba(0,0,0,0.5),rgba(0,0,0,0)); }
 @media (prefers-reduced-motion:reduce) {
   header::after { transition:none; }
 }

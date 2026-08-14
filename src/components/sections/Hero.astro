@@ -48,10 +48,17 @@ import { projects } from '../../data/projects';
 
       <div class="hero-slide-caption">
         <span class="hero-slide-label">{projects[0]?.title}</span>
-        <div class="hero-dots">
-          {projects.map((p, i) => (
-            <button type="button" class="hero-dot" data-slide-to={i} aria-label={p.title} aria-current={i === 0 ? 'true' : 'false'}></button>
-          ))}
+        <div class="hero-controls">
+          {/* O rótulo descreve a próxima ação e é ele que muda com o estado, por
+              isso não há aria-pressed: os dois juntos se contradiriam. */}
+          <button type="button" id="hero-autoplay" class="hero-toggle" data-i18n-aria="carouselPause" aria-label="Pausar a passagem automática dos projetos" title="Pausar a passagem automática dos projetos">
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><rect x="2" y="1.5" width="3" height="9" rx="1"/><rect x="7" y="1.5" width="3" height="9" rx="1"/></svg>
+          </button>
+          <div class="hero-dots">
+            {projects.map((p, i) => (
+              <button type="button" class="hero-dot" data-slide-to={i} aria-label={p.title} aria-current={i === 0 ? 'true' : 'false'}></button>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -88,10 +95,41 @@ import { projects } from '../../data/projects';
       }
     }
 
+    // Pausa pedida pelo usuário no botão. Diferente do stop() de hover/foco, esta
+    // é intencional e não pode ser desfeita por um mouseleave — daí a flag.
+    let userPaused = false;
+
     function start() {
-      if (reduceMotion || slides.length < 2) return;
+      if (reduceMotion || userPaused || slides.length < 2) return;
       stop();
       timer = window.setInterval(() => show(current + 1), 4500);
+    }
+
+    // ---------- Controle de pausa (WCAG 2.2.2) ----------
+    // Conteúdo que se move sozinho por mais de 5s precisa de um jeito de parar.
+    // Pausar no hover e no foco não conta: não alcança quem lê sem apontar.
+    const toggle = carousel.querySelector<HTMLButtonElement>('#hero-autoplay');
+    const ICON_PAUSE =
+      '<svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><rect x="2" y="1.5" width="3" height="9" rx="1"/><rect x="7" y="1.5" width="3" height="9" rx="1"/></svg>';
+    const ICON_PLAY =
+      '<svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M3 1.8v8.4a.6.6 0 0 0 .92.5l6.5-4.2a.6.6 0 0 0 0-1L3.92 1.3A.6.6 0 0 0 3 1.8z"/></svg>';
+
+    if (toggle) {
+      // Sem autoplay não há o que pausar: o botão sairia mentindo.
+      if (reduceMotion || slides.length < 2) {
+        toggle.hidden = true;
+      } else {
+        toggle.addEventListener('click', () => {
+          userPaused = !userPaused;
+          if (userPaused) stop();
+          else start();
+          toggle.innerHTML = userPaused ? ICON_PLAY : ICON_PAUSE;
+          // O rótulo nomeia a próxima ação; o DICT mora no outro módulo, então
+          // trocamos a chave e pedimos a releitura.
+          toggle.setAttribute('data-i18n-aria', userPaused ? 'carouselPlay' : 'carouselPause');
+          document.dispatchEvent(new Event('i18n:refresh'));
+        });
+      }
     }
 
     dots.forEach((dot, i) =>

@@ -52,6 +52,12 @@ interface Dict {
   lastUpdate: string;
   // Repetido 3x na faixa curva (data-i18n-repeat), por isso termina com separador
   marqueeText: string;
+  // Vão para o <head>: o servidor sempre renderiza PT, então quem corrige a aba
+  // e as metatags ao trocar de idioma é o applyLang.
+  pageTitle: string;
+  pageDescription: string;
+  carouselPlay: string;
+  carouselPause: string;
   skipLink: string;
   menuAria: string;
   themeAria: string;
@@ -112,6 +118,11 @@ const DICT: Record<Lang, Dict> = {
     jobsCta: 'Ver LinkedIn',
     lastUpdate: 'Última atualização:',
     marqueeText: 'João Vitor · Desenvolvedor Full-Stack · ',
+    pageTitle: 'João Vitor | Desenvolvedor Full-Stack & UI/UX',
+    pageDescription:
+      'Desenvolvedor Full-Stack especializado em HTML, CSS, JS, React, Next.js, Tailwind, GSAP e UI/UX. Transformo designs complexos em interfaces web de alta performance. Veja meus cases.',
+    carouselPlay: 'Retomar a passagem automática dos projetos',
+    carouselPause: 'Pausar a passagem automática dos projetos',
     skipLink: 'Pular para o conteúdo',
     menuAria: 'Abrir menu',
     themeAria: 'Alternar tema',
@@ -170,6 +181,11 @@ const DICT: Record<Lang, Dict> = {
     jobsCta: 'View LinkedIn',
     lastUpdate: 'Last updated:',
     marqueeText: 'João Vitor · Full-Stack Developer · ',
+    pageTitle: 'João Vitor | Full-Stack Developer & UI/UX',
+    pageDescription:
+      'Full-stack developer working in HTML, CSS, JS, React, Next.js, Tailwind, GSAP and UI/UX. I turn complex designs into high-performance web interfaces. See my cases.',
+    carouselPlay: 'Resume the automatic project rotation',
+    carouselPause: 'Pause the automatic project rotation',
     skipLink: 'Skip to content',
     menuAria: 'Open menu',
     themeAria: 'Toggle theme',
@@ -270,8 +286,27 @@ function applyLang(lang: Lang) {
   const langLabel = document.getElementById('lang-label');
   if (langLabel) langLabel.textContent = lang === 'pt' ? 'EN' : 'PT';
 
+  // O <head> é renderizado em PT no servidor, porque o idioma só é decidido no
+  // cliente (localStorage/navigator). Sem isto, trocar para inglês deixava a aba
+  // e o cartão de compartilhamento em português.
+  document.title = t.pageTitle;
+  const meta = (attr: 'name' | 'property', key: string, value: string) => {
+    document.head.querySelector(`meta[${attr}="${key}"]`)?.setAttribute('content', value);
+  };
+  meta('name', 'description', t.pageDescription);
+  meta('property', 'og:title', t.pageTitle);
+  meta('property', 'og:description', t.pageDescription);
+  meta('property', 'og:image:alt', t.pageTitle);
+  meta('property', 'og:locale', lang === 'pt' ? 'pt_BR' : 'en_US');
+  meta('name', 'twitter:title', t.pageTitle);
+  meta('name', 'twitter:description', t.pageDescription);
+
   root.setAttribute('lang', lang === 'pt' ? 'pt-BR' : 'en');
 }
+
+// O carrossel vive em outro módulo e troca o data-i18n-aria do botão de pausa
+// conforme o estado; este gancho deixa ele pedir a releitura sem conhecer o DICT.
+document.addEventListener('i18n:refresh', () => applyLang(currentLang()));
 
 // ---------- Tema ----------
 function applyTheme(theme: 'light' | 'dark') {

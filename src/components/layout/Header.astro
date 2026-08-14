@@ -19,16 +19,16 @@ Full-Stack */</div>
     <nav data-m="nav" style="display:flex;align-items:center;gap:clamp(14px,2.4vw,32px);">
       <div data-m="nav-links" style="display:flex;align-items:center;gap:clamp(16px,3vw,40px);">
         {navLinks.map((link) => (
-          <a href={link.href} data-i18n={link.key} data-nav-link={link.href} class="hv-nav" style="font-size:14px;font-weight:600;letter-spacing:0.04em;color:#171717;text-decoration:none;">{link.label}</a>
+          <a href={link.href} data-i18n={link.key} data-nav-link={link.href} class="nav-link" style="font-size:14px;font-weight:600;letter-spacing:0.04em;">{link.label}</a>
         ))}
       </div>
-      <button type="button" id="menu-btn" data-s="pill" data-m="menu-btn" data-mm="tap" data-i18n-aria="menuAria" aria-label="Abrir menu" title="Abrir menu" style="display:none;width:34px;height:34px;flex:none;align-items:center;justify-content:center;padding:0;border:1px solid rgba(23,23,23,0.15);border-radius:10px;background:linear-gradient(180deg,#ffffff,#eeeef0);cursor:pointer;color:#171717;" class="hv-pill">
+      <button type="button" id="menu-btn" data-s="pill" data-m="menu-btn" data-mm="tap" data-i18n-aria="menuAria" aria-label="Abrir menu" title="Abrir menu" style="display:none;width:34px;height:34px;flex:none;align-items:center;justify-content:center;padding:0;border-radius:10px;cursor:pointer;" class="pill">
         <span id="menu-icon" style="display:flex;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
       </button>
-      <button type="button" id="lang-btn" data-s="pill" data-mm="tap" data-i18n-aria="langAria" aria-label="Mudar idioma para inglês" title="Mudar idioma para inglês" style="width:34px;height:34px;flex:none;display:flex;align-items:center;justify-content:center;padding:0;border:1px solid rgba(23,23,23,0.15);border-radius:10px;background:linear-gradient(180deg,#ffffff,#eeeef0);cursor:pointer;color:#171717;font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;letter-spacing:0.02em;" class="hv-pill">
+      <button type="button" id="lang-btn" data-s="pill" data-mm="tap" data-i18n-aria="langAria" aria-label="Mudar idioma para inglês" title="Mudar idioma para inglês" style="width:34px;height:34px;flex:none;display:flex;align-items:center;justify-content:center;padding:0;border-radius:10px;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;letter-spacing:0.02em;" class="pill">
         <span id="lang-label">EN</span>
       </button>
-      <button type="button" id="theme-btn" data-s="pill" data-mm="tap" data-i18n-aria="themeAria" aria-label="Alternar tema" title="Alternar tema" style="width:34px;height:34px;flex:none;display:flex;align-items:center;justify-content:center;padding:0;border:1px solid rgba(23,23,23,0.15);border-radius:10px;background:linear-gradient(180deg,#ffffff,#eeeef0);cursor:pointer;color:#171717;" class="hv-pill">
+      <button type="button" id="theme-btn" data-s="pill" data-mm="tap" data-i18n-aria="themeAria" aria-label="Alternar tema" title="Alternar tema" style="width:34px;height:34px;flex:none;display:flex;align-items:center;justify-content:center;padding:0;border-radius:10px;cursor:pointer;" class="pill">
         <span id="theme-icon" style="display:flex;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 14.5A8.5 8.5 0 019.5 4a8.5 8.5 0 1010.5 10.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </button>
     </nav>
@@ -37,7 +37,7 @@ Full-Stack */</div>
   <div id="menu-panel" data-m="panel" hidden style="border-top:1px solid rgba(23,23,23,0.08);background:rgba(255,255,255,0.97);">
     <div style="max-width:1200px;margin:0 auto;padding:8px clamp(20px,4vw,40px) 18px;display:flex;flex-direction:column;">
       {navLinks.map((link) => (
-        <a href={link.href} data-i18n={link.key} data-nav-link={link.href} data-m="menu-link" class="hv-nav menu-close" style="font-size:15px;font-weight:600;letter-spacing:0.04em;color:#171717;text-decoration:none;padding:13px 0;border-bottom:1px solid rgba(23,23,23,0.07);">{link.label}</a>
+        <a href={link.href} data-i18n={link.key} data-nav-link={link.href} data-m="menu-link" class="nav-link menu-close" style="font-size:15px;font-weight:600;letter-spacing:0.04em;padding:13px 0;border-bottom:1px solid rgba(23,23,23,0.07);">{link.label}</a>
       ))}
     </div>
   </div>

@@ -10,7 +10,11 @@ html[data-theme="dark"] body { background:#0c0c0d; }
 html[data-theme="dark"] ::selection { background:#f4f4f5; color:#0c0c0d; }
 html[data-theme="dark"] [data-theme-root] { background:#0c0c0d !important; color:#f4f4f5 !important; }
 html[data-theme="dark"] header { background:rgba(12,12,13,0.85) !important; }
-html[data-theme="dark"] h1, html[data-theme="dark"] nav a { color:#f4f4f5 !important; }
+html[data-theme="dark"] h1 { color:#f4f4f5 !important; }
+/* Sem !important: a cor do link saiu do style="" inline, então a cascata basta —
+   e é isso que deixa o :hover abaixo conseguir ganhar. */
+html[data-theme="dark"] .nav-link { color:#f4f4f5; }
+html[data-theme="dark"] .nav-link:hover { color:#a1a1aa; }
 html[data-theme="dark"] [data-s="page"] { background:#0c0c0d !important; border-top-color:rgba(255,255,255,0.1) !important; }
 html[data-theme="dark"] [data-s="pill"] { background:linear-gradient(180deg,#1e1e24,#15151a) !important; border-color:rgba(255,255,255,0.14) !important; color:#f4f4f5 !important; }
 html[data-theme="dark"] [data-s="pill"] * { color:#f4f4f5 !important; }
@@ -26,7 +30,7 @@ html[data-theme="dark"] [data-s="solid"] circle[fill], html[data-theme="dark"] [
 html[data-theme="dark"] [data-s="muted"] { color:#a9a9b2 !important; }
 /* O painel escuro do contato já é escuro no tema claro: só a borda precisa mudar */
 html[data-theme="dark"] [data-m="cta-panel"] { border-color:rgba(255,255,255,0.12) !important; }
-html[data-theme="dark"] [data-m="menu-link"] { color:#f4f4f5 !important; border-bottom-color:rgba(255,255,255,0.08) !important; }
+html[data-theme="dark"] [data-m="menu-link"] { border-bottom-color:rgba(255,255,255,0.08) !important; }
 html[data-theme="dark"] [data-m="panel"] { background:rgba(12,12,13,0.97) !important; }
 html[data-theme="dark"] [style*="repeating-linear-gradient"] { background:repeating-linear-gradient(135deg,#141418,#141418 10px,#1c1c21 10px,#1c1c21 20px) !important; }
 html[data-theme="dark"] g[stroke*="23,23,23"] { stroke:rgba(255,255,255,0.22) !important; }
@@ -106,16 +110,35 @@ html[data-theme-swap] [data-theme-root] { transition:none !important; }
 [data-m="marquee"] { --marquee-band:#171717; --marquee-ink:#ffffff; }
 html[data-theme="dark"] [data-m="marquee"] { --marquee-band:#f4f4f5; --marquee-ink:#0c0c0d; }
 
-/* ---- Hover (substituem os `style-hover` do DC) ---- */
-.hv-nav:hover { color:#6b7280; }
-.hv-pill:hover { background:linear-gradient(180deg,#f7f7f8,#e4e4e7); }
-.hv-solid:hover { background:#000; }
-.hv-solid-cta:hover { background:#000; box-shadow:0 4px 14px rgba(0,0,0,0.25); }
+/* ---- Superfícies interativas: nav-link, pill, solid, cta-light ----
+   A cor destes elementos morava no style="" de cada um. Estilo inline vence
+   qualquer seletor, então os :hover nunca chegavam a aplicar no tema claro — no
+   escuro sobreviviam só porque o bloco do dark usa !important. Base e hover agora
+   moram na mesma classe, e voltam a disputar pela cascata normal. */
+.nav-link { color:#171717; text-decoration:none; }
+.nav-link:hover { color:#6b7280; }
+
+.pill {
+  background:linear-gradient(180deg,#ffffff,#eeeef0);
+  border:1px solid rgba(23,23,23,0.15);
+  color:#171717;
+}
+.pill:hover { background:linear-gradient(180deg,#f7f7f8,#e4e4e7); }
+
+.solid { background:#171717; color:#ffffff; }
+.solid:hover { background:#000000; }
+/* A CTA principal do hero é a única com sombra própria */
+.solid-cta { box-shadow:0 1px 2px rgba(0,0,0,0.15); }
+.solid-cta:hover { box-shadow:0 4px 14px rgba(0,0,0,0.25); }
+
+/* CTA clara dentro do painel escuro do contato: o painel não troca no dark,
+   então esta dupla é fixa nos dois temas. */
+.cta-light { background:#f4f4f5; color:#171717; }
+.cta-light:hover { background:#ffffff; transform:translateY(-2px); }
+
+/* Estes já funcionavam: mexem em transform, que ninguém escreve inline. */
 .hv-card:hover { transform:translateY(-3px); box-shadow:0 16px 34px -20px rgba(0,0,0,0.3); }
 .hv-lift:hover { transform:translateY(-2px); }
-/* CTA clara dentro do painel escuro do contato: o painel não troca no dark, então
-   este hover é fixo nos dois temas. */
-.hv-cta-light:hover { transform:translateY(-2px); background:#ffffff; }
 .hv-node:hover { --ms:1.12; }
 .hv-top:hover { background:linear-gradient(180deg,#eaeaec,#dcdce0); }
 
@@ -408,8 +431,34 @@ html[data-theme="dark"] .edu-status { color:#f4f4f5 !important; background:rgba(
   .edu-item::before { left:18px; top:38px; }
 }
 
-/* Ajustes de hover no dark (as regras dark usam !important e cobririam o hover claro) */
-html[data-theme="dark"] .hv-pill:hover,
+/* Ajustes de hover no dark. O !important continua necessário aqui porque as regras
+   de tema acima ([data-s="pill"], [data-s="solid"]) já usam !important para pintar
+   a base — sem ele o hover perderia para elas. */
+html[data-theme="dark"] .pill:hover,
 html[data-theme="dark"] .hv-top:hover { background:linear-gradient(180deg,#26262e,#1b1b21) !important; }
-html[data-theme="dark"] .hv-solid:hover,
-html[data-theme="dark"] .hv-solid-cta:hover { background:#ffffff !important; }
+html[data-theme="dark"] .solid:hover { background:#ffffff !important; }
+
+/* ---- Pressionado ----
+   Fica no fim do arquivo de propósito: mesma especificidade dos :hover acima, então
+   quem está embaixo vence enquanto o dedo/cursor segura. Em toque não existe hover,
+   e sem isto o site não dava retorno nenhum ao ser pressionado. */
+.nav-link, .pill, .solid, .cta-light, .hero-dot,
+.project-open, .project-close, .back-to-top { -webkit-tap-highlight-color:transparent; }
+
+.pill:active,
+.solid:active,
+.hero-dot:active,
+.project-open:active,
+.project-close:active,
+.back-to-top:active { transform:scale(0.97); transition:transform 100ms ease-out; }
+
+/* Estes sobem no hover: o clique desfaz a subida em vez de somar transforms */
+.cta-light:active,
+.hv-lift:active,
+a.hv-card:active { transform:translateY(0) scale(0.98); transition:transform 100ms ease-out; }
+
+@media (prefers-reduced-motion:reduce) {
+  .pill:active, .solid:active, .cta-light:active, .hero-dot:active,
+  .project-open:active, .project-close:active, .back-to-top:active,
+  .hv-lift:active, a.hv-card:active { transform:none; opacity:0.75; transition:none; }
+}

@@ -12,12 +12,9 @@ interface Dict {
   getInTouch: string;
   latest: string;
   learnMore: string;
-  learnMorePlain: string;
   repoBtn: string;
   deployBtn: string;
   closeModal: string;
-  heroShot: string;
-  projShot: string;
   aboutTitle: string;
   aboutLead: string;
   aboutBody: string;
@@ -67,16 +64,13 @@ const DICT: Record<Lang, Dict> = {
     nav: ['SOBRE MIM', 'PROJETOS', 'TECNOLOGIAS', 'EDUCAÇÃO', 'CONTATO'],
     location: 'Rio de Janeiro, Brasil',
     heroTagline: 'Desenvolvedor full-stack focado em criar interfaces modernas e funcionais.',
-    cv: 'Vizualizar CV',
+    cv: 'Visualizar CV',
     getInTouch: 'Entrar em contato',
     latest: 'Últimos projetos',
     learnMore: 'Saiba mais →',
-    learnMorePlain: 'Saiba mais',
     repoBtn: 'Repositório',
     deployBtn: 'Ver deploy',
     closeModal: 'Fechar',
-    heroShot: 'prévia do projeto em destaque',
-    projShot: 'captura do projeto',
     aboutTitle: '/* SOBRE MIM */',
     aboutLead:
       'Sou desenvolvedor full-stack focado em construir aplicações web completas — do front-end em React e Next.js ao back-end em Node.js, com deploy em produção. Trabalho com atenção em detalhes de UI/UX, usabilidade e performance, entregando experiências digitais consistentes.',
@@ -104,7 +98,7 @@ const DICT: Record<Lang, Dict> = {
     contactTitle: '/* CONTATO */',
     contactSub: '// aberto a freelas, vagas full-stack e projetos colaborativos',
     contactAvail: 'Disponível para novos projetos',
-    contactLead: 'Vamos iniciar algo incrível!',
+    contactLead: 'Do protótipo ao deploy em produção.',
     contactBody:
       'Conte sobre a ideia, o prazo e o que já existe. Respondo com um plano inicial e os próximos passos.',
     contactCta: 'Enviar email',
@@ -131,12 +125,9 @@ const DICT: Record<Lang, Dict> = {
     getInTouch: 'Get in touch',
     latest: 'Latest projects',
     learnMore: 'Learn more →',
-    learnMorePlain: 'Learn more',
     repoBtn: 'Repository',
     deployBtn: 'View deploy',
     closeModal: 'Close',
-    heroShot: 'featured project preview',
-    projShot: 'project screenshot',
     aboutTitle: '/* ABOUT ME */',
     aboutLead:
       'I am a full-stack developer focused on building complete web applications — from the front-end in React and Next.js to the back-end in Node.js, shipped to production. I work with close attention to UI/UX detail, usability and performance, delivering consistent digital experiences.',
@@ -164,7 +155,7 @@ const DICT: Record<Lang, Dict> = {
     contactTitle: '/* CONTACT */',
     contactSub: '// open to freelance work, full-stack roles and collaborative projects',
     contactAvail: 'Available for new projects',
-    contactLead: "Let's start something incredible!",
+    contactLead: 'From prototype to production deploy.',
     contactBody:
       'Tell me about the idea, the deadline and what already exists. I reply with an initial plan and the next steps.',
     contactCta: 'Send email',
@@ -358,6 +349,10 @@ if (progressBar) {
     const max = root.scrollHeight - window.innerHeight;
     const ratio = max > 0 ? Math.min(Math.max(window.scrollY / max, 0), 1) : 0;
     progressBar.style.transform = `scaleX(${ratio})`;
+    // Pega carona neste rAF em vez de abrir um segundo listener de scroll: acende
+    // o degradê da base do header (header::after) só quando já há conteúdo
+    // passando por baixo dele.
+    root.toggleAttribute('data-scrolled', window.scrollY > 4);
   };
 
   // rAF evita recalcular a cada evento de scroll (que dispara muitas vezes por frame)

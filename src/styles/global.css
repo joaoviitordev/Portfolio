@@ -9,7 +9,7 @@ body { margin: 0; scroll-behavior: smooth; background:#ffffff; }
 html[data-theme="dark"] body { background:#0c0c0d; }
 html[data-theme="dark"] ::selection { background:#f4f4f5; color:#0c0c0d; }
 html[data-theme="dark"] [data-theme-root] { background:#0c0c0d !important; color:#f4f4f5 !important; }
-html[data-theme="dark"] header { background:rgba(12,12,13,0.85) !important; border-color:rgba(255,255,255,0.1) !important; }
+html[data-theme="dark"] header { background:rgba(12,12,13,0.85) !important; }
 html[data-theme="dark"] h1, html[data-theme="dark"] nav a { color:#f4f4f5 !important; }
 html[data-theme="dark"] [data-s="page"] { background:#0c0c0d !important; border-top-color:rgba(255,255,255,0.1) !important; }
 html[data-theme="dark"] [data-s="pill"] { background:linear-gradient(180deg,#1e1e24,#15151a) !important; border-color:rgba(255,255,255,0.14) !important; color:#f4f4f5 !important; }
@@ -252,9 +252,48 @@ html[data-theme="dark"] .tech-chip img[src$="prisma.svg"] { filter:invert(1); }
 /* Header é sticky: compensa a altura dele ao pular para uma âncora */
 section[id] { scroll-margin-top:84px; }
 
-/* Barra de progresso sobre a borda inferior do header (escala vinda de ui.ts) */
+/* Barra de progresso na base do header (escala vinda de ui.ts) */
 #scroll-progress { transition:background .25s; }
 html[data-theme="dark"] #scroll-progress { background:#f4f4f5 !important; }
+
+/* ---- Emenda do header: degradê em vez de régua de 1px ----
+   O header é translúcido e o conteúdo rola por baixo dele; a separação só precisa
+   existir quando há de fato algo passando ali. Por isso o degradê é preso ao
+   data-scrolled (ui.ts) em vez de ficar aceso no topo da página, onde marcaria
+   uma borda no meio do branco sem nada para separar. */
+header::after {
+  content:'';
+  position:absolute;
+  left:0;
+  right:0;
+  top:100%;
+  height:10px;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .25s ease;
+  background:linear-gradient(180deg,rgba(23,23,23,0.08),rgba(23,23,23,0));
+}
+html[data-scrolled] header::after { opacity:1; }
+html[data-theme="dark"] header::after { background:linear-gradient(180deg,rgba(0,0,0,0.5),rgba(0,0,0,0)); }
+@media (prefers-reduced-motion:reduce) {
+  header::after { transition:none; }
+}
+
+/* ---- Foco de teclado ----
+   O anel padrão do browser some sobre os pills pretos (data-s="solid") e sobre as
+   fotos do carrossel. Com outline-offset ele fica fora do elemento, sempre contra
+   o fundo da página — e o outline moderno já acompanha o border-radius sozinho. */
+:root { --focus-ring:#171717; }
+html[data-theme="dark"] { --focus-ring:#f4f4f5; }
+
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline:2px solid var(--focus-ring);
+  outline-offset:3px;
+}
+/* Os dots ficam sobre a captura do projeto: ali o anel escuro desapareceria. */
+.hero-dot:focus-visible { outline-color:#ffffff; outline-offset:2px; }
 
 /* ---- Techstack: ícones soltos + nome embaixo ---- */
 /* --mx/--my vêm do ímã em ui.ts e --ms do :hover; os três precisam morar no mesmo

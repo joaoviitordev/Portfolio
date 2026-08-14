@@ -2,7 +2,14 @@
    Bloco copiado 1:1 do <helmet> do design DC (dark mode + keyframes + responsivo),
    acrescido das classes .hv-* que substituem os antigos `style-hover` (hover inline). */
 
-body { margin: 0; scroll-behavior: smooth; background:#ffffff; }
+/* scroll-behavior precisa morar no elemento raiz: quem rola é o viewport, e só o
+   valor de html chega nele. Em body a declaração era ignorada, então as âncoras do
+   header, do menu mobile e o "voltar ao topo" saltavam seco. */
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+body { margin: 0; background:#ffffff; }
 ::selection { background:#171717; color:#fff; }
 @keyframes fadeUp { from { opacity:0; transform:translateY(14px);} to { opacity:1; transform:translateY(0);} }
 

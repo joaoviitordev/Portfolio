@@ -446,7 +446,7 @@ h2 { letter-spacing:-0.01em; }
 
 /* Header é sticky: compensa a altura dele ao pular para uma âncora.
    --header-h é medida e publicada por ui.ts; o valor aqui é só o fallback. */
-section[id] { scroll-margin-top:calc(var(--header-h,72px) + 6px); }
+section[id] { scroll-margin-top:calc(var(--header-h,80px) + 6px); }
 
 /* Barra de progresso na base do header (escala vinda de ui.ts) */
 #scroll-progress { transition:background .25s; }

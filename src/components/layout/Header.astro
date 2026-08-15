@@ -13,8 +13,13 @@ const navLinks = [
 {/* Sem border-bottom: a separação vem do degradê em `header::after` (global.css),
     que só aparece quando há conteúdo passando por baixo. */}
 <header style="position:sticky;top:0;z-index:50;background:var(--chrome-bg);backdrop-filter:blur(10px);">
-  <div data-m="bar" style="max-width:1200px;margin:0 auto;padding:14px clamp(20px,4vw,40px);display:flex;align-items:center;justify-content:space-between;gap:24px;">
-    <div data-m="brand" data-i18n="brand" style="font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(13px,1.6vw,16px);line-height:1.35;white-space:pre-line;">/* Desenvolvedor
+  {/* A marca tem duas linhas e é ela quem define a altura da barra — os botões
+      têm 34px. Com 14px de padding o bloco encostava no topo da janela, longe
+      da folga de ~40px que o resto da página usa nas laterais. 20px de padding
+      com a entrelinha da marca em 1.25 (era 1.35) dá o respiro sem devolver
+      toda a altura que o commit anterior recuperou: 71px -> 80px. */}
+  <div data-m="bar" style="max-width:1200px;margin:0 auto;padding:20px clamp(20px,4vw,40px);display:flex;align-items:center;justify-content:space-between;gap:24px;">
+    <div data-m="brand" data-i18n="brand" style="font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(13px,1.6vw,16px);line-height:1.25;white-space:pre-line;">/* Desenvolvedor
 Full-Stack */</div>
     <nav data-m="nav" style="display:flex;align-items:center;gap:clamp(14px,2.4vw,32px);">
       <div data-m="nav-links" style="display:flex;align-items:center;gap:clamp(16px,3vw,40px);">

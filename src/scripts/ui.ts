@@ -333,13 +333,17 @@ let menuOpen = false;
 // O scroll-margin das âncoras e a linha de corte do link ativo dependem dela, e
 // ela muda com o clamp da marca em telas estreitas. Medir uma vez e publicar em
 // --header-h evita repetir o número em três lugares e vê-los divergirem.
-let headerH = 72;
+let headerH = 80;
 function measureHeader() {
-  headerH = (header as HTMLElement | null)?.offsetHeight || 72;
+  headerH = (header as HTMLElement | null)?.offsetHeight || 80;
   root.style.setProperty('--header-h', `${headerH}px`);
 }
 measureHeader();
 window.addEventListener('resize', measureHeader);
+// A primeira medida cai antes da JetBrains Mono trocar: com a fonte de sistema
+// a marca é mais baixa e o header media 62px em vez de 71px, então as âncoras
+// paravam ~9px acima do lugar. Medir de novo quando as fontes assentam.
+document.fonts?.ready.then(measureHeader);
 
 function setMenu(open: boolean) {
   menuOpen = open;
@@ -485,7 +489,8 @@ if (navLinks.length) {
     const markActive = () => {
       // Linha de corte a 40% da tela. Colada no header ela ficava tarde demais: o
       // primeiro link só acendia depois de rolar o hero inteiro. Nunca acima da
-      // base do header, para o link clicado já chegar ativo (scroll-margin-top:84px).
+      // base do header, para o link clicado já chegar ativo (o scroll-margin das
+      // âncoras é a mesma conta: --header-h + 6px).
       const line = window.scrollY + Math.max(headerH + 6, window.innerHeight * 0.4);
       let index = -1;
       for (let i = 0; i < tops.length; i++) {

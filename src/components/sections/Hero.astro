@@ -4,15 +4,15 @@ import { Image } from 'astro:assets';
 import { projects } from '../../data/projects';
 ---
 
-<section id="hero" data-screen-label="Hero" data-m="hero" style="max-width:1200px;margin:0 auto;padding:clamp(48px,8vw,110px) clamp(20px,4vw,40px) clamp(72px,9vw,120px);display:grid;grid-template-columns:minmax(280px,1fr) minmax(300px,1fr);gap:clamp(32px,5vw,60px);align-items:center;">
+<section id="hero" data-m="hero" style="max-width:1200px;margin:0 auto;padding:clamp(48px,8vw,110px) clamp(20px,4vw,40px) clamp(72px,9vw,120px);display:grid;grid-template-columns:minmax(280px,1fr) minmax(300px,1fr);gap:clamp(32px,5vw,60px);align-items:center;">
   <div>
     <div data-s="pill" data-anim style="--i:0;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-strong);border-radius:999px;padding:7px 16px;font-size:13px;color:var(--ink-muted);margin-bottom:22px;">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8z" stroke="#4b4b52" stroke-width="2"/><circle cx="12" cy="10" r="2.6" fill="#4b4b52"/></svg>
       <span data-i18n="location">Rio de Janeiro, Brasil</span>
     </div>
     <h1 data-anim style="--i:1;font-size:clamp(40px,6vw,64px);font-weight:700;line-height:1.02;letter-spacing:-0.02em;margin:0 0 18px;">João Vitor</h1>
-    <div data-s="muted" data-anim style="--i:2;font-size:clamp(14px,1.6vw,17px);color:var(--ink-muted);margin-bottom:14px;">React&nbsp; · &nbsp;Next.js&nbsp; · &nbsp;TypeScript&nbsp; · &nbsp;IA&nbsp; · &nbsp;Git/GitHub&nbsp; · &nbsp;Node.js</div>
-    <p data-s="muted" data-i18n="heroTagline" data-anim style="--i:3;max-width:44ch;font-size:clamp(15px,1.7vw,18px);line-height:1.5;color:var(--ink-muted);margin:0 0 30px;">Desenvolvedor full-stack focado em criar interfaces modernas e funcionais.</p>
+    <div data-anim style="--i:2;font-size:clamp(14px,1.6vw,17px);color:var(--ink-muted);margin-bottom:14px;">React&nbsp; · &nbsp;Next.js&nbsp; · &nbsp;TypeScript&nbsp; · &nbsp;IA&nbsp; · &nbsp;Git/GitHub&nbsp; · &nbsp;Node.js</div>
+    <p data-i18n="heroTagline" data-anim style="--i:3;max-width:44ch;font-size:clamp(15px,1.7vw,18px);line-height:1.5;color:var(--ink-muted);margin:0 0 30px;">Desenvolvedor full-stack focado em criar interfaces modernas e funcionais.</p>
     <div data-anim style="--i:4;display:flex;gap:14px;flex-wrap:wrap;">
       <a href="/doc/joaovitor_curriculo_BR.pdf" target="_blank" rel="noopener" data-s="solid" data-m="cta" class="solid solid-cta" style="display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:14px 24px;font-size:14px;font-weight:600;text-decoration:none;">
         <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><path d="M12.8332 1.83332H5.49984C5.01361 1.83332 4.54729 2.02647 4.20347 2.37029C3.85966 2.7141 3.6665 3.18042 3.6665 3.66665V18.3333C3.6665 18.8195 3.85966 19.2859 4.20347 19.6297C4.54729 19.9735 5.01361 20.1666 5.49984 20.1666H16.4998C16.9861 20.1666 17.4524 19.9735 17.7962 19.6297C18.14 19.2859 18.3332 18.8195 18.3332 18.3333V7.33332M12.8332 1.83332C13.1233 1.83285 13.4107 1.88978 13.6788 2.00085C13.9469 2.11192 14.1904 2.27493 14.3952 2.48048L17.6842 5.76948C17.8903 5.97436 18.0537 6.21805 18.1651 6.48646C18.2765 6.75488 18.3336 7.0427 18.3332 7.33332M12.8332 1.83332V6.41665C12.8332 6.65976 12.9297 6.89292 13.1017 7.06483C13.2736 7.23674 13.5067 7.33332 13.7498 7.33332L18.3332 7.33332M9.1665 8.24998H7.33317M14.6665 11.9166H7.33317M14.6665 15.5833H7.33317" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -149,6 +149,7 @@ import { projects } from '../../data/projects';
     const OMEGA = 18; // mola criticamente amortecida, ~0.35s para assentar
 
     let offset = 0; // deslocamento horizontal atual, em px
+    let startOffset = 0; // onde o filme estava quando este gesto começou
     let dir = 0; // +1 entra o próximo (pela direita), -1 o anterior
     let neighbor = -1;
     let raf = 0;
@@ -229,6 +230,13 @@ import { projects } from '../../data/projects';
       if ((e.target as HTMLElement).closest('button')) return;
       if (slides.length < 2) return;
       cancelAnimationFrame(raf); // pega a animação em voo e continua de onde está
+      raf = 0;
+      // "De onde está" é literal: o gesto continua a partir do offset que a mola
+      // tinha nesta fração de segundo, não do zero. Sem guardar isto, o primeiro
+      // pointermove fazia `offset = dx` e o slide saltava do meio do voo para
+      // perto da origem — agarrar algo em movimento tem de grudar no dedo, não
+      // teleportar. Fora de uma interrupção o valor é 0 e nada muda.
+      startOffset = offset;
       dragging = true;
       locked = false;
       startX = e.clientX;
@@ -247,8 +255,11 @@ import { projects } from '../../data/projects';
         // vertical — nesse caso desiste e devolve o controle para a página.
         if (Math.abs(dx) < HYSTERESIS && Math.abs(dy) < HYSTERESIS) return;
         if (Math.abs(dy) > Math.abs(dx)) {
-          dragging = false;
-          start();
+          // Virou rolagem vertical: o eixo volta a ser da página. Passa pelo
+          // endDrag em vez de só zerar `dragging` porque este gesto pode ter
+          // interrompido uma mola — sair por aqui direto a deixaria congelada
+          // no meio do caminho.
+          endDrag();
           return;
         }
         locked = true;
@@ -257,7 +268,7 @@ import { projects } from '../../data/projects';
         slides.forEach((s) => (s.style.willChange = 'transform'));
       }
 
-      offset = dx;
+      offset = startOffset + dx;
       setDir(offset < 0 ? 1 : offset > 0 ? -1 : 0);
       trail.push({ x: e.clientX, t: performance.now() });
       if (trail.length > 5) trail.shift();
@@ -267,7 +278,12 @@ import { projects } from '../../data/projects';
     function endDrag() {
       if (!dragging) return;
       dragging = false;
-      if (!locked) {
+      // Sem histerese vencida não houve arrasto — mas o pointerdown pode ter
+      // interrompido uma mola (neighbor >= 0 é o rastro dela). Nesse caso o dedo
+      // segurou o filme parado no meio do caminho: soltar sem velocidade deixa a
+      // decisão com a posição, que é o que o gesto de fato disse. Sair direto
+      // aqui congelaria os slides no transform onde a mola parou.
+      if (!locked && neighbor < 0) {
         start();
         return;
       }

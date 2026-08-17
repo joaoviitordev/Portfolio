@@ -152,6 +152,13 @@ body { margin: 0; background:var(--bg); }
 
 [data-m="graph-lines"] g { stroke:var(--graph-line); }
 
+/* Seta de "abre em outro lugar" nos cartões de contato. Ela mora num
+   [data-s="card"], e card é a única superfície sem regra de traço como as de
+   pill e solid acima — por isso foi o último lugar onde o #8b8b92 sobreviveu à
+   passagem de tokens. Como afordância discreta, o tom certo é o --ink-faint,
+   que acompanha o tema (e sobe junto no prefers-contrast). */
+.card-arrow [stroke] { stroke:var(--ink-faint); }
+
 /* O painel do contato é escuro nos dois temas — é a única superfície que não
    acompanha o tema. Em vez de literais espalhados, ele redefine os tokens de
    texto para si: como custom property herda, todo filho que usa var(--ink-*)

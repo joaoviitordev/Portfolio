@@ -12,7 +12,11 @@ const navLinks = [
 
 {/* Sem border-bottom: a separação vem do degradê em `header::after` (global.css),
     que só aparece quando há conteúdo passando por baixo. */}
-<header style="position:sticky;top:0;z-index:50;background:var(--chrome-bg);backdrop-filter:blur(10px);">
+{/* O -webkit- não é redundante: Safari e iOS só aprenderam a forma sem prefixo
+    no 18. Sem ele o vidro não existe nesses browsers e o header vira um branco a
+    85% com o texto passando nítido por baixo — o pior dos dois mundos. O modal e
+    o bloco de prefers-contrast em global.css já traziam o par; aqui faltava. */}
+<header style="position:sticky;top:0;z-index:50;background:var(--chrome-bg);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);">
   {/* A marca tem duas linhas e é ela quem define a altura da barra — os botões
       têm 34px. Com 14px de padding o bloco encostava no topo da janela, longe
       da folga de ~40px que o resto da página usa nas laterais. 20px de padding

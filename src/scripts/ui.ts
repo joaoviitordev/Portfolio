@@ -20,6 +20,10 @@ interface Dict {
   aboutBody: string;
   projectsTitle: string;
   projectsSub: string;
+  // O título repete o rótulo do nav (nav2) de propósito: mesmo destino, mesmo
+  // nome. Antes ele era "TECHSTACK" fixo no markup — não trocava de idioma e
+  // ainda dava dois nomes para o mesmo lugar.
+  stackTitle: string;
   stackSub: string;
   eduTitle: string;
   eduSub: string;
@@ -85,6 +89,7 @@ const DICT: Record<Lang, Dict> = {
       'Minha jornada na tecnologia começou em 2025, movida pela curiosidade de entender como a internet funciona. Desde então, venho mergulhando no ecossistema do desenvolvimento web, partindo da base de HTML, CSS e JavaScript para a criação de experiências altamente interativas utilizando GSAP e Three.js.',
     projectsTitle: '/* PROJETOS */',
     projectsSub: '// aplicações full-stack, landing pages e experiências interativas',
+    stackTitle: '/* TECNOLOGIAS */',
     stackSub: '// ecossistema de tecnologias que uso no dia a dia',
     eduTitle: '/* EDUCAÇÃO */',
     eduSub: '// formação acadêmica e cursos',
@@ -148,6 +153,7 @@ const DICT: Record<Lang, Dict> = {
       'My journey in tech started in 2025, driven by the curiosity to understand how the internet works. Since then I have been diving into the web development ecosystem, going from the fundamentals of HTML, CSS and JavaScript to building highly interactive experiences with GSAP and Three.js.',
     projectsTitle: '/* PROJECTS */',
     projectsSub: '// full-stack applications, landing pages and interactive experiences',
+    stackTitle: '/* TECH STACK */',
     stackSub: '// the technology ecosystem I work with every day',
     eduTitle: '/* EDUCATION */',
     eduSub: '// academic background and courses',

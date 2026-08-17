@@ -14,11 +14,11 @@ const github = 'https://github.com/joaoviitordev';
 const linkedin = 'https://www.linkedin.com/in/joaovitor-faria/';
 ---
 
-<section data-screen-label="Contato" id="contato" data-s="page" style="border-top:1px solid var(--line-soft);">
+<section id="contato" data-s="page" style="border-top:1px solid var(--line-soft);">
   <div style="max-width:1200px;margin:0 auto;padding:clamp(72px,9vw,120px) clamp(20px,4vw,40px) clamp(30px,4vw,50px);">
     <h2 data-i18n="contactTitle" data-anim style="--i:0;font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(18px,2.4vw,24px);margin:0 0 8px;">/* CONTATO */</h2>
 
-    <div data-i18n="contactSub" data-s="muted" data-anim style="--i:1;font-family:JetBrains Mono,monospace;font-size:13px;color:var(--ink-faint);margin-bottom:36px;">// aberto a freelas, vagas full-stack e projetos colaborativos</div>
+    <div data-i18n="contactSub" data-anim style="--i:1;font-family:JetBrains Mono,monospace;font-size:13px;color:var(--ink-faint);margin-bottom:36px;">// aberto a freelas, vagas full-stack e projetos colaborativos</div>
 
     <div data-anim-group style="display:flex;flex-direction:column;gap:18px;">
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:18px;align-items:stretch;">
@@ -28,10 +28,10 @@ const linkedin = 'https://www.linkedin.com/in/joaovitor-faria/';
             <div data-s="solid" style="width:38px;height:38px;flex:none;border-radius:10px;display:flex;align-items:center;justify-content:center;">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 8.5h18V19a1 1 0 01-1 1H4a1 1 0 01-1-1V8.5z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 8.5V6a1 1 0 011-1h4a1 1 0 011 1v2.5" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><path d="M3 13h18" stroke="#fff" stroke-width="1.8"/></svg>
             </div>
-            <div data-i18n="jobsLabel" data-s="muted" style="font-family:JetBrains Mono,monospace;font-size:13px;color:var(--ink-faint);">// vagas e oportunidades</div>
+            <div data-i18n="jobsLabel" style="font-family:JetBrains Mono,monospace;font-size:13px;color:var(--ink-faint);">// vagas e oportunidades</div>
           </div>
           <h3 data-i18n="jobsTitle" style="margin:0;font-family:JetBrains Mono,monospace;font-weight:700;font-size:clamp(18px,2.2vw,24px);line-height:1.25;">Aberto a oportunidades full-stack</h3>
-          <div data-i18n="jobsBody" data-s="muted" style="font-size:15px;line-height:1.6;color:var(--ink-muted);max-width:54ch;text-wrap:pretty;">Procuro posições júnior ou de estágio em desenvolvimento web e full-stack, no Rio de Janeiro ou remoto. Se o perfil fizer sentido para o time, meu currículo está a um clique.</div>
+          <div data-i18n="jobsBody" style="font-size:15px;line-height:1.6;color:var(--ink-muted);max-width:54ch;text-wrap:pretty;">Procuro posições júnior ou de estágio em desenvolvimento web e full-stack, no Rio de Janeiro ou remoto. Se o perfil fizer sentido para o time, meu currículo está a um clique.</div>
           <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:2px;">
             {jobsChips.map((chip, i) => (
               <div data-i18n={`jobsChips${i}`} data-s="pill" style="font-family:JetBrains Mono,monospace;font-size:12px;padding:6px 12px;border:1px solid var(--line-strong);border-radius:999px;white-space:nowrap;">{chip}</div>
@@ -66,10 +66,10 @@ const linkedin = 'https://www.linkedin.com/in/joaovitor-faria/';
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 6h18v12H3V6z" stroke="#fff" stroke-width="1.8"/><path d="M3 7l9 6 9-6" stroke="#fff" stroke-width="1.8"/></svg>
           </div>
           <div style="display:flex;flex-direction:column;gap:4px;min-width:0;flex:1;">
-            <div data-s="muted" style="font-size:12px;font-family:JetBrains Mono,monospace;color:var(--ink-faint);">Email</div>
+            <div style="font-size:12px;font-family:JetBrains Mono,monospace;color:var(--ink-faint);">Email</div>
             <div style="font-size:14px;font-weight:600;word-break:break-all;">{email}</div>
           </div>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex:none;"><path d="M7 17L17 7M9 7h8v8" stroke="#8b8b92" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex:none;"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
 
         <a href={github} target="_blank" rel="noopener" data-s="card" class="hv-card" data-anim style="--i:3;display:flex;align-items:center;gap:16px;border:1px solid var(--line);border-radius:16px;padding:20px 22px;text-decoration:none;transition:transform .2s,box-shadow .2s;">
@@ -77,10 +77,10 @@ const linkedin = 'https://www.linkedin.com/in/joaovitor-faria/';
             <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 2C6.48 2 2 6.58 2 12.2c0 4.5 2.87 8.32 6.84 9.67.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.46-1.2-1.11-1.52-1.11-1.52-.91-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.9 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.64-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.73 0 0 .84-.27 2.75 1.05a9.3 9.3 0 015 0c1.9-1.32 2.74-1.05 2.74-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.63 1.03 2.75 0 3.93-2.35 4.79-4.58 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0022 12.2C22 6.58 17.52 2 12 2z"/></svg>
           </div>
           <div style="display:flex;flex-direction:column;gap:4px;min-width:0;flex:1;">
-            <div data-s="muted" style="font-size:12px;font-family:JetBrains Mono,monospace;color:var(--ink-faint);">GitHub</div>
+            <div style="font-size:12px;font-family:JetBrains Mono,monospace;color:var(--ink-faint);">GitHub</div>
             <div style="font-size:14px;font-weight:600;">github.com/joaoviitordev</div>
           </div>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex:none;"><path d="M7 17L17 7M9 7h8v8" stroke="#8b8b92" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex:none;"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
 
         <a href={linkedin} target="_blank" rel="noopener" data-s="card" class="hv-card" data-anim style="--i:4;display:flex;align-items:center;gap:16px;border:1px solid var(--line);border-radius:16px;padding:20px 22px;text-decoration:none;transition:transform .2s,box-shadow .2s;">
@@ -88,10 +88,10 @@ const linkedin = 'https://www.linkedin.com/in/joaovitor-faria/';
             <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M6.94 5a2 2 0 11-4-.02 2 2 0 014 .02zM3.28 8.98h3.6V21h-3.6V8.98zM9.4 8.98h3.46v1.64h.05c.48-.9 1.65-1.85 3.4-1.85 3.64 0 4.3 2.4 4.3 5.5V21h-3.6v-5.9c0-1.4-.03-3.2-1.96-3.2-1.96 0-2.26 1.53-2.26 3.1V21H9.4V8.98z"/></svg>
           </div>
           <div style="display:flex;flex-direction:column;gap:4px;min-width:0;flex:1;">
-            <div data-s="muted" style="font-size:12px;font-family:JetBrains Mono,monospace;color:var(--ink-faint);">LinkedIn</div>
+            <div style="font-size:12px;font-family:JetBrains Mono,monospace;color:var(--ink-faint);">LinkedIn</div>
             <div style="font-size:14px;font-weight:600;">linkedin.com/in/joaovitor-faria</div>
           </div>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex:none;"><path d="M7 17L17 7M9 7h8v8" stroke="#8b8b92" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex:none;"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
     </div>
@@ -99,7 +99,7 @@ const linkedin = 'https://www.linkedin.com/in/joaovitor-faria/';
 
   <div data-s="page" style="border-top:1px solid var(--line-soft);background:var(--bg-footer);">
     <div style="max-width:1200px;margin:0 auto;padding:18px clamp(20px,4vw,40px);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-      <span style="font-size:13px;color:var(--ink-faint);">© <span id="year">2026</span> joaoviitordev · <span data-i18n="lastUpdate">Última atualização:</span> <span id="date-str">{lastUpdate}</span></span>
+      <span style="font-size:13px;color:var(--ink-faint);">© <span id="year">2026</span> joaoviitordev · <span data-i18n="lastUpdate">Última atualização:</span> <span>{lastUpdate}</span></span>
       <div style="display:flex;align-items:center;gap:12px;">
         <a href="https://www.linkedin.com/in/joaovitor-faria/" target="_blank" rel="noopener" data-s="solid" class="solid" style="width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M6.94 5a2 2 0 11-4-.02 2 2 0 014 .02zM3.28 8.98h3.6V21h-3.6V8.98zM9.4 8.98h3.46v1.64h.05c.48-.9 1.65-1.85 3.4-1.85 3.64 0 4.3 2.4 4.3 5.5V21h-3.6v-5.9c0-1.4-.03-3.2-1.96-3.2-1.96 0-2.26 1.53-2.26 3.1V21H9.4V8.98z"/></svg>

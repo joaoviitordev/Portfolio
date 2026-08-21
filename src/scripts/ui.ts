@@ -589,12 +589,23 @@ if (topBtn && aboutSection) {
 // do rAF-com-flag usado nos blocos acima: o alvo precisa ser perseguido com
 // inércia (é ela que dá o peso do efeito), e `startOffset` é atributo SVG, não
 // propriedade CSS — nem `transition` nem `animation-timeline` chegam nele.
-const marquee = document.querySelector<HTMLElement>('[data-m="marquee"]');
-const marqueeText = marquee?.querySelector('textPath');
+//
+// A página tem duas faixas (a de cima e a espelhada antes da educação). Cada uma
+// precisa do seu próprio lerp — target, current e running são estado por faixa —,
+// então o bloco inteiro virou função e roda uma vez por instância.
+const setupMarquee = (marquee: HTMLElement) => {
+  const marqueeText = marquee.querySelector('textPath');
+  if (!marqueeText) return;
 
-if (marquee && marqueeText && !reduceMotion && 'IntersectionObserver' in window) {
-  const FROM = 0;
-  const TO = -100 / 3; // quanto do percurso o texto recua ponta a ponta do scroll
+  // Quanto do percurso o texto recua ponta a ponta do scroll. Na faixa invertida
+  // o mesmo trecho é percorrido ao contrário (sai de -SPAN e volta a 0), então o
+  // texto desliza no sentido oposto ao da faixa de cima — inverter aqui, e não em
+  // progress(), mantém o lerp perseguindo a rolagem em vez de disparar do zero.
+  // FROM tem de casar com o startOffset que o Marquee.astro renderiza.
+  const SPAN = -100 / 3;
+  const flipped = marquee.hasAttribute('data-marquee-flip');
+  const FROM = flipped ? SPAN : 0;
+  const TO = flipped ? 0 : SPAN;
   const EASE = 0.08; // equivalente ao scrub:2 do GSAP; maior = mais colado no scroll
 
   let target = 0;
@@ -633,6 +644,10 @@ if (marquee && marqueeText && !reduceMotion && 'IntersectionObserver' in window)
       window.removeEventListener('scroll', queueMarquee);
     }
   }).observe(marquee);
+};
+
+if (!reduceMotion && 'IntersectionObserver' in window) {
+  document.querySelectorAll<HTMLElement>('[data-m="marquee"]').forEach(setupMarquee);
 }
 
 // ---------- Techstack: ícone magnético ----------

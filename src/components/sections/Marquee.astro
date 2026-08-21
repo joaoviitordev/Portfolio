@@ -1,5 +1,7 @@
 ---
-// Faixa curva com o nome, entre o hero e o "sobre mim".
+// Faixa curva com o nome. Aparece duas vezes: entre o hero e o "sobre mim", e
+// entre "tecnologias" e "educação" — esta segunda espelhada (`flipped`), para ler
+// como a mesma fita que desceu do topo da página até ali embaixo.
 // O texto desliza sobre a curva conforme a rolagem (bloco "Faixa curva" em ui.ts).
 //
 // A curva é uma linha só, com stroke-width 120: é a espessura do traço que vira
@@ -13,25 +15,56 @@ const CURVE = 'M-90 400 Q 20 50 720 190 Q 1000 250 1511 200';
 
 // O viewBox é recortado no eixo Y (90→350) porque a fita só ocupa essa faixa
 // dentro da área visível; sem isso sobraria vazio acima e abaixo dela.
+const VIEW_TOP = 90;
+const VIEW_HEIGHT = 260;
+
+// A variante invertida é a MESMA curva espelhada no eixo Y do recorte
+// (y' = 2 × centro − y). Espelhar o `d` em vez de escrever um segundo path mantém
+// CURVE como fonte única — mexer nele reposiciona as duas faixas de uma vez — e,
+// diferente de um scaleY(-1) no SVG, deixa o texto de pé: só o trilho vira.
+const MIRROR_AXIS = 2 * VIEW_TOP + VIEW_HEIGHT;
+const mirrorY = (d: string) =>
+  d.replace(/(-?[\d.]+)\s+(-?[\d.]+)/g, (_m, x: string, y: string) => `${x} ${MIRROR_AXIS - Number(y)}`);
+
+interface Props {
+  // Precisa ser único na página: é o alvo dos href="#..." do <use> e do <textPath>.
+  // Com id repetido as duas faixas passariam a apontar para o mesmo trilho.
+  id?: string;
+  flipped?: boolean;
+}
+
+const { id = 'marquee-curve', flipped = false } = Astro.props;
+const path = flipped ? mirrorY(CURVE) : CURVE;
+
+// Quanto do percurso o texto anda de ponta a ponta da rolagem. A faixa invertida
+// percorre o MESMO trecho do trilho no sentido contrário: sai do fim do recuo e
+// volta para 0%, em vez de recuar a partir de 0%. Assim a inversão vale para o
+// deslize também, não só para o desenho da curva.
+//
+// O valor inicial precisa ser o mesmo FROM que ui.ts usa: sem isso a faixa
+// invertida nasceria em 0% e saltaria para -33% no primeiro frame do lerp.
+const SPAN = 100 / 3;
+const startOffset = flipped ? `-${SPAN}%` : '0%';
 ---
 
 <section
   data-m="marquee"
+  data-marquee-flip={flipped ? '' : undefined}
   aria-hidden="true"
   style="overflow:hidden;margin:clamp(-10px,-0vw,90px) 0;"
 >
   <svg
-    viewBox="0 90 1440 260"
+    viewBox={`0 ${VIEW_TOP} 1440 ${VIEW_HEIGHT}`}
     width="100%"
     xmlns="http://www.w3.org/2000/svg"
     style="display:block;overflow:visible;"
   >
     <defs>
-      <path id="marquee-curve" d={CURVE} />
+      <path id={id} d={path} />
     </defs>
 
     <use
-      href="#marquee-curve"
+      href={`#${id}`}
       stroke="var(--marquee-band)"
       stroke-width="120"
       stroke-linecap="round"
@@ -44,8 +77,8 @@ const CURVE = 'M-90 400 Q 20 50 720 190 Q 1000 250 1511 200';
           apareceria vazio. O texto só precisa ser mais longo que o percurso mais
           o recuo máximo — 3x cobre com folga. */}
       <textPath
-        href="#marquee-curve"
-        startOffset="0%"
+        href={`#${id}`}
+        startOffset={startOffset}
         alignment-baseline="middle"
         data-i18n="marqueeText"
         data-i18n-repeat="3"

@@ -17,10 +17,12 @@ import BackToTop from '../components/layout/BackToTop.astro';
       rola até a âncora mas o foco continua no topo, e o Tab seguinte volta ao header. */}
   <main id="conteudo" tabindex="-1">
     <Hero />
-    <Marquee />
+    <Marquee id="marquee-curve-top" />
     <About />
     <Projects />
     <Technologies />
+    {/* Espelhada: desce da esquerda em vez de subir, fechando o arco começado lá em cima. */}
+    <Marquee id="marquee-curve-bottom" flipped />
     <Education />
     <Contact />
   </main>

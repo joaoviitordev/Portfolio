@@ -41,6 +41,15 @@ export const academic: EduItem[] = [
 
 export const courses: EduItem[] = [
   {
+    key: 'eduSantander',
+    course: 'Santander Bootcamp 2026 — AI React Front-end',
+    institution: 'DIO',
+    year: '2026',
+    detail:
+      'Trilha de 42 horas em React 19, Vite, JavaScript ES6 e UI/UX Design. Projeto final: um educador financeiro inteligente, com diagnóstico gerado pela API do Gemini.',
+    icon: 'spark',
+  },
+  {
     key: 'eduBootcamp',
     course: 'Bootcamp Full-Stack',
     institution: 'Full Stack Club',

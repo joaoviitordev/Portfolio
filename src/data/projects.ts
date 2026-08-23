@@ -7,6 +7,7 @@ import doutoragenda from '../assets/images/dr-agenda.png';
 import agencia from '../assets/images/webhub.png';
 import stockly from '../assets/images/stockly.png';
 import riff from '../assets/images/riff.png';
+import financeia from '../assets/images/financeia.png';
 import barber from '../assets/images/barber.png';
 import spiderman from '../assets/images/spiderman-1920x1200.png';
 
@@ -28,6 +29,21 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  {
+    title: 'Finance IA',
+    url: 'https://financeia.vercel.app/',
+    repo: 'https://github.com/joaoviitordev/financeia',
+    img: financeia,
+    description:
+      'Simulador de planejamento financeiro pessoal com diagnóstico por IA. São sete perguntas sobre renda, gastos fixos, dívidas e metas: a partir delas o app calcula a sobra mensal, monta um plano com prazo para cada objetivo e pede à IA um diagnóstico em português sobre aqueles números — com uma conversa aberta sobre o próprio plano. Cada simulação vira um endereço próprio e fica no dispositivo de quem usa: não há conta nem servidor de dados. A chave da IA nunca vai para o navegador, fica num proxy no servidor. Projeto final do Bootcamp DIO Santander 2026.',
+    techs: [
+      { name: 'React', icon: '/assets/icons/react.svg' },
+      { name: 'TypeScript', icon: '/assets/icons/typescript.svg' },
+      { name: 'Vite', icon: '/assets/icons/vite.svg' },
+      { name: 'Tailwind CSS', icon: '/assets/icons/tailwindcss.svg' },
+      { name: 'IA', icon: '/assets/icons/ai.svg' },
+    ],
+  },
   {
     title: 'Riff',
     url: 'https://riff-mauve.vercel.app/',

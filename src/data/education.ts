@@ -41,6 +41,15 @@ export const academic: EduItem[] = [
 
 export const courses: EduItem[] = [
   {
+    key: 'eduBob',
+    course: 'IBM Bob: IA de Nível Empresarial para Desenvolvedores e Tech Leaders',
+    institution: 'DIO',
+    year: '2026',
+    detail:
+      'Uso de IA assistida em fluxos de desenvolvimento: geração e revisão de código, automação de tarefas, integração com MCP, criação de skills e modos personalizados, e boas práticas de engenharia com IA de nível empresarial.',
+    icon: 'spark',
+  },
+  {
     key: 'eduSantander',
     course: 'Santander Bootcamp 2026 — AI React Front-end',
     institution: 'DIO',

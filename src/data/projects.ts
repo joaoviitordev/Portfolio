@@ -8,6 +8,7 @@ import agencia from '../assets/images/webhub.png';
 import stockly from '../assets/images/stockly.png';
 import riff from '../assets/images/riff.png';
 import financeia from '../assets/images/financeia.png';
+import encurtador from '../assets/images/encurtador-1920x1200.png';
 import barber from '../assets/images/barber.png';
 import spiderman from '../assets/images/spiderman-1920x1200.png';
 
@@ -29,6 +30,24 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  {
+    title: 'Encurtador de URL',
+    url: 'https://url-shortener-web-lheh.onrender.com/',
+    repo: 'https://github.com/joaoviitordev/url-shortener',
+    img: encurtador,
+    description:
+      'API de encurtamento de URLs com uma tela única para gerar e copiar o link curto. O Redis gera um ID sequencial com INCR, o Hashids o converte num código base62 que esconde a sequência, e o MongoDB guarda a URL original usando esse ID como chave primária. O redirecionamento consulta primeiro o cache no Redis e só cai no banco em caso de miss. Tem rate limit por IP, validação com Zod, documentação OpenAPI, testes com Vitest e CI no GitHub Actions. A arquitetura foi pensada para a AWS e adaptada para rodar inteira em planos gratuitos (Render, MongoDB Atlas e Upstash). Projeto da Imersão Arquitetura de Software com IA.',
+    techs: [
+      { name: 'Node.js', icon: '/assets/icons/nodejs2.svg' },
+      { name: 'Fastify', icon: '/assets/icons/fastify.svg' },
+      { name: 'TypeScript', icon: '/assets/icons/typescript.svg' },
+      { name: 'MongoDB', icon: '/assets/icons/mongodb.svg' },
+      { name: 'Redis', icon: '/assets/icons/redis.svg' },
+      { name: 'Docker', icon: '/assets/icons/docker.svg' },
+      { name: 'React', icon: '/assets/icons/react.svg' },
+      { name: 'Claude', icon: '/assets/icons/claude.svg' },
+    ],
+  },
   {
     title: 'Finance IA',
     url: 'https://financeia.vercel.app/',

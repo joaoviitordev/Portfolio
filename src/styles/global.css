@@ -440,7 +440,8 @@ html[data-theme="dark"] .back-to-top { box-shadow:0 8px 20px -8px rgba(0,0,0,0.7
 /* Logos monocromáticos nos chips de tecnologia: contraste nos dois temas */
 html[data-theme="dark"] .tech-chip img[src$="nextjs.svg"],
 html[data-theme="dark"] .tech-chip img[src$="ai.svg"],
-html[data-theme="dark"] .tech-chip img[src$="prisma.svg"] { filter:invert(1); }
+html[data-theme="dark"] .tech-chip img[src$="prisma.svg"],
+html[data-theme="dark"] .tech-chip img[src$="fastify.svg"] { filter:invert(1); }
 
 /* ---- Tracking por tamanho ----
    As letras parecem mais afastadas conforme o corpo cresce, então título grande

@@ -14,7 +14,7 @@ export interface EduItem {
   /** Ementa resumida (PT). Ausente quando o currículo não detalha. */
   detail?: string;
   /** Nome do ícone em ICONS (Education.astro). */
-  icon: 'cap' | 'terminal' | 'rocket' | 'spark' | 'code';
+  icon: 'cap' | 'terminal' | 'rocket' | 'spark' | 'code' | 'network';
   /** Curso ainda em andamento: ganha o selo "Cursando". */
   current?: boolean;
 }
@@ -40,6 +40,15 @@ export const academic: EduItem[] = [
 ];
 
 export const courses: EduItem[] = [
+  {
+    key: 'eduArq',
+    course: 'Imersão Arquitetura de Software com IA',
+    institution: 'Full Stack Club',
+    year: '2026',
+    detail:
+      'Imersão de 6 horas arquitetando um encurtador de URLs, da concepção ao deploy na AWS, dimensionado para 11.600 leituras e 1.160 escritas por segundo. System design, estimativa de capacidade, escalabilidade horizontal, load balancing, replicação de dados, containerização e deploy na AWS com Fargate.',
+    icon: 'network',
+  },
   {
     key: 'eduBob',
     course: 'IBM Bob: IA de Nível Empresarial para Desenvolvedores e Tech Leaders',

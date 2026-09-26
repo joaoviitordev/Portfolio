@@ -45,6 +45,8 @@ interface Dict {
   eduAdsTitle: string;
   eduNextTitle: string;
   eduNextBody: string;
+  eduArqTitle: string;
+  eduArqBody: string;
   eduBobTitle: string;
   eduBobBody: string;
   eduSantanderTitle: string;
@@ -135,6 +137,9 @@ const DICT: Record<Lang, Dict> = {
     eduNextTitle: 'Formação Next.js',
     eduNextBody:
       'CSR, SSR, SSG & ISR · Client e Server Components · Composition Pattern · App Router e rotas · Streaming & Suspense · Data Fetching · Caching & Revalidations · Server Actions · build e deploy na Vercel.',
+    eduArqTitle: 'Imersão Arquitetura de Software com IA',
+    eduArqBody:
+      'Imersão de 6 horas arquitetando um encurtador de URLs, da concepção ao deploy na AWS, dimensionado para 11.600 leituras e 1.160 escritas por segundo. System design, estimativa de capacidade, escalabilidade horizontal, load balancing, replicação de dados, containerização e deploy na AWS com Fargate.',
     eduBobTitle: 'IBM Bob: IA de Nível Empresarial para Desenvolvedores e Tech Leaders',
     eduBobBody:
       'Uso de IA assistida em fluxos de desenvolvimento: geração e revisão de código, automação de tarefas, integração com MCP, criação de skills e modos personalizados, e boas práticas de engenharia com IA de nível empresarial.',
@@ -225,6 +230,9 @@ const DICT: Record<Lang, Dict> = {
     eduNextTitle: 'Next.js Track',
     eduNextBody:
       'CSR, SSR, SSG & ISR · Client and Server Components · Composition Pattern · App Router and routing · Streaming & Suspense · Data Fetching · Caching & Revalidations · Server Actions · build and deploy on Vercel.',
+    eduArqTitle: 'Software Architecture with AI Immersion',
+    eduArqBody:
+      '6-hour immersion architecting a URL shortener, from design to deployment on AWS, sized for 11,600 reads and 1,160 writes per second. System design, capacity estimation, horizontal scaling, load balancing, data replication, containerization and deployment on AWS with Fargate.',
     eduBobTitle: 'IBM Bob: Enterprise-Grade AI for Developers and Tech Leaders',
     eduBobBody:
       'AI-assisted development workflows: code generation and review, task automation, MCP integration, custom skills and modes, and engineering best practices with enterprise-grade AI.',

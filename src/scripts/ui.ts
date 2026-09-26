@@ -20,6 +20,17 @@ interface Dict {
   aboutBody: string;
   projectsTitle: string;
   projectsSub: string;
+  // Um Body por item de src/data/projects.ts (a chave lá é o prefixo)
+  projEncurtadorBody: string;
+  projFinanceiaBody: string;
+  projRiffBody: string;
+  projBarberBody: string;
+  projDoutorAgendaBody: string;
+  projStocklyBody: string;
+  projSpidermanBody: string;
+  projStrangerBody: string;
+  projPringlesBody: string;
+  projAgenciaBody: string;
   // O título repete o rótulo do nav (nav2) de propósito: mesmo destino, mesmo
   // nome. Antes ele era "TECHSTACK" fixo no markup — não trocava de idioma e
   // ainda dava dois nomes para o mesmo lugar.
@@ -93,6 +104,26 @@ const DICT: Record<Lang, Dict> = {
       'Minha jornada na tecnologia começou em 2025, movida pela curiosidade de entender como a internet funciona. Desde então, venho mergulhando no ecossistema do desenvolvimento web, partindo da base de HTML, CSS e JavaScript para a criação de experiências altamente interativas utilizando GSAP e Three.js.',
     projectsTitle: '/* PROJETOS */',
     projectsSub: '// aplicações full-stack, landing pages e experiências interativas',
+    projEncurtadorBody:
+      'API de encurtamento de URLs com uma tela única para gerar e copiar o link curto. O Redis gera um ID sequencial com INCR, o Hashids o converte num código base62 que esconde a sequência, e o MongoDB guarda a URL original usando esse ID como chave primária. O redirecionamento consulta primeiro o cache no Redis e só cai no banco em caso de miss. Tem rate limit por IP, validação com Zod, documentação OpenAPI, testes com Vitest e CI no GitHub Actions. A arquitetura foi pensada para a AWS e adaptada para rodar inteira em planos gratuitos (Render, MongoDB Atlas e Upstash). Projeto da Imersão Arquitetura de Software com IA.',
+    projFinanceiaBody:
+      'Simulador de planejamento financeiro pessoal com diagnóstico por IA. São sete perguntas sobre renda, gastos fixos, dívidas e metas: a partir delas o app calcula a sobra mensal, monta um plano com prazo para cada objetivo e pede à IA um diagnóstico em português sobre aqueles números — com uma conversa aberta sobre o próprio plano. Cada simulação vira um endereço próprio e fica no dispositivo de quem usa: não há conta nem servidor de dados. A chave da IA nunca vai para o navegador, fica num proxy no servidor. Projeto final do Bootcamp DIO Santander 2026.',
+    projRiffBody:
+      'Riff é uma rede social musical que conecta pessoas através do Spotify. Cada usuário cria um perfil com @nome de usuário próprio, conecta sua conta do Spotify e passa a ter uma página pública onde qualquer visitante pode ver o que ele está ouvindo agora, suas músicas e artistas mais ouvidos por período — sem esperar o Wrapped anual.',
+    projBarberBody:
+      'Aplicação web para agendamento de horários em barbearias. O usuário pesquisa barbearias, visualiza os serviços de cada uma, autentica-se com a conta Google e reserva um horário para o serviço desejado, além de acompanhar e cancelar seus agendamentos. O foco foi entregar uma interface responsiva — desktop e mobile — com fluxo de reserva curto e sem fricção.',
+    projDoutorAgendaBody:
+      'Sistema SaaS para agendamento médico construído com React, Next.js e Tailwind CSS. Desafio: otimização de performance e criação de um painel de UI/UX intuitivo para clínicas. Para saber mais sobre as tecnologias utilizadas, acesse o repositório do projeto.',
+    projStocklyBody:
+      'Este projeto consiste em uma aplicação web completa para o controle de estoque e vendas, desenvolvida com o objetivo de aprender a criar soluções full stack robustas. O sistema permite o gerenciamento de produtos, registro de vendas e possui um painel de controle com gráficos de receita em tempo real.',
+    projSpidermanBody:
+      'Landing page do filme Spider-Man: Um Novo Dia, construída com foco em UI/UX e narrativa visual. A navegação é conduzida por animações em GSAP — transições de seção, revelações de texto e efeitos de scroll — que acompanham a atmosfera do filme. Recursos de IA foram usados como apoio na concepção e no refinamento da interface.',
+    projStrangerBody:
+      'Este projeto consiste em uma Landing Page inspirada no site oficial da série Stranger Things da Netflix, desenvolvida com foco em UI/UX, experiência imersiva e identidade visual. A interface foi planejada para transmitir a atmosfera da série, respeitando hierarquia visual, consistência de design e boas práticas de front-end.',
+    projPringlesBody:
+      'Assim como o projeto de Stranger Things, este projeto também é uma Landing Page, porém, é inspirada no site oficial da Pringles, desenvolvida com foco em UI/UX, experiência imersiva e identidade visual. A interface foi planejada para transmitir a atmosfera da marca, respeitando hierarquia visual, consistência de design e boas práticas de front-end.',
+    projAgenciaBody:
+      'Landing page imersiva para Agência 3D do grupo WebHub usando bibliotecas avançadas de animação web (GSAP e Three.js). A interface foi planejada para transmitir a atmosfera da marca, respeitando hierarquia visual, consistência de design e boas práticas de front-end. Para saber mais sobre as tecnologias utilizadas, acesse o repositório do projeto.',
     stackTitle: '/* TECNOLOGIAS */',
     stackSub: '// ecossistema de tecnologias que uso no dia a dia',
     eduTitle: '/* EDUCAÇÃO */',
@@ -163,6 +194,26 @@ const DICT: Record<Lang, Dict> = {
       'My journey in tech started in 2025, driven by the curiosity to understand how the internet works. Since then I have been diving into the web development ecosystem, going from the fundamentals of HTML, CSS and JavaScript to building highly interactive experiences with GSAP and Three.js.',
     projectsTitle: '/* PROJECTS */',
     projectsSub: '// full-stack applications, landing pages and interactive experiences',
+    projEncurtadorBody:
+      'URL shortening API with a single screen to generate and copy the short link. Redis issues a sequential ID with INCR, Hashids turns it into a base62 code that hides the sequence, and MongoDB stores the original URL using that ID as the primary key. Redirects check the Redis cache first and only fall back to the database on a miss. It has per-IP rate limiting, Zod validation, OpenAPI docs, tests with Vitest and CI on GitHub Actions. The architecture was designed for AWS and adapted to run entirely on free tiers (Render, MongoDB Atlas and Upstash). Built during the Software Architecture with AI immersion program.',
+    projFinanceiaBody:
+      'Personal financial planning simulator with an AI diagnosis. Seven questions about income, fixed expenses, debts and goals: from them the app calculates the monthly surplus, builds a plan with a deadline for each goal and asks the AI for a diagnosis, in Portuguese, of those numbers — with an open conversation about the plan itself. Each simulation gets its own address and stays on the user\'s device: there is no account and no data server. The AI key never reaches the browser; it lives in a server-side proxy. Final project of the DIO Santander Bootcamp 2026.',
+    projRiffBody:
+      'Riff is a music social network that connects people through Spotify. Each user creates a profile with their own @username, connects their Spotify account and gets a public page where any visitor can see what they are listening to right now, plus their top tracks and artists by period — no need to wait for the yearly Wrapped.',
+    projBarberBody:
+      'Web app for booking barbershop appointments. Users search for barbershops, browse each one\'s services, sign in with their Google account and book a time slot for the service they want, as well as track and cancel their bookings. The focus was a responsive interface — desktop and mobile — with a short, frictionless booking flow.',
+    projDoutorAgendaBody:
+      'SaaS for medical appointment scheduling built with React, Next.js and Tailwind CSS. Challenge: performance optimization and an intuitive UI/UX dashboard for clinics. To learn more about the technologies used, check out the project repository.',
+    projStocklyBody:
+      'A complete web application for inventory and sales management, built with the goal of learning how to create robust full-stack solutions. The system handles product management and sales records, and has a dashboard with real-time revenue charts.',
+    projSpidermanBody:
+      'Landing page for the movie Spider-Man: Brand New Day, built with a focus on UI/UX and visual storytelling. Navigation is driven by GSAP animations — section transitions, text reveals and scroll effects — that follow the film\'s atmosphere. AI tools supported the design and refinement of the interface.',
+    projStrangerBody:
+      'A landing page inspired by the official Netflix website for Stranger Things, developed with a focus on UI/UX, immersive experience and visual identity. The interface was designed to convey the show\'s atmosphere, respecting visual hierarchy, design consistency and front-end best practices.',
+    projPringlesBody:
+      'Like the Stranger Things project, this one is also a landing page, this time inspired by the official Pringles website, developed with a focus on UI/UX, immersive experience and visual identity. The interface was designed to convey the brand\'s atmosphere, respecting visual hierarchy, design consistency and front-end best practices.',
+    projAgenciaBody:
+      'Immersive landing page for WebHub group\'s 3D Agency, using advanced web animation libraries (GSAP and Three.js). The interface was designed to convey the brand\'s atmosphere, respecting visual hierarchy, design consistency and front-end best practices. To learn more about the technologies used, check out the project repository.',
     stackTitle: '/* TECH STACK */',
     stackSub: '// the technology ecosystem I work with every day',
     eduTitle: '/* EDUCATION */',

@@ -20,11 +20,14 @@ export interface Tech {
 
 export interface Project {
   title: string;
+  /** Prefixo da chave `${key}Body` no dicionário de ui.ts. */
+  key: string;
   /** Ausente enquanto o projeto não tiver deploy publicado. */
   url?: string;
   /** Ausente enquanto o repositório não for publicado. */
   repo?: string;
   img: ImageMetadata;
+  /** Descrição (PT): só o fallback renderizado no servidor; o par pt/en fica em ui.ts. */
   description: string;
   techs: Tech[];
 }
@@ -32,6 +35,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     title: 'Encurtador de URL',
+    key: 'projEncurtador',
     url: 'https://url-shortener-web-lheh.onrender.com/',
     repo: 'https://github.com/joaoviitordev/url-shortener',
     img: encurtador,
@@ -50,6 +54,7 @@ export const projects: Project[] = [
   },
   {
     title: 'Finance IA',
+    key: 'projFinanceia',
     url: 'https://financeia.vercel.app/',
     repo: 'https://github.com/joaoviitordev/financeia',
     img: financeia,
@@ -65,6 +70,7 @@ export const projects: Project[] = [
   },
   {
     title: 'Riff',
+    key: 'projRiff',
     url: 'https://riff-mauve.vercel.app/',
     repo: 'https://github.com/joaoviitordev/riff',
     img: riff,
@@ -81,6 +87,7 @@ export const projects: Project[] = [
   },
   {
     title: 'FSW Barber',
+    key: 'projBarber',
     url: 'https://barber-app-rust-theta.vercel.app',
     repo: 'https://github.com/joaoviitordev/barber-app',
     img: barber,
@@ -97,6 +104,7 @@ export const projects: Project[] = [
   },
   {
     title: 'Doutor Agenda',
+    key: 'projDoutorAgenda',
     url: 'https://doutor-agenda-indol.vercel.app/',
     repo: 'https://github.com/joaoviitordev/doutor-agenda',
     img: doutoragenda,
@@ -113,6 +121,7 @@ export const projects: Project[] = [
   },
   {
     title: 'Stockly',
+    key: 'projStockly',
     url: 'https://stockly-seven-nu.vercel.app/',
     repo: 'https://github.com/joaoviitordev/stockly',
     img: stockly,
@@ -129,6 +138,7 @@ export const projects: Project[] = [
   },
   {
     title: 'Spider-Man',
+    key: 'projSpiderman',
     url: 'https://joaoviitordev.github.io/spiderman/',
     repo: 'https://github.com/joaoviitordev/spiderman',
     img: spiderman,
@@ -144,6 +154,7 @@ export const projects: Project[] = [
   },
   {
     title: 'Stranger Things',
+    key: 'projStranger',
     url: 'https://joaoviitordev.github.io/StrangerThings/',
     repo: 'https://github.com/joaoviitordev/StrangerThings',
     img: strangerThings,
@@ -159,6 +170,7 @@ export const projects: Project[] = [
   },
   {
     title: 'Pringles',
+    key: 'projPringles',
     url: 'https://joaoviitordev.github.io/Pringles/',
     repo: 'https://github.com/joaoviitordev/Pringles',
     img: pringles,
@@ -174,6 +186,7 @@ export const projects: Project[] = [
   },
   {
     title: 'Agência 3D',
+    key: 'projAgencia',
     url: 'https://joaoviitordev.github.io/Agencia3D/',
     repo: 'https://github.com/joaoviitordev/Agencia3D',
     img: agencia,

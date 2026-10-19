@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    {
+      "source": "/whatsapp",
+      "destination": "https://wa.me/5521999359892?text=Oi%2C%20Jo%C3%A3o!%20Quero%20uma%20pr%C3%A9via%20do%20site%20do%20meu%20neg%C3%B3cio.",
+      "permanent": false
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
